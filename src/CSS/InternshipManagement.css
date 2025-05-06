@@ -1,0 +1,117 @@
+/* Wrapper for the entire page */
+.management-wrapper {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    font-family: 'Courier New', Courier, monospace;
+    background: linear-gradient(135deg, #add8e6, #e0ffff);
+}
+
+/* Header styling */
+.management-header {
+    width: 100%;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.8);
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.management-title {
+    color: #1e90ff;
+    font-size: 36px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Main content styling */
+.management-main {
+    flex: 1;
+    padding: 20px;
+    display: flex;
+    gap: 20px;
+    background: rgba(255, 255, 255, 0.9);
+    overflow-y: auto;
+}
+
+.section-title {
+    font-size: 20px;
+    color: #1e90ff;
+    margin-bottom: 15px;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.form-label {
+    font-size: 16px;
+    color: #00008b;
+    font-weight: bold;
+}
+
+.form-input,
+.form-textarea,
+.form-select {
+    padding: 10px;
+    border: 2px solid #4682b4;
+    border-radius: 8px;
+    font-size: 16px;
+    background: rgba(255, 255, 255, 0.9);
+}
+
+.form-checkbox {
+    width: 20px;
+    height: 20px;
+}
+
+.action-button {
+    background: linear-gradient(135deg, #4682b4, #add8e6);
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: background 0.3s ease, transform 0.3s ease;
+}
+
+    .action-button:hover {
+        background: linear-gradient(135deg, #add8e6, #4682b4);
+        transform: translateY(-3px);
+    }
+
+.delete-button {
+    background: linear-gradient(135deg, #ff4d4d, #ff9999);
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    transition: background 0.3s ease, transform 0.3s ease;
+}
+
+    .delete-button:hover {
+        background: linear-gradient(135deg, #ff9999, #ff4d4d);
+        transform: translateY(-3px);
+    }
+
+.internship-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.internship-item {
+    padding: 15px;
+    border: 2px solid #4682b4;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    background: rgba(255, 255, 255, 0.8);
+}
