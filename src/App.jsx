@@ -25,6 +25,8 @@ import SCADWorkship from './ScadWorkship';
 import SCADReports from './ScadReports';
 import SCADWorkshop from './ScadInternships';
 import SCADInternships from './ScadInternships';
+import FacultyStatistics from './FacultyStatistics';
+import FacultyReports from './FacultyReports';
 
 
 
@@ -58,6 +60,9 @@ function App() {
               <Route path="/scad/Workshop" element={<SCADWorkship />} />
               <Route path="/scad/reports" element={<SCADReports />} />
               <Route path="/scad/interns" element={<SCADInternships />} />
+
+              <Route path="/faculty/statistics" element={<FacultyStatistics />} />
+              <Route path="/faculty/reports" element={<FacultyReports />} />
           </Routes>
       </Router>
   )

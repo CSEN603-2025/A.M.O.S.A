@@ -5,35 +5,33 @@ const FacultyDashboard = () => {
     return (
         <div className="dashboard-wrapper">
             <header className="dashboard-header">
-                <h1 className="dashboard-title">Faculty Dashboard</h1>
+
+                <div className="header-left">
+                    <h1 className="dashboard-title">Faculty Member Dashboard</h1>
+                </div>
+                <div className="header-right">
+                    <a href="/" className="signout-button">Sign Out</a>
+                </div>
+
             </header>
             <div className="dashboard-content">
                 <aside className="dashboard-sidebar">
                     <h2 className="sidebar-title">Navigation</h2>
                     <ul className="nav-list">
+                        <li className="nav-item">Home</li>
                         <li className="nav-item"><a href="/faculty/reports" className="nav-link">Review Reports</a></li>
                         <li className="nav-item"><a href="/faculty/statistics" className="nav-link">Statistics</a></li>
-                        <li className="nav-item"><a href="/faculty/settings" className="nav-link">Settings</a></li>
+                     
                     </ul>
                 </aside>
                 <main className="dashboard-main">
-                    <section className="stats-section">
-                        <h2 className="section-title">Report Review Status</h2>
-                        <p>Reports to Review: 15</p>
-                        <p>Flagged Reports: 3</p>
-                        <p>Accepted Reports: 10</p>
-                    </section>
-                    <section className="filters-section">
-                        <h2 className="section-title">Quick Filters</h2>
-                        <button className="action-button">Pending Reports</button>
-                        <button className="action-button">Flagged Reports</button>
-                        <button className="action-button">Accepted Reports</button>
-                    </section>
-                    <div className="actions-section">
-                        <h2 className="section-title">Actions</h2>
-                        <button className="action-button">View All Reports</button>
-                        <button className="action-button">Generate Statistics</button>
-                    </div>
+                    
+                        <div className="welcome-box">
+                            <h2 className="welcome-title">Welcome to the Fcaulty Dashboard</h2>
+                            <p className="welcome-text">Use the navigation panel on the right to view Reports and Statisitcs </p>
+
+                        </div>
+                 
                 </main>
             </div>
             <footer className="dashboard-footer">

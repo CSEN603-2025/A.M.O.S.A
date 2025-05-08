@@ -5,6 +5,7 @@ const mockData = [
     {
         id: 1,
         studentName: "Ali Hassan",
+        major: "Computer Science",
         cycle: "Spring 2025",
         company: "Tech Solutions Ltd",
         internshipReport: {
@@ -13,7 +14,7 @@ const mockData = [
             body: "Worked with React.",
             status: "flagged",
             comment: "Needs more technical detail.",
-            commentSaved: true
+            commentSaved: false
         },
         evaluationReport: {
             startDate: "2025-02-01",
@@ -24,6 +25,7 @@ const mockData = [
     {
         id: 2,
         studentName: "Sara Ahmed",
+        major: "Data Science",
         cycle: "Spring 2025",
         company: "Innovatech",
         internshipReport: {
@@ -32,7 +34,7 @@ const mockData = [
             body: "Worked with pandas and matplotlib.",
             status: "rejected",
             comment: "",
-            commentSaved: false  // This comment hasn't been saved yet
+            commentSaved: false
         },
         evaluationReport: {
             startDate: "2025-01-15",
@@ -43,6 +45,7 @@ const mockData = [
     {
         id: 3,
         studentName: "Mohammed Khan",
+        major: "UX Design",
         cycle: "Spring 2025",
         company: "Digital Solutions",
         internshipReport: {
@@ -75,6 +78,8 @@ const SCADReports = () => {
     const [modalType, setModalType] = useState(null);
     const [studentsData, setStudentsData] = useState(mockData);
     const [currentComment, setCurrentComment] = useState("");
+    const [majorFilter, setMajorFilter] = useState("");
+    const [statusFilter, setStatusFilter] = useState("");
 
     const openModal = (student, type) => {
         setSelectedStudent(student);
@@ -115,6 +120,12 @@ const SCADReports = () => {
         }));
     };
 
+    const filteredStudents = studentsData.filter(student => {
+        const matchesMajor = majorFilter ? student.major === majorFilter : true;
+        const matchesStatus = statusFilter ? student.internshipReport.status === statusFilter : true;
+        return matchesMajor && matchesStatus;
+    });
+
     return (
         <div className="dashboard-wrapper">
             <header className="dashboard-header">
@@ -125,6 +136,7 @@ const SCADReports = () => {
                     <a href="/" className="signout-button">Sign Out</a>
                 </div>
             </header>
+
             <div className="dashboard-content">
                 <aside className="dashboard-sidebar">
                     <h2 className="sidebar-title">Navigation</h2>
@@ -141,34 +153,69 @@ const SCADReports = () => {
                         <li className="nav-item"><a href="/scad/Workshop" className="nav-link">Workshop</a></li>
                     </ul>
                 </aside>
+
                 <main className="dashboard-main">
                     <h2>Student Internship Reports</h2>
+
+                    <div className="filters">
+                        <label>
+                            <p className="filters-title"> Filter by Major:</p>
+                            <select value={majorFilter} onChange={(e) => setMajorFilter(e.target.value)}>
+                                <option value="">All</option>
+                                <option value="Computer Science">Computer Science</option>
+                                <option value="Data Science">Data Science</option>
+                                <option value="UX Design">UX Design</option>
+                            </select>
+                        </label>
+
+                        <label>
+                            <p className="filters-title"> Filter by Status:</p>
+                            <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)}>
+                                <option value="">All</option>
+                                <option value="pending">Pending</option>
+                                <option value="approved">Approved</option>
+                                <option value="rejected">Rejected</option>
+                                <option value="flagged">Flagged</option>
+                            </select>
+                        </label>
+                    </div>
+
                     <table className="student-table">
                         <thead>
                             <tr>
                                 <th>Student Name</th>
+                                <th>Major</th>
                                 <th>Company</th>
                                 <th>Cycle</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {studentsData.map(student => (
-                                <tr key={student.id}>
-                                    <td>{student.studentName}</td>
-                                    <td>{student.company}</td>
-                                    <td>{student.cycle}</td>
-                                    <td>
-                                        <button onClick={() => openModal(student, 'internship')}>Internship Report</button>
-                                        <button onClick={() => openModal(student, 'evaluation')}>Evaluation Report</button>
-                                    </td>
+                            {filteredStudents.length > 0 ? (
+                                filteredStudents.map(student => (
+                                    <tr key={student.id}>
+                                        <td>{student.studentName}</td>
+                                        <td>{student.major}</td>
+                                        <td>{student.company}</td>
+                                        <td>{student.cycle}</td>
+                                        <td>
+                                            <button onClick={() => openModal(student, 'internship')}>Internship Report</button>
+                                            <button onClick={() => openModal(student, 'evaluation')}>Evaluation Report</button>
+                                        </td>
+                                    </tr>
+                                ))
+                            ) : (
+                                <tr>
+                                    <td colSpan="5">No students match the selected filters.</td>
                                 </tr>
-                            ))}
+                            )}
                         </tbody>
                     </table>
 
                     {selectedStudent && modalType === 'internship' && (
                         <Modal onClose={closeModal}>
+                            <br />
+                        <br/>
                             <h3>Internship Report</h3>
                             <p><strong>Title:</strong> {selectedStudent.internshipReport.title}</p>
                             <p><strong>Introduction:</strong> {selectedStudent.internshipReport.introduction}</p>
@@ -201,12 +248,13 @@ const SCADReports = () => {
                                     </div>
                                 )}
                             <button className="download-button">Download Report</button>
-
                         </Modal>
                     )}
 
                     {selectedStudent && modalType === 'evaluation' && (
                         <Modal onClose={closeModal}>
+                            <br />
+                        <br/>
                             <h3>Evaluation Report</h3>
                             <p><strong>Student:</strong> {selectedStudent.studentName}</p>
                             <p><strong>Company:</strong> {selectedStudent.company}</p>
@@ -214,11 +262,11 @@ const SCADReports = () => {
                             <p><strong>Start Date:</strong> {selectedStudent.evaluationReport.startDate}</p>
                             <p><strong>End Date:</strong> {selectedStudent.evaluationReport.endDate}</p>
                             <button className="download-button">Download Report</button>
-
                         </Modal>
                     )}
                 </main>
             </div>
+
             <footer className="dashboard-footer">
                 <p>&copy; 2025 SCAD System. All rights reserved.</p>
             </footer>
