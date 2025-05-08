@@ -38,13 +38,16 @@ body {
     background: rgba(255, 255, 255, 0.8);
     text-align: center;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
     display: flex;
     justify-content: space-between; /* Pushes left and right apart */
     align-items: center; /* Vertically center */
+
 }
 
 .dashboard-title {
     color: #1e90ff;
+
 
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
     margin: 0;
@@ -53,6 +56,7 @@ body {
     margin: 0;
     font-size: 24px;
     white-space: nowrap; /* <-- this is the key to fix it */
+
 }
 
 /* Content area */
@@ -84,7 +88,9 @@ body {
 
 .nav-item {
     margin-bottom: 10px;
+
     color:midnightblue;
+
 }
 
 .nav-link {
@@ -144,6 +150,7 @@ body {
     font-size: 14px;
     color: #4682b4;
 }
+
 .edit-button {
     background-color: #4CAF50;
     color: white;
@@ -1023,3 +1030,4 @@ button {
     }
 
     /* Rest of your existing CSS */
+

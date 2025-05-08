@@ -14,6 +14,7 @@ import InternshipManagement from './Company/InternshipManagement';
 import ApplicationsReview from './Company/ApplicationsReview';
 import StudentProfile from './Student/StudentProfile';
 import InternshipBrowser from './Student/browseInternships';
+
 import SCADPendingCompany from './ScadPendingCompany';
 import SCADCurrentCycle from './ScadCurrentCycle';
 import SCADStudent from './ScadStudents';
@@ -24,6 +25,7 @@ import SCADWorkship from './ScadWorkship';
 import SCADReports from './ScadReports';
 import SCADWorkshop from './ScadInternships';
 import SCADInternships from './ScadInternships';
+
 
 
 
@@ -46,6 +48,7 @@ function App() {
               <Route path="/Companydashboard" element={<CompanyDashboard />} />
               <Route path="/CompanyRegistration" element={<CompanyRegistration />} />
               <Route path="/Studentdashboard" element={<StudentDashboard />} />
+
               <Route path="/scad/companies" element={<SCADPendingCompany />} />
               <Route path="/scad/cycle" element={<SCADCurrentCycle />} />
               <Route path="/scad/students" element={<SCADStudent />} />
