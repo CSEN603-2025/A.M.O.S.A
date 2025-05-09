@@ -1,0 +1,61 @@
+import React from "react";
+import './CSS/SCADOfficeDashboard.css';
+
+const PROStudentDashboard = () => {
+    return (
+        <div className="dashboard-wrapper">
+            <header className="dashboard-header">
+                <h1 className="dashboard-title"> PRO Student Dashboard</h1>
+            </header>
+            <div className="dashboard-content">
+                <aside className="dashboard-sidebar">
+                    <h2 className="sidebar-title">Navigation</h2>
+                    <ul className="nav-list">
+                        <li className="nav-item"><a href="/student/recommendations" className="nav-link">Internship Recommendations</a></li>
+                        <li className="nav-item"><a href="/student/current-internship" className="nav-link">Current Internship</a></li>
+                        <li className="nav-item"><a href="/student/deadlines" className="nav-link">Upcoming Deadlines</a></li>
+                        <li className="nav-item"><a href="/student/proprofile" className="nav-link">My Profile</a></li>
+                        <li className="nav-item"><a href="/student/settings" className="nav-link">Settings</a></li>
+                        <li className="nav-item"><a href="/student/appointments" className="nav-link">Appointments</a></li>
+
+                        <li className="nav-item"><a href="/student/Calls" className="nav-link">Calls</a></li>
+                        <li className="nav-item"><a href="/student/viewed" className="nav-link">Viewed my profile</a></li>
+                        <li className="nav-item"><a href="/student/assessment" className="nav-link">Online assessments</a></li>
+
+                        <li className="nav-item"><a href="/student/workshop" className="nav-link">Workshop</a></li>
+                        
+
+                    </ul>
+                </aside>
+                <main className="dashboard-main">
+                    <section className="recommendations-section">
+                        <h2 className="section-title">Internship Recommendations</h2>
+                        <ul>
+                            <li>Software Engineer Intern at TechCorp</li>
+                            <li>Marketing Intern at Marketify</li>
+                            <li>Data Analyst Intern at DataWorks</li>
+                        </ul>
+                    </section>
+                    <section className="status-section">
+                        <h2 className="section-title">Current Internship</h2>
+                        <p>Status: Active</p>
+                        <p>Company: TechCorp</p>
+                        <p>Role: Software Engineer Intern</p>
+                    </section>
+                    <section className="deadlines-section">
+                        <h2 className="section-title">Upcoming Deadlines</h2>
+                        <ul>
+                            <li>Submit Internship Report - May 15, 2025</li>
+                            <li>Apply for Summer Internships - June 1, 2025</li>
+                        </ul>
+                    </section>
+                </main>
+            </div>
+            <footer className="dashboard-footer">
+                <p>&copy; 2025 SCAD System. All rights reserved.</p>
+            </footer>
+        </div>
+    );
+};
+
+export default PROStudentDashboard;
