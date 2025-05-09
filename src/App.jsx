@@ -40,6 +40,7 @@ import PROAssessment from './PROAssessment';
 
 
 
+
 function App() {
   const [count, setCount] = useState(0)
 
@@ -70,6 +71,7 @@ function App() {
 
               <Route path="/faculty/statistics" element={<FacultyStatistics />} />
               <Route path="/faculty/reports" element={<FacultyReports />} />
+
               <Route path="/student/proprofile" element={<PROStudentProfile/>}/>
               <Route path="/student/viewed" element={<PROViewed/>}/>
               <Route path ="/student/assessment" element ={<PROAssessment/>}/>
@@ -78,6 +80,7 @@ function App() {
               <Route path="/student/appointments" element={<ProAppointments />} />
               <Route path ="/student/calls" element = {<PROCalls/>}/>
               <Route path ="/student/workshop" element ={<PROWorkshop/>}/>
+
           </Routes>
       </Router>
   )
