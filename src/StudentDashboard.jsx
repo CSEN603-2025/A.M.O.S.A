@@ -11,8 +11,9 @@ const StudentDashboard = () => {
                 <aside className="dashboard-sidebar">
                     <h2 className="sidebar-title">Navigation</h2>
                     <ul className="nav-list">
-                        <li className="nav-item"><a href="/student/recommendations" className="nav-link">Internship Recommendations</a></li>
-                        <li className="nav-item"><a href="/student/current-internship" className="nav-link">Current Internship</a></li>
+                        <li className="nav-item">Home</li>
+                        <li className="nav-item"><a href="/studentInternships" className="nav-link">Browse Internships</a></li>
+                        <li className="nav-item"><a href="/StudentApplied" className="nav-link">View Applied Internships</a></li>
                         <li className="nav-item"><a href="/student/deadlines" className="nav-link">Upcoming Deadlines</a></li>
                         <li className="nav-item"><a href="/student/profile" className="nav-link">My Profile</a></li>
                         <li className="nav-item"><a href="/student/settings" className="nav-link">Settings</a></li>
@@ -27,12 +28,22 @@ const StudentDashboard = () => {
                             <li>Data Analyst Intern at DataWorks</li>
                         </ul>
                     </section>
+
+                    <section className="video-section">
+                        <h2 className="section-title">Introduction Video</h2>
+                        <div className="video-placeholder">
+                            <p>Video cannot be played. No video link provided.</p>
+                            <button className="play-button" disabled>Play</button>
+                        </div>
+                    </section>
+
                     <section className="status-section">
                         <h2 className="section-title">Current Internship</h2>
                         <p>Status: Active</p>
                         <p>Company: TechCorp</p>
                         <p>Role: Software Engineer Intern</p>
                     </section>
+
                     <section className="deadlines-section">
                         <h2 className="section-title">Upcoming Deadlines</h2>
                         <ul>

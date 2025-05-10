@@ -107,3 +107,15 @@
         background: linear-gradient(135deg, #ff9999, #ff4d4d);
         transform: translateY(-3px);
     }
+
+    .upload-section {
+    margin: 10px 0;
+}
+.upload-input {
+    margin-top: 5px;
+}
+.file-name {
+    font-style: italic;
+    margin-top: 5px;
+    color: #555;
+}
