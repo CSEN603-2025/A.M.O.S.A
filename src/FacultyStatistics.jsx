@@ -58,6 +58,35 @@ const FacultyStatistics = () => {
     };
 
     const statistics = cycleData[selectedCycle];
+
+    const handleDownload = (stats, cycleName) => {
+        const content = `
+SCAD Report - ${cycleName}
+
+Accepted Reports: ${stats.acceptedReports}
+Rejected Reports: ${stats.rejectedReports}
+Flagged Reports: ${stats.flaggedReports}
+Average Review Time: ${stats.averageReviewTime}
+
+Top Courses:
+${stats.topCourses.map((course, i) => `  ${i + 1}. ${course}`).join("\n")}
+
+Top Rated Companies:
+${stats.topRatedCompanies.map((company, i) => `  ${i + 1}. ${company}`).join("\n")}
+
+Top Companies by Internship Count:
+${stats.topCompaniesByCount.map((company, i) => `  ${i + 1}. ${company}`).join("\n")}
+`;
+
+        const blob = new Blob([content], { type: 'text/plain' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `SCAD_Report_${cycleName.replace(/\s/g, "_")}.txt`;
+        a.click();
+        URL.revokeObjectURL(url);
+    };
+
     return (
         <div className="dashboard-wrapper">
             <header className="dashboard-header">
@@ -127,7 +156,7 @@ const FacultyStatistics = () => {
                         <p><strong>Top Companies by Internship Count:</strong> {statistics.topCompaniesByCount.join(", ")}</p>
 
                         {/* Dummy Download Button */}
-                        <button className="download-button">Download Report</button>
+                        <button className="download-button" onClick={handleDownload(statistics, selectedCycle)}>Download Report</button>
 
                         {/* Close button for popup */}
                         <button className="close-button" onClick={() => setOpenPopup(false)}>Close</button>

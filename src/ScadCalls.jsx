@@ -10,9 +10,9 @@ const SCADCalls = () => {
 
     const [activeCall, setActiveCall] = useState(null);
     const [micOn, setMicOn] = useState(true);
-    const [screenOn, setScreenOf] = useState(true);
+    const [screenOn, setScreenOn] = useState(true);
     const [cameraOn, setCameraOn] = useState(true);
-    const [callerLeft, setCallerLeft] = useState(false);  // NEW state for popup
+    const [callerLeft, setCallerLeft] = useState(false);
 
     const acceptCall = (caller) => {
         setIncomingCalls(prev => prev.filter(call => call.id !== caller.id));
@@ -21,41 +21,37 @@ const SCADCalls = () => {
 
     const rejectCall = (caller) => {
         setIncomingCalls(prev => prev.filter(call => call.id !== caller.id));
+        if (activeCall && activeCall.id === caller.id) {
+            setActiveCall(null);
+        }
     };
 
     const endCall = () => {
         setActiveCall(null);
         setMicOn(true);
         setCameraOn(true);
-        setCallerLeft(false); // Reset popup
+        setScreenOn(true);
+        setCallerLeft(false);
     };
 
-    const toggleMic = () => {
-        setMicOn(prev => !prev);
-    };
-
-    const toggleCamera = () => {
-        setCameraOn(prev => !prev);
-    };
-
-    const toggleScreen = () => {
-        setScreenOf(prev => !prev);
-    };
+    const toggleMic = () => setMicOn(prev => !prev);
+    const toggleCamera = () => setCameraOn(prev => !prev);
+    const toggleScreen = () => setScreenOn(prev => !prev);
 
     const simulateCallerLeft = () => {
         if (activeCall) {
-            setCallerLeft(true); // Instead of alert, open the nice popup
+            setCallerLeft(true);
         }
     };
 
     const closeCallerLeftPopup = () => {
         setCallerLeft(false);
-        endCall(); // Optionally, you can also end the call when caller leaves
+        endCall();
     };
 
     return (
         <div className="dashboard-wrapper">
-            {/* === Navigation Bar === */}
+            {/* Header */}
             <header className="dashboard-header">
                 <div className="header-left">
                     <h1 className="dashboard-title">SCAD Office Dashboard</h1>
@@ -65,7 +61,7 @@ const SCADCalls = () => {
                 </div>
             </header>
 
-            {/* === Page Content === */}
+            {/* Main Content */}
             <div className="dashboard-content">
                 <aside className="dashboard-sidebar">
                     <h2 className="sidebar-title">Navigation</h2>
@@ -86,35 +82,28 @@ const SCADCalls = () => {
                 <main className="dashboard-main">
                     <h2>Incoming Calls</h2>
 
-                    {incomingCalls.length === 0 && <p>No incoming calls.</p>}
+                    {incomingCalls.length === 0 && !activeCall && <p>No incoming calls.</p>}
 
-                    {incomingCalls.map((caller) => (
-                        <div key={caller.id} className="incoming-call-notification">
-                            <p><strong>{caller.name}</strong> is calling you...</p>
-                            <button onClick={() => acceptCall(caller)} className="btn accept">Accept</button>
-                            <button onClick={() => rejectCall(caller)} className="btn reject">Reject</button>
-                        </div>
-                    ))}
+                    <div className="calls-container">
+                        {incomingCalls.map((caller) => (
+                            <div key={caller.id} className="incoming-call-card ringing">
+                                <p><strong>{caller.name}</strong> is calling you...</p>
+                                <button onClick={() => acceptCall(caller)} className="btn accept">Accept</button>
+                                <button onClick={() => rejectCall(caller)} className="btn reject">Reject</button>
+                            </div>
+                        ))}
+                    </div>
 
-                    {/* Active Call Popup */}
+                    {/* Active Call UI */}
                     {activeCall && (
                         <div className="call-popup">
                             <div className="popup-content">
                                 <h2>In Call with {activeCall.name}</h2>
-
                                 <div className="call-controls">
-                                    <button onClick={toggleMic} className="btn control">
-                                        {micOn ? "Mute Mic" : "Unmute Mic"}
-                                    </button>
-                                    <button onClick={toggleCamera} className="btn control">
-                                        {cameraOn ? "Turn Off Camera" : "Turn On Camera"}
-                                    </button>
-                                    <button onClick={toggleScreen} className="btn control">
-                                        {screenOn ? "Share Screen" : "Unshare Screen"}
-                                    </button>
-                                    <button onClick={simulateCallerLeft} className="btn control">
-                                        Simulate Caller Left
-                                    </button>
+                                    <button onClick={toggleMic} className="btn control">{micOn ? "Mute Mic" : "Unmute Mic"}</button>
+                                    <button onClick={toggleCamera} className="btn control">{cameraOn ? "Turn Off Camera" : "Turn On Camera"}</button>
+                                    <button onClick={toggleScreen} className="btn control">{screenOn ? "Stop Screen" : "Share Screen"}</button>
+                                    <button onClick={simulateCallerLeft} className="btn control">Simulate Caller Left</button>
                                     <button onClick={endCall} className="btn leave">End Call</button>
                                 </div>
                             </div>
@@ -123,11 +112,12 @@ const SCADCalls = () => {
                 </main>
             </div>
 
+            {/* Footer */}
             <footer className="dashboard-footer">
                 <p>&copy; 2025 SCAD System. All rights reserved.</p>
             </footer>
 
-            {/* === Caller Left Popup === */}
+            {/* Caller Left Popup */}
             {callerLeft && (
                 <div className="popup-overlay">
                     <div className="caller-left-popup">

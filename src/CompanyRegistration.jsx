@@ -13,6 +13,7 @@ const CompanyRegistration = () => {
     const [password, setPassword] = useState('');
     const [logo, setLogo] = useState(null);
     const [successMessage, setSuccessMessage] = useState('');
+    const [documents, setDocuments] = useState(null);
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -23,6 +24,10 @@ const CompanyRegistration = () => {
     const handleLogoChange = (event) => {
         setLogo(event.target.files[0]);
     };
+    const handledocumentsChange = (event) => {
+        setDocuments(event.target.files[0]);
+
+ };
 
     return (
         <div className="registration-container">
@@ -111,6 +116,14 @@ const CompanyRegistration = () => {
                 </label>
                 <label className="form-label">
                     Logo:
+                    <input
+                        className="form-input"
+                        type="file"
+                        onChange={handleLogoChange}
+                    />
+                </label>
+                <label className="form-label">
+                    Tax documents:
                     <input
                         className="form-input"
                         type="file"

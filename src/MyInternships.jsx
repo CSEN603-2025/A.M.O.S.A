@@ -10,6 +10,8 @@ const internshipsData = [
 
 const courses = ["Intro to Software Engineering", "Data Structures", "Marketing Fundamentals", "Database Systems"];
 
+
+
 const MyInternships = () => {
     const [selectedInternship, setSelectedInternship] = useState(null);
     const [evaluations, setEvaluations] = useState({});
@@ -72,6 +74,29 @@ const MyInternships = () => {
         setSubmitted(prev => ({ ...prev, [id]: { ...prev[id], report: false } }));
         setEditable(prev => ({ ...prev, [id]: { ...prev[id], report: true } }));
     };
+
+    const downloadReport = (id) => {
+        const report = reports[id];
+        if (!report) return;
+
+        const content =
+            `Introduction:\n${report.introduction || ""}\n\n` +
+            `Body:\n${report.body || ""}\n\n` +
+            `Title:\n${report.conclusion || ""}\n\n` +
+            `Helpful Courses:\n${(helpfulCourses[id] || []).join(", ")}`;
+
+        const blob = new Blob([content], { type: "text/plain" });
+        const url = URL.createObjectURL(blob);
+
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = `Report_${id}.txt`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+    };
+
 
     const filteredInternships = internshipsData.filter(internship => {
         const matchesSearch = internship.title.toLowerCase().includes(searchTerm.toLowerCase()) || internship.company.toLowerCase().includes(searchTerm.toLowerCase());
@@ -189,9 +214,9 @@ const MyInternships = () => {
                                                 }))}
                                                 readOnly={!isReportEditable(internship.id)}
                                             />
-                                            <label>Conclusion</label>
+                                            <label>Title</label>
                                             <textarea
-                                                placeholder="Conclusion"
+                                                placeholder="Title"
                                                 value={reports[internship.id]?.conclusion || ""}
                                                 onChange={e => setReports(prev => ({
                                                     ...prev,
@@ -224,7 +249,8 @@ const MyInternships = () => {
                                             ) : (
                                                 <>
                                                     <button onClick={() => handleEditReport(internship.id)}>Edit</button>
-                                                    <button onClick={() => handleDeleteReport(internship.id)}>Delete</button>
+                                                            <button onClick={() => handleDeleteReport(internship.id)}>Delete</button>
+                                                            <button onClick={() => downloadReport(internship.id)}>Download Report</button>
                                                 </>
                                             )}
                                         </div>

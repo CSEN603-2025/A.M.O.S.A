@@ -8,22 +8,23 @@ const sampleInterns = [
 ];
 
 const CompanyCurrentInterns = () => {
-    const [searchTerm, setSearchTerm] = useState('');
+    const [searchnTerm, setSearchTerm] = useState('');
+    const [searchtTerm, setSearchtTerm] = useState('');
     const [filterStatus, setFilterStatus] = useState('All');
     const [interns, setInterns] = useState(sampleInterns);
     const [selectedIntern, setSelectedIntern] = useState(null);
     const [evaluationText, setEvaluationText] = useState('');
 
-    const handleSearch = (e) => setSearchTerm(e.target.value);
+    const handlenSearch = (e) => setSearchTerm(e.target.value);
+    const handletSearch = (e) => setSearchtTerm(e.target.value);
     const handleFilter = (e) => setFilterStatus(e.target.value);
 
     const filteredInterns = interns.filter((intern) => {
-        const matchesSearch =
-            intern.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            intern.title.toLowerCase().includes(searchTerm.toLowerCase());
-        const matchesFilter =
-            filterStatus === 'All' || intern.status === filterStatus;
-        return matchesSearch && matchesFilter;
+        const nameMatch = searchnTerm === '' || intern.name.toLowerCase().includes(searchnTerm.toLowerCase());
+        const titleMatch = searchtTerm === '' || intern.title.toLowerCase().includes(searchtTerm.toLowerCase());
+        const statusMatch = filterStatus === 'All' || intern.status === filterStatus;
+
+        return nameMatch && titleMatch && statusMatch;
     });
 
     const openEvaluation = (intern) => {
@@ -76,10 +77,17 @@ const CompanyCurrentInterns = () => {
                     <div className="search-filter-section">
                         <input
                             type="text"
-                            placeholder="Search by name or title"
+                            placeholder="Search by name"
                             className="search-bar"
-                            value={searchTerm}
-                            onChange={handleSearch}
+                            value={searchnTerm}
+                            onChange={handlenSearch}
+                        />
+                        <input
+                            type="text"
+                            placeholder="Search by title"
+                            className="search-bar"
+                            value={searchtTerm}
+                            onChange={handletSearch}
                         />
                         <select className="filter-dropdown" value={filterStatus} onChange={handleFilter}>
                             <option value="All">All</option>

@@ -126,6 +126,39 @@ const SCADReports = () => {
         return matchesMajor && matchesStatus;
     });
 
+    // Function to download the internship or evaluation report as a text file
+    const downloadReport = (type) => {
+        if (!selectedStudent) return;
+
+        let reportContent = "";
+
+        if (type === "internship") {
+            reportContent = `
+                Internship Report:
+                Title: ${selectedStudent.internshipReport.title}
+                Introduction: ${selectedStudent.internshipReport.introduction}
+                Body: ${selectedStudent.internshipReport.body}
+                Status: ${selectedStudent.internshipReport.status}
+                Comment: ${selectedStudent.internshipReport.comment || "No comment provided"}
+            `;
+        } else if (type === "evaluation") {
+            reportContent = `
+                Evaluation Report:
+                Student: ${selectedStudent.studentName}
+                Company: ${selectedStudent.company}
+                Supervisor: ${selectedStudent.evaluationReport.companySupervisor}
+                Start Date: ${selectedStudent.evaluationReport.startDate}
+                End Date: ${selectedStudent.evaluationReport.endDate}
+            `;
+        }
+
+        const blob = new Blob([reportContent], { type: "text/plain" });
+        const link = document.createElement("a");
+        link.href = URL.createObjectURL(blob);
+        link.download = `${selectedStudent.studentName}_${type}_Report.txt`;
+        link.click();
+    };
+
     return (
         <div className="dashboard-wrapper">
             <header className="dashboard-header">
@@ -215,7 +248,7 @@ const SCADReports = () => {
                     {selectedStudent && modalType === 'internship' && (
                         <Modal onClose={closeModal}>
                             <br />
-                        <br/>
+                            <br />
                             <h3>Internship Report</h3>
                             <p><strong>Title:</strong> {selectedStudent.internshipReport.title}</p>
                             <p><strong>Introduction:</strong> {selectedStudent.internshipReport.introduction}</p>
@@ -247,21 +280,21 @@ const SCADReports = () => {
                                         )}
                                     </div>
                                 )}
-                            <button className="download-button">Download Report</button>
+                            <button className="download-button" onClick={() => downloadReport('internship')}>Download Report</button>
                         </Modal>
                     )}
 
                     {selectedStudent && modalType === 'evaluation' && (
                         <Modal onClose={closeModal}>
                             <br />
-                        <br/>
+                            <br />
                             <h3>Evaluation Report</h3>
                             <p><strong>Student:</strong> {selectedStudent.studentName}</p>
                             <p><strong>Company:</strong> {selectedStudent.company}</p>
                             <p><strong>Supervisor:</strong> {selectedStudent.evaluationReport.companySupervisor}</p>
                             <p><strong>Start Date:</strong> {selectedStudent.evaluationReport.startDate}</p>
                             <p><strong>End Date:</strong> {selectedStudent.evaluationReport.endDate}</p>
-                            <button className="download-button">Download Report</button>
+                            <button className="download-button" onClick={() => downloadReport('evaluation')}>Download Report</button>
                         </Modal>
                     )}
                 </main>

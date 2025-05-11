@@ -13,6 +13,11 @@ const StudentNotifications = () => {
             id: 2,
             message: "⏳ A new internship cycle will begin next week. Get your documents ready!",
             date: "2025-04-25"
+        },
+        {
+            id: 3,
+            message: " 📝 your internship report status (Microsoft internship) has been sent",
+            date: "2025-04-25"
         }
     ]);
 

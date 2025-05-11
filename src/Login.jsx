@@ -1,34 +1,36 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const LoginPage = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [role, setRole] = useState("Company");
-
+    const navigate = useNavigate();
     const handleLogin = (e) => {
         e.preventDefault();
         // Dummy authentication logic
         if (email && password) {
-            switch (role) {
-                case "Company":
-                    alert("Redirecting to Company Dashboard...");
+            switch (email) {
+                case "Company@gmail.com":
+                    navigate('/Companydashboard');
                     break;
-                case "Student":
-                    alert("Redirecting to Student Dashboard...");
+                case "Student@gmail.com":
+                    navigate('/Studentdashboard');
                     break;
-                case "PRO Student":
-                    alert("Redirecting to PRO Student Dashboard...");
+                case "PROstudent@gmail.com":
+                    navigate('/PROStudentDashboard');
                     break;
-                case "SCAD Office":
-                    alert("Redirecting to SCAD Office Dashboard...");
+                case "SCADOffice@gmail.com":
+                    navigate('/SCADOfficedashboard');
                     break;
-                case "Faculty Member":
-                    alert("Redirecting to Faculty Member Dashboard...");
+                case "FacultyMember@gmail.com":
+                    navigate('/Facultydashboard');
                     break;
                 default:
                     alert("Invalid role selected.");
             }
-        } else {
+            }
+        else {
             alert("Please enter both email and password.");
         }
     };
@@ -57,52 +59,20 @@ const LoginPage = () => {
                                required
                            />
                        </div>
-                       <div style={styles.inputGroup}>
-                           <label style={styles.label}>Role</label>
-                           <select
-                               value={role}
-                               onChange={(e) => setRole(e.target.value)}
-                               style={{ ...styles.select, ...styles.inputFocus }}
-                           >
-                               <option value="Company">Company</option>
-                               <option value="Student">Student</option>
-                               <option value="PRO Student">PRO Student</option>
-                               <option value="SCAD Office">SCAD Office</option>
-                               <option value="Faculty Member">Faculty Member</option>
-                           </select>
-                       </div>
+                       
                        <button
                            type="submit"
                            style={{ ...styles.button, ...styles.buttonHover }}
                            onMouseEnter={(e) => (e.target.style.transform = "translateY(-3px)")}
                            onMouseLeave={(e) => (e.target.style.transform = "translateY(0)")}
-                           onClick={() => {
-                               switch (role) {
-                                   case "Company":
-                                       navigate('/company/dashboard');
-                                       break;
-                                   case "Student":
-                                       navigate('/student/dashboard');
-                                       break;
-                                   case "PRO Student":
-                                       navigate('/pro-student/dashboard');
-                                       break;
-                                   case "SCAD Office":
-                                       navigate('/scad-office/dashboard');
-                                       break;
-                                   case "Faculty Member":
-                                       navigate('/faculty-member/dashboard');
-                                       break;
-                                   default:
-                                       alert("Invalid role selected.");
-                               }
-                           }}
+                           
+                              
                        >
                            Login
                        </button>
                    </form>
                    <a
-                       href="#"
+                       href="/"
                        style={{ ...styles.forgotPassword, ...styles.forgotPasswordLink }}
                        onMouseEnter={(e) => {
                            e.target.style.textShadow = "0 0 5px rgba(30, 144, 255, 0.8)";
@@ -128,7 +98,7 @@ const LoginPage = () => {
                     e.target.style.color = "#4682b4";
                 }}
             >
-Don't have an account?
+Don't have an account?(if you are a company)
             </a>
                </div>
     );

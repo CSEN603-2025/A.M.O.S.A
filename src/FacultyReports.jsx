@@ -175,6 +175,36 @@ const FacultyReports = () => {
         const majorMatch = filters.major === "" || student.major === filters.major;
         return statusMatch && majorMatch;
     });
+    const downloadReport = (type) => {
+        if (!selectedStudent) return;
+
+        let content = `Student: ${selectedStudent.studentName}\n`;
+        content += `Major: ${selectedStudent.major}\n`;
+        content += `Company: ${selectedStudent.company}\n`;
+
+        if (type === "internship") {
+            content += `Title: ${selectedStudent.internshipReport.title}\n`;
+            content += `Introduction: ${selectedStudent.internshipReport.introduction}\n`;
+            content += `Body: ${selectedStudent.internshipReport.body}\n`;
+            content += `Status: ${selectedStudent.internshipReport.status}\n`;
+            if (selectedStudent.internshipReport.comment) {
+                content += `Comment: ${selectedStudent.internshipReport.comment}\n`;
+            }
+        } else if (type === "evaluation") {
+            content += `Supervisor: ${selectedStudent.evaluationReport.companySupervisor}\n`;
+            content += `Start Date: ${selectedStudent.evaluationReport.startDate}\n`;
+            content += `End Date: ${selectedStudent.evaluationReport.endDate}\n`;
+        }
+
+        const blob = new Blob([content], { type: "text/plain;charset=utf-8" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = `${selectedStudent.studentName.replace(/\s/g, "_")}_${type}_report.txt`;
+        a.click();
+        URL.revokeObjectURL(url);
+    };
+
 
     return (
         <div className="dashboard-wrapper">
@@ -318,7 +348,7 @@ const FacultyReports = () => {
                             )}
 
                             <div className="action-buttons">
-                                <button className="download-button">Download Report</button>
+                                <button className="download-button" onClick={() => { downloadReport("internship") }}>Download Report</button>
                                 <button
                                     className="save-button"
                                     onClick={handleCommentSubmit}
@@ -340,7 +370,7 @@ const FacultyReports = () => {
                             <p><strong>Supervisor:</strong> {selectedStudent.evaluationReport.companySupervisor}</p>
                             <p><strong>Start Date:</strong> {selectedStudent.evaluationReport.startDate}</p>
                             <p><strong>End Date:</strong> {selectedStudent.evaluationReport.endDate}</p>
-                            <button className="download-button">Download Report</button>
+                            <button className="download-button" onClick={() => downloadReport("evaluation")}>Download Report</button>
                         </Modal>
                     )}
                 </main>
