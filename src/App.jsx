@@ -41,6 +41,9 @@ import PROAssessment from './PROAssessment';
 
 import CompanyInternships from './CompanyInternships';
 import CompanyAll from './CompanyAll';
+import CompanyCurrentInterns from './CompanyCurrentInterns';
+import CompanyDocs from './CompanyDocs';
+import CompanyNotifications from './CompanyNotifications';
 
 
 
@@ -80,6 +83,9 @@ function App() {
 
               <Route path="/CompanyInternships" element={<CompanyInternships />} />
               <Route path="/CompanyAll" element={<CompanyAll />} />
+              <Route path="/CompanyCurrentInterns" element={<CompanyCurrentInterns />} />
+              <Route path="/CompanyDocs" element={<CompanyDocs />} />
+              <Route path="/CompanyNotifications" element={<CompanyNotifications />} />
 
               <Route path="/faculty/statistics" element={<FacultyStatistics />} />
               <Route path="/faculty/reports" element={<FacultyReports />} />
