@@ -25,6 +25,7 @@ body {
 .dashboard-header {
     width: 100%;
     padding: 20px;
+    position:relative;
     background: rgba(255, 255, 255, 0.8);
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     text-align: center;
@@ -337,4 +338,33 @@ body, html {
     border-color: #1e90ff;
     outline: none;
     box-shadow: 0 0 8px rgba(30, 144, 255, 0.3);
+}
+
+.notification-bell {
+    position: absolute;
+    top: 25px;
+    right: 30px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: #1e90ff;
+    transition: transform 0.2s ease, color 0.3s ease;
+}
+
+.notification-bell:hover {
+    transform: scale(1.2);
+    color: #007BFF;
+}
+
+.notification-count {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background: red;
+    color: white;
+    border-radius: 50%;
+    padding: 2px 6px;
+    font-size: 12px;
+    font-weight: bold;
+    line-height: 1;
 }

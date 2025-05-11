@@ -1,11 +1,23 @@
 import React from "react";
 import './CSS/CompanyDashboard.css';
+import { useNavigate } from 'react-router-dom';
+import { FiBell } from 'react-icons/fi';
 
 const CompanyDashboard = () => {
+    const navigate = useNavigate();
+
+    const handleBellClick = () => {
+        navigate('/CompanyNotifications');
+    };
+
     return (
         <div className="dashboard-wrapper">
             <header className="dashboard-header">
                 <h1 className="dashboard-title">Company Dashboard</h1>
+                <button className="notification-bell" onClick={handleBellClick} title="Notifications">
+                    <FiBell size={24} />
+                    <span className="notification-count">3</span>
+                </button>
             </header>
             <div className="dashboard-content">
                 <aside className="dashboard-sidebar">
@@ -34,12 +46,6 @@ const CompanyDashboard = () => {
                             <li>Application for "Data Analyst Intern" reviewed</li>
                         </ul>
                     </section>
-                    <div className="actions-section">
-                        <button className="action-button">Create New Internship Post</button>
-                        <br />
-                        <br />
-                        <button className="action-button">View All Applications</button>
-                    </div>
                 </main>
             </div>
             <footer className="dashboard-footer">
@@ -50,4 +56,3 @@ const CompanyDashboard = () => {
 };
 
 export default CompanyDashboard;
-
