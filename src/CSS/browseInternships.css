@@ -119,3 +119,22 @@
     margin-top: 5px;
     color: #555;
 }
+.back-button {
+    align-self: flex-start;
+    padding: 8px 14px;
+    margin-bottom: 10px;
+    background: linear-gradient(135deg, #1e90ff, #63b8ff);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+.back-button:hover {
+    background: linear-gradient(135deg, #63b8ff, #1e90ff);
+    transform: translateY(-2px);
+}

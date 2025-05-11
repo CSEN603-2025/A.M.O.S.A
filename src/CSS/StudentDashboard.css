@@ -191,4 +191,27 @@ body, html {
 }
 
 
-   
+  .notification-widget {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: #f0f8ff;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.notification-link {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: #1e90ff;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.bell-icon {
+    margin-right: 6px;
+    color: #1e90ff;
+}
+ 
