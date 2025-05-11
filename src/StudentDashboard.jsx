@@ -6,7 +6,12 @@ const StudentDashboard = () => {
     return (
         <div className="dashboard-wrapper">
             <header className="dashboard-header">
-                <h1 className="dashboard-title">Student Dashboard</h1>
+                <div className="header-left">
+                    <h1 className="dashboard-title">Student Dashboard</h1>
+                </div>
+                <div className="header-right">
+                    <a href="/" className="signout-button">Sign Out</a>
+                </div>
             </header>
             <div className="dashboard-content">
                 <aside className="dashboard-sidebar">
@@ -24,7 +29,7 @@ const StudentDashboard = () => {
                         <li className="nav-item"><a href="/studentInternships" className="nav-link">Browse Internships</a></li>
                         <li className="nav-item"><a href="/StudentApplied" className="nav-link">View Applied Internships</a></li>
                         <li className="nav-item"><a href="/student/profile" className="nav-link">My Profile</a></li>
-                        <li className="nav-item"><a href="/student/settings" className="nav-link">Settings</a></li>
+                        <li className="nav-item"><a href="/MyInternships" className="nav-link">My Internships</a></li>
                     </ul>
                 </aside>
 

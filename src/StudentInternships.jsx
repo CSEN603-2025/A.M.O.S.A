@@ -98,6 +98,8 @@ const StudentInternships = () => {
                         <li className="nav-item"><a href="/StudentDashboard" className="nav-link">Home</a></li>
                         <li className="nav-item">Browse Internships</li>
                         <li className="nav-item"><a href="/StudentApplied" className="nav-link">View Applied Internships</a></li>
+                        <li className="nav-item"><a href="/student/profile" className="nav-link">My Profile</a></li>
+                        <li className="nav-item"><a href="/MyInternships" className="nav-link">My Internships</a></li>
                     </ul>
                 </aside>
                 <main className="dashboard-main">

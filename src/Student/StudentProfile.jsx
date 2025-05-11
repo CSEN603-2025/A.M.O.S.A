@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import '../CSS/StudentProfile.css';
+import { FiBell } from 'react-icons/fi'; // Bell icon
 
 const StudentProfile = () => {
     const [profile, setProfile] = useState({
@@ -10,7 +11,7 @@ const StudentProfile = () => {
         pastExperiences: "",
         major: "",
         semester: "",
-        proBadge: false, // Indicates if the PRO badge is earned
+        proBadge: false,
     });
 
     const handleInputChange = (e) => {
@@ -24,104 +25,136 @@ const StudentProfile = () => {
     };
 
     return (
-        <div className="profile-wrapper">
-            <header className="profile-header">
-                <h1 className="profile-title">Student Profile</h1>
+        <div className="dashboard-wrapper">
+            <header className="dashboard-header">
+                <div className="header-left">
+                    <h1 className="dashboard-title">Student Profile</h1>
+                </div>
+                <div className="header-right">
+                    <a href="/" className="signout-button">Sign Out</a>
+                </div>
             </header>
-            <main className="profile-main">
-                <section className="info-section">
-                    <h2 className="section-title">Personal Information</h2>
-                    <form className="info-form">
-                        <label className="form-label">Name</label>
-                        <input
-                            type="text"
-                            name="name"
-                            value={profile.name}
+
+            <div className="dashboard-content">
+                <aside className="dashboard-sidebar">
+                    <div className="notification-widget">
+                        <a href="/StudentNotifications" className="notification-link">
+                            <FiBell size={18} className="bell-icon" />
+                            <span>Notifications</span>
+                        </a>
+                    </div>
+
+                    <h2 className="sidebar-title">Navigation</h2>
+                    <ul className="nav-list">
+                        <li className="nav-item"><a href="/StudentDashboard" className="nav-link">Home</a></li>
+                        <li className="nav-item"><a href="/studentInternships" className="nav-link">Browse Internships</a></li>
+                        <li className="nav-item"><a href="/StudentApplied" className="nav-link">View Applied Internships</a></li>
+                        <li className="nav-item">My Profile</li>
+                        <li className="nav-item"><a href="/MyInternships" className="nav-link">My Internships</a></li>
+                    </ul>
+                </aside>
+
+                <main className="dashboard-main">
+                    <section className="info-section">
+                        <h2 className="section-title">Personal Information</h2>
+                        <form className="info-form">
+                            <label className="form-label">Name</label>
+                            <input
+                                type="text"
+                                name="name"
+                                value={profile.name}
+                                onChange={handleInputChange}
+                                className="form-input"
+                            />
+                            <label className="form-label">Email</label>
+                            <input
+                                type="email"
+                                name="email"
+                                value={profile.email}
+                                onChange={handleInputChange}
+                                className="form-input"
+                            />
+                            <label className="form-label">Phone</label>
+                            <input
+                                type="text"
+                                name="phone"
+                                value={profile.phone}
+                                onChange={handleInputChange}
+                                className="form-input"
+                            />
+                        </form>
+                    </section>
+
+                    <section className="interests-section">
+                        <h2 className="section-title">Job Interests and Past Experiences</h2>
+                        <label className="form-label">Job Interests</label>
+                        <textarea
+                            name="jobInterests"
+                            value={profile.jobInterests}
                             onChange={handleInputChange}
-                            className="form-input"
-                        />
-                        <label className="form-label">Email</label>
-                        <input
-                            type="email"
-                            name="email"
-                            value={profile.email}
+                            className="form-textarea"
+                        ></textarea>
+                        <label className="form-label">Past Experiences</label>
+                        <textarea
+                            name="pastExperiences"
+                            value={profile.pastExperiences}
                             onChange={handleInputChange}
-                            className="form-input"
-                        />
-                        <label className="form-label">Phone</label>
-                        <input
-                            type="text"
-                            name="phone"
-                            value={profile.phone}
+                            className="form-textarea"
+                        ></textarea>
+                    </section>
+
+                    <section className="academic-section">
+                        <h2 className="section-title">Academic Information</h2>
+                        <label className="form-label">Major</label>
+                        <select
+                            name="major"
+                            value={profile.major}
                             onChange={handleInputChange}
-                            className="form-input"
-                        />
-                    </form>
-                </section>
-                <section className="interests-section">
-                    <h2 className="section-title">Job Interests and Past Experiences</h2>
-                    <label className="form-label">Job Interests</label>
-                    <textarea
-                        name="jobInterests"
-                        value={profile.jobInterests}
-                        onChange={handleInputChange}
-                        className="form-textarea"
-                    ></textarea>
-                    <label className="form-label">Past Experiences</label>
-                    <textarea
-                        name="pastExperiences"
-                        value={profile.pastExperiences}
-                        onChange={handleInputChange}
-                        className="form-textarea"
-                    ></textarea>
-                </section>
-                <section className="academic-section">
-                    <h2 className="section-title">Academic Information</h2>
-                    <label className="form-label">Major</label>
-                    <select
-                        name="major"
-                        value={profile.major}
-                        onChange={handleInputChange}
-                        className="form-select"
-                    >
-                        <option value="">Select Major</option>
-                        <option value="Computer Science">Computer Science</option>
-                        <option value="Business Administration">Business Administration</option>
-                        <option value="Engineering">Engineering</option>
-                        <option value="Arts">Arts</option>
-                    </select>
-                    <label className="form-label">Semester</label>
-                    <select
-                        name="semester"
-                        value={profile.semester}
-                        onChange={handleInputChange}
-                        className="form-select"
-                    >
-                        <option value="">Select Semester</option>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="5">5</option>
-                        <option value="6">6</option>
-                        <option value="7">7</option>
-                        <option value="8">8</option>
-                    </select>
-                </section>
-                <section className="badge-section">
-                    <h2 className="section-title">PRO Badge</h2>
-                    {profile.proBadge ? (
-                        <p className="badge-earned">Congratulations! You have earned the PRO badge.</p>
-                    ) : (
-                        <p className="badge-not-earned">You have not earned the PRO badge yet.</p>
-                    )}
-                </section>
-                <button onClick={handleSave} className="action-button">Save Profile</button>
-            </main>
+                            className="form-select"
+                        >
+                            <option value="">Select Major</option>
+                            <option value="Computer Science">Computer Science</option>
+                            <option value="Business Administration">Business Administration</option>
+                            <option value="Engineering">Engineering</option>
+                            <option value="Arts">Arts</option>
+                        </select>
+                        <label className="form-label">Semester</label>
+                        <select
+                            name="semester"
+                            value={profile.semester}
+                            onChange={handleInputChange}
+                            className="form-select"
+                        >
+                            <option value="">Select Semester</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                        </select>
+                    </section>
+
+                    <section className="badge-section">
+                        <h2 className="section-title">PRO Badge</h2>
+                        {profile.proBadge ? (
+                            <p className="badge-earned">Congratulations! You have earned the PRO badge.</p>
+                        ) : (
+                            <p className="badge-not-earned">You have not earned the PRO badge yet.</p>
+                        )}
+                    </section>
+
+                    <button onClick={handleSave} className="action-button">Save Profile</button>
+                </main>
+            </div>
+
+            <footer className="dashboard-footer">
+                <p>&copy; 2025 SCAD System. All rights reserved.</p>
+            </footer>
         </div>
     );
 };
 
 export default StudentProfile;
-
-
