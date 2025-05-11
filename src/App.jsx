@@ -16,6 +16,7 @@ import StudentProfile from './Student/StudentProfile';
 import InternshipBrowser from './Student/browseInternships';
 import StudentInternships from './studentInternships';
 import StudentApplied from './StudentApplied';
+import StudentNotifications from './StudentNotifications';
 
 import SCADPendingCompany from './ScadPendingCompany';
 import SCADCurrentCycle from './ScadCurrentCycle';
@@ -38,6 +39,10 @@ import PROViewed from './PROViewed';
 import PROAssessment from './PROAssessment';
 
 import CompanyInternships from './CompanyInternships';
+import CompanyAll from './CompanyAll';
+import CompanyCurrentInterns from './CompanyCurrentInterns';
+import CompanyDocs from './CompanyDocs';
+import CompanyNotifications from './CompanyNotifications';
 
 
 
@@ -62,6 +67,7 @@ function App() {
               <Route path="/Studentdashboard" element={<StudentDashboard />} />
               <Route path="/studentInternships" element={<StudentInternships />} />
               <Route path="/StudentApplied" element={<StudentApplied />} />
+              <Route path="/StudentNotifications" element={<StudentNotifications />} />
 
               <Route path="/scad/companies" element={<SCADPendingCompany />} />
               <Route path="/scad/cycle" element={<SCADCurrentCycle />} />
@@ -74,6 +80,10 @@ function App() {
               <Route path="/scad/interns" element={<SCADInternships />} />
 
               <Route path="/CompanyInternships" element={<CompanyInternships />} />
+              <Route path="/CompanyAll" element={<CompanyAll />} />
+              <Route path="/CompanyCurrentInterns" element={<CompanyCurrentInterns />} />
+              <Route path="/CompanyDocs" element={<CompanyDocs />} />
+              <Route path="/CompanyNotifications" element={<CompanyNotifications />} />
 
               <Route path="/faculty/statistics" element={<FacultyStatistics />} />
               <Route path="/faculty/reports" element={<FacultyReports />} />

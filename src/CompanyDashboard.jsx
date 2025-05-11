@@ -1,11 +1,23 @@
 import React from "react";
 import './CSS/CompanyDashboard.css';
+import { useNavigate } from 'react-router-dom';
+import { FiBell } from 'react-icons/fi';
 
 const CompanyDashboard = () => {
+    const navigate = useNavigate();
+
+    const handleBellClick = () => {
+        navigate('/CompanyNotifications');
+    };
+
     return (
         <div className="dashboard-wrapper">
             <header className="dashboard-header">
                 <h1 className="dashboard-title">Company Dashboard</h1>
+                <button className="notification-bell" onClick={handleBellClick} title="Notifications">
+                    <FiBell size={24} />
+                    <span className="notification-count">3</span>
+                </button>
             </header>
             <div className="dashboard-content">
                 <aside className="dashboard-sidebar">
@@ -14,9 +26,9 @@ const CompanyDashboard = () => {
                         <li className="nav-item">Home</li>
                         <li className="nav-item"><a href="/CompanyInternships" className="nav-link"> My Internship Posts</a></li>
                         <li className="nav-item"><a href="/company/applications" className="nav-link">Applications</a></li>
-                        <li className="nav-item"><a href="/company/current-interns" className="nav-link">Current Interns</a></li>
-                        <li className="nav-item"><a href="/company/evaluations" className="nav-link">Evaluations</a></li>
-                        <li className="nav-item"><a href="/company/settings" className="nav-link">Settings</a></li>
+                        <li className="nav-item"><a href="/CompanyCurrentInterns" className="nav-link">Current Interns</a></li>
+                        <li className="nav-item"><a href="/CompanyAll" className="nav-link">All Internships</a></li>
+                        <li className="nav-item"><a href="CompanyDocs" className="nav-link">Reports and Documents</a></li>
                     </ul>
                 </aside>
                 <main className="dashboard-main">
@@ -34,12 +46,6 @@ const CompanyDashboard = () => {
                             <li>Application for "Data Analyst Intern" reviewed</li>
                         </ul>
                     </section>
-                    <div className="actions-section">
-                        <button className="action-button">Create New Internship Post</button>
-                        <br />
-                        <br />
-                        <button className="action-button">View All Applications</button>
-                    </div>
                 </main>
             </div>
             <footer className="dashboard-footer">
@@ -50,4 +56,3 @@ const CompanyDashboard = () => {
 };
 
 export default CompanyDashboard;
-

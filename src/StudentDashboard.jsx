@@ -1,5 +1,6 @@
 import React from "react";
 import './CSS/StudentDashboard.css';
+import { FiBell } from 'react-icons/fi'; // Bell icon
 
 const StudentDashboard = () => {
     return (
@@ -9,16 +10,24 @@ const StudentDashboard = () => {
             </header>
             <div className="dashboard-content">
                 <aside className="dashboard-sidebar">
+                    {/* Notification Icon Section */}
+                    <div className="notification-widget">
+                        <a href="/StudentNotifications" className="notification-link">
+                            <FiBell size={18} className="bell-icon" />
+                            <span>Notifications</span>
+                        </a>
+                    </div>
+
                     <h2 className="sidebar-title">Navigation</h2>
                     <ul className="nav-list">
                         <li className="nav-item">Home</li>
                         <li className="nav-item"><a href="/studentInternships" className="nav-link">Browse Internships</a></li>
                         <li className="nav-item"><a href="/StudentApplied" className="nav-link">View Applied Internships</a></li>
-                        <li className="nav-item"><a href="/student/deadlines" className="nav-link">Upcoming Deadlines</a></li>
                         <li className="nav-item"><a href="/student/profile" className="nav-link">My Profile</a></li>
                         <li className="nav-item"><a href="/student/settings" className="nav-link">Settings</a></li>
                     </ul>
                 </aside>
+
                 <main className="dashboard-main">
                     <section className="recommendations-section">
                         <h2 className="section-title">Internship Recommendations</h2>
