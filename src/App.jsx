@@ -38,6 +38,7 @@ import PROViewed from './PROViewed';
 import PROAssessment from './PROAssessment';
 
 import CompanyInternships from './CompanyInternships';
+import CompanyAll from './CompanyAll';
 
 
 
@@ -74,6 +75,7 @@ function App() {
               <Route path="/scad/interns" element={<SCADInternships />} />
 
               <Route path="/CompanyInternships" element={<CompanyInternships />} />
+              <Route path="/CompanyAll" element={<CompanyAll />} />
 
               <Route path="/faculty/statistics" element={<FacultyStatistics />} />
               <Route path="/faculty/reports" element={<FacultyReports />} />

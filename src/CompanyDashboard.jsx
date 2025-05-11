@@ -15,7 +15,7 @@ const CompanyDashboard = () => {
                         <li className="nav-item"><a href="/CompanyInternships" className="nav-link"> My Internship Posts</a></li>
                         <li className="nav-item"><a href="/company/applications" className="nav-link">Applications</a></li>
                         <li className="nav-item"><a href="/company/current-interns" className="nav-link">Current Interns</a></li>
-                        <li className="nav-item"><a href="/company/evaluations" className="nav-link">Evaluations</a></li>
+                        <li className="nav-item"><a href="/CompanyAll" className="nav-link">All Internships</a></li>
                         <li className="nav-item"><a href="/company/settings" className="nav-link">Settings</a></li>
                     </ul>
                 </aside>
