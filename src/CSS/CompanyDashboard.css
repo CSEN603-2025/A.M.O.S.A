@@ -141,4 +141,98 @@ body, html {
 * {
     box-sizing: border-box;
 }
-   
+  
+.search-filter-section {
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.search-bar, .filter-dropdown {
+    padding: 10px;
+    font-size: 16px;
+    border: 2px solid #4682b4;
+    border-radius: 6px;
+    width: 100%;
+    max-width: 400px;
+}
+
+.search-bar:focus, .filter-dropdown:focus {
+    outline: none;
+    border-color: #1e90ff;
+    box-shadow: 0 0 8px rgba(30, 144, 255, 0.3);
+}
+
+.posts-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.internship-post {
+    padding: 15px;
+    background: white;
+    border-left: 5px solid #1e90ff;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    border-radius: 8px;
+}
+
+.filter-bar {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.search-input, .filter-select {
+    padding: 10px;
+    font-size: 16px;
+    border: 2px solid #4682b4;
+    border-radius: 8px;
+    width: 200px;
+}
+
+.internship-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    background: #f0f8ff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+}
+
+.internship-form input,
+.internship-form select,
+.internship-form textarea {
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+}
+
+.internship-form textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+.form-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.internship-list {
+    list-style: none;
+    padding: 0;
+}
+
+.internship-card {
+    background: #ffffff;
+    border: 1px solid #cce7ff;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 15px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}

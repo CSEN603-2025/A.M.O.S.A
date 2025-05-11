@@ -1,10 +1,27 @@
-/* Wrapper for the entire page */
+/* Ensure full-page layout */
+body, html {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('..//assets/ims-chart.png'); /* Update the path if needed */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+/* Wrapper for the entire ApplicationsReview page */
 .applications-wrapper {
     width: 100%;
     height: 100vh;
     display: flex;
     flex-direction: column;
-    font-family: 'Courier New', Courier, monospace;
     background: linear-gradient(135deg, #add8e6, #e0ffff);
 }
 
@@ -21,33 +38,82 @@
     color: #1e90ff;
     font-size: 36px;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+    letter-spacing: 2px;
 }
 
-/* Main content styling */
+/* Dashboard-like content layout */
 .applications-main {
     flex: 1;
+    display: flex;
+    overflow: hidden;
+}
+
+/* Sidebar (reusable for navigation if needed) */
+.dashboard-sidebar {
+    width: 250px;
+    background: rgba(255, 255, 255, 0.8);
     padding: 20px;
+    border-right: 2px solid #4682b4;
+    box-shadow: inset 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar-title {
+    font-size: 18px;
+    color: #00008b;
+    text-transform: uppercase;
+    margin-bottom: 15px;
+}
+
+.nav-list {
+    list-style: none;
+    padding: 0;
+}
+
+.nav-item {
+    margin-bottom: 10px;
+}
+
+.nav-link {
+    text-decoration: none;
+    color: #007BFF;
+    font-weight: bold;
+    transition: color 0.3s ease, text-shadow 0.3s ease;
+}
+
+.nav-link:hover {
+    text-shadow: 0 0 5px rgba(30, 144, 255, 0.8);
+    color: #add8e6;
+}
+
+/* Main content area */
+.dashboard-main {
+    flex: 1;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.9);
+    overflow-y: auto;
     display: flex;
     flex-direction: column;
     gap: 20px;
-    background: rgba(255, 255, 255, 0.9);
-    overflow-y: auto;
 }
 
 .section-title {
     font-size: 20px;
     color: #1e90ff;
     margin-bottom: 15px;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
 }
 
+/* Filter dropdowns */
 .filter-select {
     padding: 10px;
     border: 2px solid #4682b4;
     border-radius: 8px;
     font-size: 16px;
     background: rgba(255, 255, 255, 0.9);
+    margin-bottom: 10px;
 }
 
+/* Application list styles */
 .applications-list {
     list-style: none;
     padding: 0;
@@ -62,6 +128,7 @@
     background: rgba(255, 255, 255, 0.8);
 }
 
+/* Buttons */
 .view-button,
 .status-button {
     background: linear-gradient(135deg, #4682b4, #add8e6);
@@ -74,14 +141,16 @@
     font-weight: bold;
     transition: background 0.3s ease, transform 0.3s ease;
     margin-right: 10px;
+    margin-top: 10px;
 }
 
-    .view-button:hover,
-    .status-button:hover {
-        background: linear-gradient(135deg, #add8e6, #4682b4);
-        transform: translateY(-3px);
-    }
+.view-button:hover,
+.status-button:hover {
+    background: linear-gradient(135deg, #add8e6, #4682b4);
+    transform: translateY(-3px);
+}
 
+/* Modal styling */
 .modal {
     position: fixed;
     top: 0;
@@ -112,9 +181,10 @@
     font-size: 16px;
     font-weight: bold;
     transition: background 0.3s ease, transform 0.3s ease;
+    margin-top: 15px;
 }
 
-    .close-button:hover {
-        background: linear-gradient(135deg, #ff9999, #ff4d4d);
-        transform: translateY(-3px);
-    }
+.close-button:hover {
+    background: linear-gradient(135deg, #ff9999, #ff4d4d);
+    transform: translateY(-3px);
+}
