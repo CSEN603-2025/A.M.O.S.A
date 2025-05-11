@@ -17,6 +17,7 @@ import InternshipBrowser from './Student/browseInternships';
 import StudentInternships from './studentInternships';
 import StudentApplied from './StudentApplied';
 import StudentNotifications from './StudentNotifications';
+import MyInternships from './MyInternships';
 
 import SCADPendingCompany from './ScadPendingCompany';
 import SCADCurrentCycle from './ScadCurrentCycle';
@@ -65,6 +66,7 @@ function App() {
               <Route path="/studentInternships" element={<StudentInternships />} />
               <Route path="/StudentApplied" element={<StudentApplied />} />
               <Route path="/StudentNotifications" element={<StudentNotifications />} />
+              <Route path="/MyInternships" element={<MyInternships />} />
 
               <Route path="/scad/companies" element={<SCADPendingCompany />} />
               <Route path="/scad/cycle" element={<SCADCurrentCycle />} />

@@ -214,4 +214,106 @@ body, html {
     margin-right: 6px;
     color: #1e90ff;
 }
- 
+ .header-actions {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+}
+
+.notification-link-header {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    background-color: #f0f8ff;
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 14px;
+    color: #1e90ff;
+    font-weight: 500;
+    transition: background 0.3s;
+}
+
+.notification-link-header:hover {
+    background-color: #dbefff;
+}
+
+.notification-link-header .bell-icon {
+    margin-right: 5px;
+    color: #1e90ff;
+}
+
+.signout-button {
+    background-color: #ff4d4f;
+    color: white;
+    padding: 6px 12px;
+    border: none;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    transition: background 0.3s ease;
+}
+
+.signout-button:hover {
+    background-color: #e04345;
+}
+
+.internship-details {
+  margin-top: 1rem;
+  padding: 1rem;
+  border-top: 1px solid #ccc;
+}
+
+.evaluation-section,
+.report-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+textarea {
+  width: 100%;
+  min-height: 80px;
+  resize: vertical;
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-family: inherit;
+}
+
+button {
+  align-self: start;
+  padding: 0.5rem 1rem;
+  border: none;
+  background-color: #003366;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-top: 0.25rem;
+}
+
+button:hover {
+  background-color: #0055aa;
+}
+
+.course-selection {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.course-selection h4 {
+  margin-bottom: 0.5rem;
+}
+
+label {
+  font-weight: 500;
+}
+
+input[type="checkbox"] {
+  margin-right: 0.5rem;
+}
