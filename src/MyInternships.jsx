@@ -100,10 +100,11 @@ const MyInternships = () => {
                     </div>
                     <h2 className="sidebar-title">Navigation</h2>
                     <ul className="nav-list">
-                        <li className="nav-item"><a href="/studentDashboard">Home</a></li>
-                        <li className="nav-item"><a href="/studentInternships">Browse Internships</a></li>
-                        <li className="nav-item"><a href="/StudentApplied">View Applied Internships</a></li>
-                        <li className="nav-item"><a href="/student/profile">My Internships</a></li>
+                        <li className="nav-item"><a href="/StudentDashboard" className="nav-link">Home</a></li>
+                        <li className="nav-item"><a href="/studentInternships" className="nav-link">Browse Internships</a></li>
+                        <li className="nav-item"><a href="/StudentApplied" className="nav-link">View Applied Internships</a></li>
+                        <li className="nav-item"><a href="/student/profile" className="nav-link">My Profile</a></li>
+                        <li className="nav-item">My Internships</li>
                     </ul>
                 </aside>
 

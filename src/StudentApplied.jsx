@@ -40,8 +40,10 @@ const StudentApplied = () => {
                     <h2 className="sidebar-title">Navigation</h2>
                     <ul className="nav-list">
                         <li className="nav-item"><a href="/StudentDashboard" className="nav-link">Home</a></li>
-                        <li className="nav-item"><a href="/StudentInternships" className="nav-link">Browse Internships</a></li>
+                        <li className="nav-item"><a href="/studentInternships" className="nav-link">Browse Internships</a></li>
                         <li className="nav-item">View Applied Internships</li>
+                        <li className="nav-item"><a href="/student/profile" className="nav-link">My Profile</a></li>
+                        <li className="nav-item"><a href="/MyInternships" className="nav-link">My Internships</a></li>
                     </ul>
                 </aside>
                 <main className="dashboard-main">
