@@ -80,9 +80,9 @@ const MyInternships = () => {
         if (!report) return;
 
         const content =
+            `Title:\n${report.conclusion || ""}\n\n` +
             `Introduction:\n${report.introduction || ""}\n\n` +
             `Body:\n${report.body || ""}\n\n` +
-            `Title:\n${report.conclusion || ""}\n\n` +
             `Helpful Courses:\n${(helpfulCourses[id] || []).join(", ")}`;
 
         const blob = new Blob([content], { type: "text/plain" });
@@ -193,67 +193,68 @@ const MyInternships = () => {
                                         </div>
 
                                         <div className="report-section">
-                                            <h3>Report</h3>
-                                            <label>Introduction</label>
-                                            <textarea
-                                                placeholder="Introduction"
-                                                value={reports[internship.id]?.introduction || ""}
-                                                onChange={e => setReports(prev => ({
-                                                    ...prev,
-                                                    [internship.id]: { ...prev[internship.id], introduction: e.target.value }
-                                                }))}
-                                                readOnly={!isReportEditable(internship.id)}
-                                            />
-                                            <label>Body</label>
-                                            <textarea
-                                                placeholder="Body"
-                                                value={reports[internship.id]?.body || ""}
-                                                onChange={e => setReports(prev => ({
-                                                    ...prev,
-                                                    [internship.id]: { ...prev[internship.id], body: e.target.value }
-                                                }))}
-                                                readOnly={!isReportEditable(internship.id)}
-                                            />
-                                            <label>Title</label>
-                                            <textarea
-                                                placeholder="Title"
-                                                value={reports[internship.id]?.conclusion || ""}
-                                                onChange={e => setReports(prev => ({
-                                                    ...prev,
-                                                    [internship.id]: { ...prev[internship.id], conclusion: e.target.value }
-                                                }))}
-                                                readOnly={!isReportEditable(internship.id)}
-                                            />
+                                                <h3>Report</h3>
+                                                <label>Title</label>
+                                                <textarea
+                                                    placeholder="Title"
+                                                    value={reports[internship.id]?.conclusion || ""}
+                                                    onChange={e => setReports(prev => ({
+                                                        ...prev,
+                                                        [internship.id]: { ...prev[internship.id], conclusion: e.target.value }
+                                                    }))}
+                                                    readOnly={!isReportEditable(internship.id)}
+                                                />
+                                                <label>Introduction</label>
+                                                <textarea
+                                                    placeholder="Introduction"
+                                                    value={reports[internship.id]?.introduction || ""}
+                                                    onChange={e => setReports(prev => ({
+                                                        ...prev,
+                                                        [internship.id]: { ...prev[internship.id], introduction: e.target.value }
+                                                    }))}
+                                                    readOnly={!isReportEditable(internship.id)}
+                                                />
+                                                <label>Body</label>
+                                                <textarea
+                                                    placeholder="Body"
+                                                    value={reports[internship.id]?.body || ""}
+                                                    onChange={e => setReports(prev => ({
+                                                        ...prev,
+                                                        [internship.id]: { ...prev[internship.id], body: e.target.value }
+                                                    }))}
+                                                    readOnly={!isReportEditable(internship.id)}
+                                                />
 
-                                            <div className="course-selection">
-                                                <h4>Courses that helped:</h4>
-                                                {courses.map(course => (
-                                                    <div key={course}>
-                                                        <label>
-                                                            <input
-                                                                type="checkbox"
-                                                                checked={helpfulCourses[internship.id]?.includes(course) || false}
-                                                                onChange={() => handleCourseToggle(course, internship.id)}
-                                                                disabled={!isReportEditable(internship.id)}
-                                                            />
-                                                            {course}
-                                                        </label>
-                                                    </div>
-                                                ))}
+                                                <div className="course-selection">
+                                                    <h4>Courses that helped:</h4>
+                                                    {courses.map(course => (
+                                                        <div key={course}>
+                                                            <label>
+                                                                <input
+                                                                    type="checkbox"
+                                                                    checked={helpfulCourses[internship.id]?.includes(course) || false}
+                                                                    onChange={() => handleCourseToggle(course, internship.id)}
+                                                                    disabled={!isReportEditable(internship.id)}
+                                                                />
+                                                                {course}
+                                                            </label>
+                                                        </div>
+                                                    ))}
+                                                </div>
+
+                                                {!submitted[internship.id]?.report ? (
+                                                    <button onClick={() => handleSubmitReport(internship.id)}>Submit Report</button>
+                                                ) : editable[internship.id]?.report ? (
+                                                    <button onClick={() => handleSaveReport(internship.id)}>Save</button>
+                                                ) : (
+                                                    <>
+                                                        <button onClick={() => handleEditReport(internship.id)}>Edit</button>
+                                                        <button onClick={() => handleDeleteReport(internship.id)}>Delete</button>
+                                                        <button onClick={() => downloadReport(internship.id)}>Download Report</button>
+                                                    </>
+                                                )}
                                             </div>
 
-                                            {!submitted[internship.id]?.report ? (
-                                                <button onClick={() => handleSubmitReport(internship.id)}>Submit Report</button>
-                                            ) : editable[internship.id]?.report ? (
-                                                <button onClick={() => handleSaveReport(internship.id)}>Save</button>
-                                            ) : (
-                                                <>
-                                                    <button onClick={() => handleEditReport(internship.id)}>Edit</button>
-                                                            <button onClick={() => handleDeleteReport(internship.id)}>Delete</button>
-                                                            <button onClick={() => downloadReport(internship.id)}>Download Report</button>
-                                                </>
-                                            )}
-                                        </div>
                                     </div>
                                 )}
                             </div>
