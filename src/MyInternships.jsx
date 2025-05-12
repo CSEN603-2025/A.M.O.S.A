@@ -8,7 +8,7 @@ const internshipsData = [
     { id: 3, company: "DataWorks", status: "Current", duration: "Jan 2025 - Present", title: "Data Analyst Intern", current: true }
 ];
 
-const courses = ["Intro to Software Engineering", "Data Structures", "Marketing Fundamentals", "Database Systems"];
+const courses = ["Software Engineering", "Database", "Management", "Computer System Architecture","Operating Systems"];
 
 
 

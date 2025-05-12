@@ -138,3 +138,9 @@
     background: linear-gradient(135deg, #63b8ff, #1e90ff);
     transform: translateY(-2px);
 }
+.browser-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+

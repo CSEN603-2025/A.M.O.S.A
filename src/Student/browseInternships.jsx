@@ -160,4 +160,3 @@ const InternshipBrowser = () => {
 
 export default InternshipBrowser;
 
-
