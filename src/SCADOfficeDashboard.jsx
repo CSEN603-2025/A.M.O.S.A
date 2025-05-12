@@ -1,24 +1,54 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
+import { FaPhone, FaBell } from "react-icons/fa"; // icons
 import './CSS/SCADOfficeDashboard.css';
 
 const SCADOfficeDashboard = () => {
+    const navigate = useNavigate();
+
+    const goToCalls = () => {
+        navigate("/scad/Calls");
+    };
+
+    const goToNotifications = () => {
+        navigate("/scad/noti");
+    };
+
+    // Example: numbers
+    const missedCalls = 5;
+    const notifications = 3;
+
     return (
         <div className="dashboard-wrapper">
             <header className="dashboard-header">
-
                 <div className="header-left">
                     <h1 className="dashboard-title">SCAD Office Dashboard</h1>
                 </div>
-                <div className="header-right">
-                    <a href="/" className="signout-button">Sign Out</a>
-                </div>
 
+                <div className="header-right">
+                    <div className="header-icons">
+                        {/* Calls Button with Badge */}
+                        <button onClick={goToCalls} className="icon-button call-button">
+                            <FaPhone />
+                            <span className="call-badge">{missedCalls}</span>
+                        </button>
+
+                        {/* Notifications Button with Badge */}
+                        <button onClick={goToNotifications} className="icon-button notification-button">
+                            <FaBell />
+                            <span className="notification-badge">{notifications}</span>
+                        </button>
+
+                        {/* Sign Out */}
+                        <a href="/" className="signout-button">Sign Out</a>
+                    </div>
+                </div>
             </header>
+
             <div className="dashboard-content">
                 <aside className="dashboard-sidebar">
                     <h2 className="sidebar-title">Navigation</h2>
                     <ul className="nav-list">
-
                         <li className="nav-item">Home</li>
                         <li className="nav-item"><a href="/scad/companies" className="nav-link">Pending Company Applications</a></li>
                         <li className="nav-item"><a href="/scad/interns" className="nav-link">All Internships</a></li>
@@ -31,14 +61,17 @@ const SCADOfficeDashboard = () => {
                         <li className="nav-item"><a href="/scad/Workshop" className="nav-link">Workshop</a></li>
                     </ul>
                 </aside>
+
                 <main className="dashboard-main">
                     <div className="welcome-box">
                         <h2 className="welcome-title">Welcome to the SCAD Office Dashboard</h2>
-                        <p className="welcome-text">Use the navigation panel on the right to explore and manage internships, company applications, students, and more.</p>
-
+                        <p className="welcome-text">
+                            Use the navigation panel on the right to explore and manage internships, company applications, students, and more.
+                        </p>
                     </div>
                 </main>
             </div>
+
             <footer className="dashboard-footer">
                 <p>&copy; 2025 SCAD System. All rights reserved.</p>
             </footer>

@@ -1,9 +1,25 @@
 import React, { useState } from "react";
-import './CSS/SCADOfficeDashboard.css'; // Ensure you have styling for students list and popup
+import { FaPhone, FaBell } from "react-icons/fa";
+import { useNavigate, useLocation } from "react-router-dom";
+import './CSS/SCADOfficeDashboard.css';
 
 const SCADStudent = () => {
     const [selectedStudent, setSelectedStudent] = useState(null);
     const [filterStatus, setFilterStatus] = useState("All");
+    const navigate = useNavigate();
+    const location = useLocation();
+
+    // Example numbers for calls and notifications
+    const missedCalls = 5;
+    const notifications = 3;
+
+    const goToCalls = () => {
+        navigate("/scad/Calls", { state: { from: location.pathname } });
+    };
+
+    const goToNotifications = () => {
+        navigate("/scad/noti", { state: { from: location.pathname } });
+    };
 
     const students = [
         {
@@ -55,7 +71,21 @@ const SCADStudent = () => {
                     <h1 className="dashboard-title">SCAD Office Dashboard</h1>
                 </div>
                 <div className="header-right">
-                    <a href="/" className="signout-button">Sign Out</a>
+                    <div className="header-icons">
+                        {/* Calls Button with Badge */}
+                        <button onClick={goToCalls} className="icon-button call-button">
+                            <FaPhone />
+                            <span className="call-badge">{missedCalls}</span>
+                        </button>
+
+                        {/* Notifications Button with Badge */}
+                        <button onClick={goToNotifications} className="icon-button notification-button">
+                            <FaBell />
+                            <span className="notification-badge">{notifications}</span>
+                        </button>
+
+                        <a href="/" className="signout-button">Sign Out</a>
+                    </div>
                 </div>
             </header>
 

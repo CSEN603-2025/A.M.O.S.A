@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { FaPhone, FaBell, FaFileAlt, FaClipboardList } from "react-icons/fa";
+import { useNavigate, useLocation } from "react-router-dom";
 import './CSS/SCADOfficeDashboard.css';
 
 const mockData = [
@@ -80,6 +82,20 @@ const SCADReports = () => {
     const [currentComment, setCurrentComment] = useState("");
     const [majorFilter, setMajorFilter] = useState("");
     const [statusFilter, setStatusFilter] = useState("");
+    const navigate = useNavigate();
+    const location = useLocation();
+
+    // Example numbers for calls and notifications
+    const missedCalls = 5;
+    const notifications = 3;
+
+    const goToCalls = () => {
+        navigate("/scad/Calls", { state: { from: location.pathname } });
+    };
+
+    const goToNotifications = () => {
+        navigate("/scad/noti", { state: { from: location.pathname } });
+    };
 
     const openModal = (student, type) => {
         setSelectedStudent(student);
@@ -166,7 +182,21 @@ const SCADReports = () => {
                     <h1 className="dashboard-title">SCAD Office Dashboard</h1>
                 </div>
                 <div className="header-right">
-                    <a href="/" className="signout-button">Sign Out</a>
+                    <div className="header-icons">
+                        {/* Calls Button with Badge */}
+                        <button onClick={goToCalls} className="icon-button call-button">
+                            <FaPhone />
+                            <span className="call-badge">{missedCalls}</span>
+                        </button>
+
+                        {/* Notifications Button with Badge */}
+                        <button onClick={goToNotifications} className="icon-button notification-button">
+                            <FaBell />
+                            <span className="notification-badge">{notifications}</span>
+                        </button>
+
+                        <a href="/" className="signout-button">Sign Out</a>
+                    </div>
                 </div>
             </header>
 
@@ -231,9 +261,13 @@ const SCADReports = () => {
                                         <td>{student.major}</td>
                                         <td>{student.company}</td>
                                         <td>{student.cycle}</td>
-                                        <td>
-                                            <button onClick={() => openModal(student, 'internship')}>Internship Report</button>
-                                            <button onClick={() => openModal(student, 'evaluation')}>Evaluation Report</button>
+                                        <td className="action-buttons">
+                                            <button onClick={() => openModal(student, 'internship')}>
+                                                <FaFileAlt /> Internship Report
+                                            </button>
+                                            <button onClick={() => openModal(student, 'evaluation')}>
+                                                <FaClipboardList /> Evaluation Report
+                                            </button>
                                         </td>
                                     </tr>
                                 ))

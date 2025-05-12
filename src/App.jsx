@@ -46,6 +46,9 @@ import CompanyDocs from './CompanyDocs';
 import CompanyNotifications from './CompanyNotifications';
 
 
+import SCADNotificationPage from './ScadNotifi';
+
+
 
 
 
@@ -97,7 +100,9 @@ function App() {
               <Route path="/PROStudentDashboard" element={<PROStudentDashboard />} />
               <Route path="/student/appointments" element={<ProAppointments />} />
               <Route path ="/student/calls" element = {<PROCalls/>}/>
-              <Route path ="/student/workshop" element ={<PROWorkshop/>}/>
+              <Route path="/student/workshop" element={<PROWorkshop />} />
+
+              <Route path="/scad/noti" element={<SCADNotificationPage />} />
 
           </Routes>
       </Router>

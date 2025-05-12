@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { FaPhone, FaBell } from "react-icons/fa";
+import { useNavigate, useLocation } from "react-router-dom";
 import './CSS/SCADOfficeDashboard.css';
 
 const SCADCalls = () => {
@@ -13,6 +15,19 @@ const SCADCalls = () => {
     const [screenOn, setScreenOn] = useState(true);
     const [cameraOn, setCameraOn] = useState(true);
     const [callerLeft, setCallerLeft] = useState(false);
+    const navigate = useNavigate();
+    const location = useLocation();
+    // Example numbers for calls and notifications
+    const missedCalls = 0;
+    const notifications = 3;
+
+    const goToCalls = () => {
+        navigate("/scad/Calls");
+    };
+
+    const goToNotifications = () => {
+        navigate("/scad/noti", { state: { from: location.pathname } });
+    };
 
     const acceptCall = (caller) => {
         setIncomingCalls(prev => prev.filter(call => call.id !== caller.id));
@@ -57,7 +72,25 @@ const SCADCalls = () => {
                     <h1 className="dashboard-title">SCAD Office Dashboard</h1>
                 </div>
                 <div className="header-right">
-                    <a href="/" className="signout-button">Sign Out</a>
+                    <div className="header-icons">
+                        {/* Calls Button with Badge */}
+                        <button
+                            onClick={location.pathname === "/scad/Calls" ? undefined : goToCalls}
+                            className={`icon-button call-button ${location.pathname === "/scad/Calls" ? "disabled" : ""}`}
+                            disabled={location.pathname === "/scad/Calls"}
+                        >
+                            <FaPhone />
+                            {location.pathname !== "/scad/Calls" && <span className="call-badge">{missedCalls}</span>}
+                        </button>
+
+                        {/* Notifications Button with Badge */}
+                        <button onClick={goToNotifications} className="icon-button notification-button">
+                            <FaBell />
+                            <span className="notification-badge">{notifications}</span>
+                        </button>
+
+                        <a href="/" className="signout-button">Sign Out</a>
+                    </div>
                 </div>
             </header>
 

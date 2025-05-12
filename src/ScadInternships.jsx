@@ -1,6 +1,6 @@
-
 import React, { useState } from "react";
-
+import { useNavigate, useLocation } from "react-router-dom";
+import { FaPhone, FaBell } from "react-icons/fa";
 import './CSS/SCADOfficeDashboard.css';
 import './CSS/browseInternships.css';
 
@@ -44,8 +44,13 @@ const SCADInternships = () => {
     const [filter, setFilter] = useState({ industry: "All", paid: "All" });
     const [selectedInternship, setSelectedInternship] = useState(null);
     const [showModal, setShowModal] = useState(false);
-    const [applications, setApplications] = useState();
+    const [applications, setApplications] = useState([]);
+    const navigate = useNavigate();
+    const location = useLocation();
 
+    // Example numbers for calls and notifications
+    const missedCalls = 5;
+    const notifications = 3;
 
     const handleSearchChange = (e) => {
         setSearchTerm(e.target.value);
@@ -62,6 +67,13 @@ const SCADInternships = () => {
         setSelectedInternship(null);
     };
 
+    const goToCalls = () => {
+        navigate("/scad/Calls", { state: { from: location.pathname } });
+    };
+
+    const goToNotifications = () => {
+        navigate("/scad/noti", { state: { from: location.pathname } });
+    };
 
     const filteredInternships = internships.filter((internship) => {
         const matchesSearch =
@@ -83,7 +95,21 @@ const SCADInternships = () => {
                     <h1 className="dashboard-title">SCAD Office Dashboard</h1>
                 </div>
                 <div className="header-right">
-                    <a href="/" className="signout-button">Sign Out</a>
+                    <div className="header-icons">
+                        {/* Calls Button with Badge */}
+                        <button onClick={goToCalls} className="icon-button call-button">
+                            <FaPhone />
+                            <span className="call-badge">{missedCalls}</span>
+                        </button>
+
+                        {/* Notifications Button with Badge */}
+                        <button onClick={goToNotifications} className="icon-button notification-button">
+                            <FaBell />
+                            <span className="notification-badge">{notifications}</span>
+                        </button>
+
+                        <a href="/" className="signout-button">Sign Out</a>
+                    </div>
                 </div>
             </header>
             <div className="dashboard-content">
@@ -173,7 +199,7 @@ const SCADInternships = () => {
                                     >
                                         Close
                                     </button>
-                                   
+
                                 </div>
                             </div>
                         )}

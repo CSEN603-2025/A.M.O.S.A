@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { FaPhone, FaBell } from "react-icons/fa";
+import { useNavigate, useLocation } from "react-router-dom";
 import "./CSS/SCADOfficeDashboard.css";
 
 const SCADWorkshop = () => {
@@ -34,6 +36,20 @@ const SCADWorkshop = () => {
 
     const [editingId, setEditingId] = useState(null);
     const [showModal, setShowModal] = useState(false);
+    const navigate = useNavigate();
+    const location = useLocation();
+
+    // Example numbers for calls and notifications
+    const missedCalls = 5;
+    const notifications = 3;
+
+    const goToCalls = () => {
+        navigate("/scad/Calls");
+    };
+
+    const goToNotifications = () => {
+        navigate("/scad/noti", { state: { from: location.pathname } });
+    };
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -81,7 +97,21 @@ const SCADWorkshop = () => {
                     <h1 className="dashboard-title">SCAD Office Dashboard</h1>
                 </div>
                 <div className="header-right">
-                    <a href="/" className="signout-button">Sign Out</a>
+                    <div className="header-icons">
+                        {/* Calls Button with Badge */}
+                        <button onClick={goToCalls} className="icon-button call-button">
+                            <FaPhone />
+                            <span className="call-badge">{missedCalls}</span>
+                        </button>
+
+                        {/* Notifications Button with Badge */}
+                        <button onClick={goToNotifications} className="icon-button notification-button">
+                            <FaBell />
+                            <span className="notification-badge">{notifications}</span>
+                        </button>
+
+                        <a href="/" className="signout-button">Sign Out</a>
+                    </div>
                 </div>
             </header>
             <div className="dashboard-content">
@@ -108,7 +138,7 @@ const SCADWorkshop = () => {
                         {workshops.map((workshop) => (
                             <li key={workshop.id} className="workshop-item">
                                 <h3>{workshop.name}</h3>
-                                <p><strong>Time:</strong> {workshop.startDate} to {workshop.endDate}</p>
+                                <p><strong>Time:</strong> {new Date(workshop.startDate).toLocaleString()} to {new Date(workshop.endDate).toLocaleString()}</p>
                                 <p><strong>Description:</strong> {workshop.description}</p>
                                 <p><strong>Speaker:</strong> {workshop.speakerBio}</p>
                                 <p><strong>Agenda:</strong> {workshop.agenda}</p>

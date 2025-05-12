@@ -1,7 +1,39 @@
 import React, { useState } from "react";
+import { FaPhone, FaBell } from "react-icons/fa";
+import { useNavigate, useLocation } from "react-router-dom";
+import {
+    BarChart,
+    Bar,
+    XAxis,
+    YAxis,
+    CartesianGrid,
+    Tooltip,
+    Legend,
+    PieChart,
+    Pie,
+    Cell,
+    ResponsiveContainer
+} from 'recharts';
 import './CSS/SCADOfficeDashboard.css';
 
 const SCADStatistics = () => {
+    const [selectedCycle, setSelectedCycle] = useState("Winter 2024");
+    const [openPopup, setOpenPopup] = useState(false);
+    const navigate = useNavigate();
+    const location = useLocation();
+
+    // Example numbers for calls and notifications
+    const missedCalls = 5;
+    const notifications = 3;
+
+    const goToCalls = () => {
+        navigate("/scad/Calls", { state: { from: location.pathname } });
+    };
+
+    const goToNotifications = () => {
+        navigate("/scad/noti", { state: { from: location.pathname } });
+    };
+
     const cycleData = {
         "Winter 2024": {
             acceptedReports: 100,
@@ -41,9 +73,6 @@ const SCADStatistics = () => {
         }
     };
 
-    const [selectedCycle, setSelectedCycle] = useState("Winter 2024");
-    const [openPopup, setOpenPopup] = useState(false);
-
     const handleCycleChange = (e) => {
         setSelectedCycle(e.target.value);
     };
@@ -80,7 +109,24 @@ ${stats.topCompaniesByCount.map((company, i) => `  ${i + 1}. ${company}`).join("
         URL.revokeObjectURL(url);
     };
 
+    // Prepare data for reports and charts
+    const allCyclesReportsData = Object.keys(cycleData).map(cycle => ({
+        name: cycle,
+        Accepted: cycleData[cycle].acceptedReports,
+        Rejected: cycleData[cycle].rejectedReports,
+        Flagged: cycleData[cycle].flaggedReports
+    }));
+
     const statistics = cycleData[selectedCycle];
+
+    // Pie chart data for selected cycle
+    const pieChartData = [
+        { name: 'Accepted', value: statistics.acceptedReports },
+        { name: 'Rejected', value: statistics.rejectedReports },
+        { name: 'Flagged', value: statistics.flaggedReports }
+    ];
+
+    const COLORS = ['#00C49F', '#FF6384', '#FFBB28'];
 
     return (
         <div className="dashboard-wrapper">
@@ -89,9 +135,24 @@ ${stats.topCompaniesByCount.map((company, i) => `  ${i + 1}. ${company}`).join("
                     <h1 className="dashboard-title">SCAD Office Dashboard</h1>
                 </div>
                 <div className="header-right">
-                    <a href="/" className="signout-button">Sign Out</a>
+                    <div className="header-icons">
+                        {/* Calls Button with Badge */}
+                        <button onClick={goToCalls} className="icon-button call-button">
+                            <FaPhone />
+                            <span className="call-badge">{missedCalls}</span>
+                        </button>
+
+                        {/* Notifications Button with Badge */}
+                        <button onClick={goToNotifications} className="icon-button notification-button">
+                            <FaBell />
+                            <span className="notification-badge">{notifications}</span>
+                        </button>
+
+                        <a href="/" className="signout-button">Sign Out</a>
+                    </div>
                 </div>
             </header>
+
             <div className="dashboard-content">
                 <aside className="dashboard-sidebar">
                     <h2 className="sidebar-title">Navigation</h2>
@@ -108,6 +169,7 @@ ${stats.topCompaniesByCount.map((company, i) => `  ${i + 1}. ${company}`).join("
                         <li className="nav-item"><a href="/scad/Workshop" className="nav-link">Workshop</a></li>
                     </ul>
                 </aside>
+
                 <main className="dashboard-main">
                     <h2 className="main-title">Real-Time Statistics</h2>
 
@@ -118,6 +180,48 @@ ${stats.topCompaniesByCount.map((company, i) => `  ${i + 1}. ${company}`).join("
                                 <option key={cycle} value={cycle}>{cycle}</option>
                             ))}
                         </select>
+                    </div>
+
+                    {/* Bar Chart for All Cycles */}
+                    <div className="chart-container">
+                        <h3>Reports Across Cycles</h3>
+                        <ResponsiveContainer width="100%" height={300}>
+                            <BarChart data={allCyclesReportsData}>
+                                <CartesianGrid strokeDasharray="3 3" />
+                                <XAxis dataKey="name" />
+                                <YAxis />
+                                <Tooltip />
+                                <Legend />
+                                <Bar dataKey="Accepted" fill="#00C49F" />
+                                <Bar dataKey="Rejected" fill="#FF6384" />
+                                <Bar dataKey="Flagged" fill="#FFBB28" />
+                            </BarChart>
+                        </ResponsiveContainer>
+                    </div>
+
+                    {/* Pie Chart for Selected Cycle */}
+                    <div className="chart-container">
+                        <h3>Report Distribution for {selectedCycle}</h3>
+                        <ResponsiveContainer width="100%" height={300}>
+                            <PieChart>
+                                <Pie
+                                    data={pieChartData}
+                                    cx="50%"
+                                    cy="50%"
+                                    labelLine={false}
+                                    outerRadius={80}
+                                    fill="#8884d8"
+                                    dataKey="value"
+                                    label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                                >
+                                    {pieChartData.map((entry, index) => (
+                                        <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                                    ))}
+                                </Pie>
+                                <Tooltip />
+                                <Legend />
+                            </PieChart>
+                        </ResponsiveContainer>
                     </div>
 
                     <div className="statistics-section">

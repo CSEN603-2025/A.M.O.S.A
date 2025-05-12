@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { FaPhone, FaBell } from "react-icons/fa";
+import { useNavigate, useLocation } from "react-router-dom";
 import './CSS/SCADOfficeDashboard.css';
 
 const AppointmentsScad = () => {
@@ -28,6 +30,21 @@ const AppointmentsScad = () => {
         subject: "",
         online: true
     });
+
+    const navigate = useNavigate();
+    const location = useLocation();
+
+    // Example numbers for calls and notifications
+    const missedCalls = 2;
+    const unreadNotifications = notifications.length;
+
+    const goToCalls = () => {
+        navigate("/scad/Calls");
+    };
+
+    const goToNotifications = () => {
+        navigate("/scad/noti", { state: { from: location.pathname } });
+    };
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -66,7 +83,21 @@ const AppointmentsScad = () => {
                     <h1 className="dashboard-title">SCAD Office Dashboard</h1>
                 </div>
                 <div className="header-right">
-                    <a href="/" className="signout-button">Sign Out</a>
+                    <div className="header-icons">
+                        {/* Calls Button with Badge */}
+                        <button onClick={goToCalls} className="icon-button call-button">
+                            <FaPhone />
+                            <span className="call-badge">{missedCalls}</span>
+                        </button>
+
+                        {/* Notifications Button with Badge */}
+                        <button onClick={goToNotifications} className="icon-button notification-button">
+                            <FaBell />
+                            <span className="notification-badge">{unreadNotifications}</span>
+                        </button>
+
+                        <a href="/" className="signout-button">Sign Out</a>
+                    </div>
                 </div>
             </header>
 
