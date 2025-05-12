@@ -10,15 +10,26 @@ const CompanyDashboard = () => {
         navigate('/CompanyNotifications');
     };
 
+    const handleLogout = () => {
+        // Add logout logic here if needed
+        navigate('/');
+    };
+
     return (
         <div className="dashboard-wrapper">
             <header className="dashboard-header">
                 <h1 className="dashboard-title">Company Dashboard</h1>
-                <button className="notification-bell" onClick={handleBellClick} title="Notifications">
-                    <FiBell size={24} />
-                    <span className="notification-count">3</span>
-                </button>
+                <div className="dashboard-actions">
+                    <button className="notification-bell" onClick={handleBellClick} title="Notifications">
+                        <FiBell size={24} />
+                        <span className="notification-count">3</span>
+                    </button>
+                    <button className="signout-button" onClick={handleLogout}>
+                        Sign Out
+                    </button>
+                </div>
             </header>
+
             <div className="dashboard-content">
                 <aside className="dashboard-sidebar">
                     <h2 className="sidebar-title">Navigation</h2>
@@ -46,8 +57,9 @@ const CompanyDashboard = () => {
                             <li>Application for "Data Analyst Intern" reviewed</li>
                         </ul>
                     </section>
-                </main>
+                </main> 
             </div>
+
             <footer className="dashboard-footer">
                 <p>&copy; 2025 SCAD System. All rights reserved.</p>
             </footer>
