@@ -87,14 +87,15 @@ body {
 .dashboard-header {
     width: 100%;
     padding: 24px 40px;
-    position:relative;
     background: #fff;
     box-shadow: 0 2px 8px rgba(44, 62, 80, 0.04);
     text-align: center;
     display: flex;
     align-items: center;
     justify-content: space-between;
+    flex-wrap: wrap;
 }
+
 
 .dashboard-title {
     color: #2563eb;
@@ -157,7 +158,7 @@ body {
     margin-top: 20px;
 }
 
-.action-button, .signout-button, .modal-content button {
+.action-button, .modal-content button {
     background: linear-gradient(90deg, #2563eb 0%, #60a5fa 100%);
     color: #fff;
     border: none;
@@ -170,7 +171,7 @@ body {
     transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
 }
 
-.action-button:hover, .signout-button:hover, .modal-content button:hover {
+.action-button:hover, .modal-content button:hover {
     background: linear-gradient(90deg, #1d4ed8 0%, #2563eb 100%);
     transform: translateY(-2px) scale(1.04);
     box-shadow: 0 4px 16px rgba(37, 99, 235, 0.13);
@@ -390,6 +391,12 @@ body {
     border: none;
     cursor: pointer;
     color: #1e90ff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px;
+    border-radius: 50%;
+    transition: transform 0.2s ease;
 }
 
 .notification-bell:hover {
@@ -398,14 +405,15 @@ body {
 
 .notification-count {
     position: absolute;
-    top: -8px;
-    right: -8px;
+    top: -6px;
+    right: -6px;
     background-color: red;
     color: white;
     font-size: 12px;
     border-radius: 50%;
     padding: 2px 6px;
 }
+
 
 /* Responsive adjustments */
 @media (max-width: 1100px) {
@@ -433,4 +441,27 @@ body {
     .dashboard-main {
         border-radius: 0 0 18px 18px;
     }
+}
+
+.dashboard-actions {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.signout-button {
+    background-color: #ff4d4d;
+    color: white;
+    text-decoration: none;
+    padding: 8px 16px;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+    border: none;
+    cursor: pointer;
+}
+
+.signout-button:hover {
+    background-color: #e60000;
 }

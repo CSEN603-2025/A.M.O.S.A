@@ -1,39 +1,31 @@
 import React, { useState } from "react";
-import './CSS/StudentDashboard.css'; // Reusing styles from Student version
+import './CSS/StudentDashboard.css';
 import './CSS/browseInternships.css';
-import { FiArrowLeft } from 'react-icons/fi';
-import { useNavigate } from "react-router-dom";
 
-const CompanyNotifications = () => {
-    const navigate = useNavigate();
+const PROStudentNotifications = () => {
     const [expandedId, setExpandedId] = useState(null);
-
-    const notifications = [
+    const [notifications] = useState([
         {
             id: 1,
-            type: 'email',
-            message: 'New application received for "Frontend Developer Intern".',
-            time: '5 minutes ago'
+            message: "🎉 A new internship cycle has begun! Start applying now.",
+            date: "2025-05-01"
         },
         {
             id: 2,
-            type: 'email',
-            message: 'Candidate John Doe has accepted the offer for "Data Analyst Intern".',
-            time: '1 hour ago'
+            message: "⏳ A new internship cycle will begin next week. Get your documents ready!",
+            date: "2025-04-25"
         },
         {
             id: 3,
-            type: 'email',
-            message: 'New application received for "Backend Developer Intern".',
-            time: '2 hours ago'
+            message: "📝 Your internship report status (Microsoft internship) has been sent.",
+            date: "2025-04-25"
         },
         {
             id: 4,
-            type: 'system',
-            message: 'Your application has been accepted, welcome to the system',
-            time: 'Yesterday, 9:45 AM'
+            message: "📝 Your internship report status (Sumerge internship) has been sent.",
+            date: "2025-04-29"
         }
-    ];
+    ]);
 
     return (
         <div className="browser-wrapper">
@@ -42,8 +34,8 @@ const CompanyNotifications = () => {
             </header>
 
             <main className="browser-main">
-                <button className="back-button" onClick={() => navigate('/CompanyDashboard')}>
-                    <FiArrowLeft style={{ marginRight: '5px' }} /> Back to Dashboard
+                <button className="back-button" onClick={() => window.location.href = "/PROStudentDashboard"}>
+                    ← Back to Home
                 </button>
 
                 <section className="filter-section">
@@ -56,13 +48,21 @@ const CompanyNotifications = () => {
                                 onClick={() => setExpandedId(expandedId === notification.id ? null : notification.id)}
                                 style={{ cursor: "pointer" }}
                             >
-                                <p><strong>{notification.type === 'email' ? 'Email: ' : 'System: '}</strong>{notification.message}</p>
-                                <small><em>{notification.time}</em></small>
+                                <p>{notification.message}</p>
+                                <small><em>Date: {notification.date}</em></small>
 
                                 {expandedId === notification.id && (
                                     <div style={{ marginTop: '10px' }}>
-                                        <p>Full Notification:</p>
+                                        <p>This is your full notification message:</p>
                                         <p><strong>{notification.message}</strong></p>
+                                        {(notification.id === 3 || notification.id === 4) && (
+                                            <button
+                                                onClick={() => window.location.href = `/PROReportFeedback?source=${notification.id}`}
+                                                className="view-report-button"
+                                            >
+                                                Click to View
+                                            </button>
+                                        )}
                                     </div>
                                 )}
                             </li>
@@ -78,4 +78,4 @@ const CompanyNotifications = () => {
     );
 };
 
-export default CompanyNotifications;
+export default PROStudentNotifications;

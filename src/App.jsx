@@ -14,7 +14,7 @@ import InternshipManagement from './Company/InternshipManagement';
 import ApplicationsReview from './Company/ApplicationsReview';
 import StudentProfile from './Student/StudentProfile';
 import InternshipBrowser from './Student/browseInternships';
-import StudentInternships from './studentInternships';
+import StudentInternships from './StudentInternships';
 import StudentApplied from './StudentApplied';
 import StudentNotifications from './StudentNotifications';
 import MyInternships from './MyInternships';
@@ -48,9 +48,12 @@ import CompanyNotifications from './CompanyNotifications';
 
 
 import SCADNotificationPage from './ScadNotifi';
-
-
-
+import PROStudentinternship from './PROStudentinternship';
+import PROStudentApplied from './PROStudentApplied';
+import PROMyInternships from './PROMyInternships';
+import PROStudentNotifications from './PROStudentNotifications';
+import PROReportFeedback from './PROReportFeedback';
+import PreRecord from './PreRecord';
 
 
 function App() {
@@ -105,6 +108,12 @@ function App() {
               <Route path="/student/workshop" element={<PROWorkshop />} />
 
               <Route path="/scad/noti" element={<SCADNotificationPage />} />
+              <Route path="/PROStudentinternship" element={<PROStudentinternship/>}/>
+              <Route path="/PROStudentApplied" element={<PROStudentApplied/>}/>
+              <Route path ="/PROMyInternships" element={<PROMyInternships/>}/>
+              <Route path ="/PROStudentNotifications" element={<PROStudentNotifications/>}/>
+              <Route path ="/PROReportFeedback" element={<PROReportFeedback/>}/>
+              <Route path ="/PreRecord" element={<PreRecord/>}/>
 
           </Routes>
       </Router>

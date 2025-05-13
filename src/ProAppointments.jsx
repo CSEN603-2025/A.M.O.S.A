@@ -67,24 +67,19 @@ const AppointmentsStudent = () => {
                 <aside className="dashboard-sidebar">
                     <h2 className="sidebar-title">Navigation</h2>
                     <ul className="nav-list">
-                    <li className="nav-item"><a href="/student/recommendations" className="nav-link">Internship Recommendations</a></li>
-                        <li className="nav-item"><a href="/student/current-internship" className="nav-link">Current Internship</a></li>
-                        <li className="nav-item"><a href="/student/deadlines" className="nav-link">Upcoming Deadlines</a></li>
-                        <li className="nav-item"><a href="/student/profile" className="nav-link">My Profile</a></li>
-                        <li className="nav-item"><a href="/student/settings" className="nav-link">Settings</a></li>
-                        <li className="nav-item">
-    {currentPath === "/student/appointments" ? (
-        <span className="nav-link active">Appointments</span>
-    ) : (
-        <a href="/student/appointments" className="nav-link">Appointments</a>
-    )}
-</li>
-
-
-                        <li className="nav-item"><a href="/scad/Calls" className="nav-link">Calls</a></li>
+                    
+                       <li className="nav-item"><a href="/PROStudentDashboard" className="nav-link">Home</a></li>
+                        <li className="nav-item"><a href="/PROStudentinternships" className="nav-link">Browse Internships</a></li>
+                        <li className="nav-item"><a href="/PROStudentApplied" className="nav-link">View Applied Internships</a></li>
+                        <li className="nav-item"><a href="/student/proprofile" className="nav-link">My Profile</a></li>
+                        <li className="nav-item"><a href="/PROMyInternships" className="nav-link">My Internships</a></li>
+                        <li className="nav-item">Appointments</li>
+                        <li className="nav-item"><a href="/student/Calls" className="nav-link">Calls</a></li>
                         <li className="nav-item"><a href="/student/viewed" className="nav-link">Viewed my profile</a></li>
                         <li className="nav-item"><a href="/student/assessment" className="nav-link">Online assessments</a></li>
+
                         <li className="nav-item"><a href="/student/workshop" className="nav-link">Workshop</a></li>
+                        <li className="nav-item"><a href="/PreRecord" className="nav-link">Pre-recorded workshops</a></li>
                     </ul>
                 </aside>
 

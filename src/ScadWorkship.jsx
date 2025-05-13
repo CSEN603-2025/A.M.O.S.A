@@ -1,7 +1,9 @@
 import React, { useState } from "react";
-import { FaPhone, FaBell } from "react-icons/fa";
 import { useNavigate, useLocation } from "react-router-dom";
+import { FaPhone, FaBell } from "react-icons/fa";
+import { FiBell } from "react-icons/fi";
 import "./CSS/SCADOfficeDashboard.css";
+import "./CSS/browseInternships.css";
 
 const SCADWorkshop = () => {
     const [workshops, setWorkshops] = useState([
@@ -36,6 +38,7 @@ const SCADWorkshop = () => {
 
     const [editingId, setEditingId] = useState(null);
     const [showModal, setShowModal] = useState(false);
+    const [selectedWorkshop, setSelectedWorkshop] = useState(null);
     const navigate = useNavigate();
     const location = useLocation();
 
@@ -99,14 +102,14 @@ const SCADWorkshop = () => {
                 <div className="header-right">
                     <div className="header-icons">
                         {/* Calls Button with Badge */}
-                        <button onClick={goToCalls} className="icon-button call-button">
+                        <button onClick={goToCalls} className="notification-bell">
                             <FaPhone />
                             <span className="call-badge">{missedCalls}</span>
                         </button>
 
                         {/* Notifications Button with Badge */}
-                        <button onClick={goToNotifications} className="icon-button notification-button">
-                            <FaBell />
+                        <button onClick={goToNotifications} className="notification-bell">
+                            <FiBell size={24} />
                             <span className="notification-badge">{notifications}</span>
                         </button>
 
@@ -125,28 +128,80 @@ const SCADWorkshop = () => {
                         <li className="nav-item"><a href="/scad/students" className="nav-link">View Students</a></li>
                         <li className="nav-item"><a href="/scad/reports" className="nav-link">View Reports</a></li>
                         <li className="nav-item"><a href="/scad/Statistics" className="nav-link">Statistics</a></li>
-                        <li className="nav-item"><a href="/scad/Appointments" className="nav-link">Appointments</a></li>
+                        <li className="nav-item"><a href="/scad/Appointmnets" className="nav-link">Appointments</a></li>
                         <li className="nav-item"><a href="/scad/Calls" className="nav-link">Calls</a></li>
-                        <li className="nav-item"> Workshops</li>
+                        <li className="nav-item">Workshops</li>
                     </ul>
                 </aside>
                 <main className="dashboard-main">
-                    <h2>Manage Workshops</h2>
-                    <button onClick={() => setShowModal(true)} className="create-btn">+ Create Workshop</button>
-
-                    <ul className="workshop-list">
-                        {workshops.map((workshop) => (
-                            <li key={workshop.id} className="workshop-item">
-                                <h3>{workshop.name}</h3>
-                                <p><strong>Time:</strong> {new Date(workshop.startDate).toLocaleString()} to {new Date(workshop.endDate).toLocaleString()}</p>
-                                <p><strong>Description:</strong> {workshop.description}</p>
-                                <p><strong>Speaker:</strong> {workshop.speakerBio}</p>
-                                <p><strong>Agenda:</strong> {workshop.agenda}</p>
-                                <button onClick={() => handleEdit(workshop.id)} className="button-workshop-alo"> Edit</button>
-                                <button onClick={() => handleDelete(workshop.id)} className="button-workshop-alop"> Delete</button>
-                            </li>
-                        ))}
-                    </ul>
+                    <div className="browser-wrapper">
+                        <header className="browser-header">
+                            <h1 className="browser-title">Manage Workshops</h1>
+                        </header>
+                        <main className="browser-main">
+                            <section className="filter-section">
+                                <button
+                                    onClick={() => setShowModal(true)}
+                                    className="create-btn"
+                                    style={{ marginBottom: '20px' }}
+                                >
+                                    + Create Workshop
+                                </button>
+                            </section>
+                            <section className="list-section">
+                                <h2 className="section-title">Available Workshops</h2>
+                                <ul className="internship-list">
+                                    {workshops.map((workshop) => (
+                                        <li
+                                            key={workshop.id}
+                                            className="internship-item"
+                                            onClick={() => setSelectedWorkshop(workshop)}
+                                        >
+                                            <p><strong>{workshop.name}</strong></p>
+                                            <p><strong>Time:</strong> {new Date(workshop.startDate).toLocaleString()} to {new Date(workshop.endDate).toLocaleString()}</p>
+                                            <p><strong>Speaker:</strong> {workshop.speakerBio}</p>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </section>
+                        </main>
+                        {selectedWorkshop && (
+                            <div className="workshop-modal-backdrop">
+                                <div className="workshop-modal">
+                                    <div className="modal-buttons">
+                                        <button onClick={() => setSelectedWorkshop(null)}>
+                                            Close
+                                        </button>
+                                    </div>
+                                    <h2>{selectedWorkshop.name}</h2>
+                                    <p><strong>Time:</strong> {new Date(selectedWorkshop.startDate).toLocaleString()} to {new Date(selectedWorkshop.endDate).toLocaleString()}</p>
+                                    <p><strong>Description:</strong> {selectedWorkshop.description}</p>
+                                    <p><strong>Speaker:</strong> {selectedWorkshop.speakerBio}</p>
+                                    <p><strong>Agenda:</strong> {selectedWorkshop.agenda}</p>
+                                    <div className="modal-buttons" style={{ marginTop: '20px' }}>
+                                        <button
+                                            onClick={() => {
+                                                handleEdit(selectedWorkshop.id);
+                                                setSelectedWorkshop(null);
+                                            }}
+                                            className="button-workshop-alo"
+                                        >
+                                            Edit
+                                        </button>
+                                        <button
+                                            onClick={() => {
+                                                handleDelete(selectedWorkshop.id);
+                                                setSelectedWorkshop(null);
+                                            }}
+                                            className="button-workshop-alop"
+                                        >
+                                            Delete
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+                    </div>
                 </main>
             </div>
 

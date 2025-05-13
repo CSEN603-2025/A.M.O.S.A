@@ -1,6 +1,8 @@
 import React from "react";
 import { jsPDF } from "jspdf";
 import './CSS/CompanyDashboard.css';
+import { useNavigate } from 'react-router-dom';
+import { FiBell } from 'react-icons/fi';
 
 const dummyDocuments = [
     {
@@ -31,10 +33,29 @@ const downloadPDF = (title, content) => {
 };
 
 const CompanyDocs = () => {
+    const navigate = useNavigate();
+
+    const handleBellClick = () => {
+        navigate('/CompanyNotifications');
+    };
+
+    const handleLogout = () => {
+        navigate('/');
+    };
+
     return (
         <div className="dashboard-wrapper">
             <header className="dashboard-header">
                 <h1 className="dashboard-title">Company Documents</h1>
+                <div className="dashboard-actions">
+                    <button className="notification-bell" onClick={handleBellClick} title="Notifications">
+                        <FiBell size={24} />
+                        <span className="notification-count">3</span>
+                    </button>
+                    <button className="signout-button" onClick={handleLogout}>
+                        Sign Out
+                    </button>
+                </div>
             </header>
             <div className="dashboard-content">
                 <aside className="dashboard-sidebar">

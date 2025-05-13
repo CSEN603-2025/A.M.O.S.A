@@ -1,7 +1,9 @@
 import React, { useState } from "react";
-import { FaPhone, FaBell, FaFileAlt, FaClipboardList } from "react-icons/fa";
 import { useNavigate, useLocation } from "react-router-dom";
+import { FaPhone, FaFileAlt, FaClipboardList } from "react-icons/fa";
+import { FiBell } from "react-icons/fi";
 import './CSS/SCADOfficeDashboard.css';
+import './CSS/browseInternships.css';
 
 const mockData = [
     {
@@ -67,10 +69,12 @@ const mockData = [
 ];
 
 const Modal = ({ onClose, children }) => (
-    <div className="modal-overlay">
-        <div className="modal-content">
+    <div className="workshop-modal-backdrop">
+        <div className="workshop-modal">
+            <div className="modal-buttons">
+                <button onClick={onClose}>Close</button>
+            </div>
             {children}
-            <button className="close-button" onClick={onClose}>Close</button>
         </div>
     </div>
 );
@@ -142,7 +146,6 @@ const SCADReports = () => {
         return matchesMajor && matchesStatus;
     });
 
-    // Function to download the internship or evaluation report as a text file
     const downloadReport = (type) => {
         if (!selectedStudent) return;
 
@@ -183,15 +186,13 @@ const SCADReports = () => {
                 </div>
                 <div className="header-right">
                     <div className="header-icons">
-                        {/* Calls Button with Badge */}
-                        <button onClick={goToCalls} className="icon-button call-button">
+                        <button onClick={goToCalls} className="notification-bell">
                             <FaPhone />
                             <span className="call-badge">{missedCalls}</span>
                         </button>
 
-                        {/* Notifications Button with Badge */}
-                        <button onClick={goToNotifications} className="icon-button notification-button">
-                            <FaBell />
+                        <button onClick={goToNotifications} className="notification-bell">
+                            <FiBell size={24} />
                             <span className="notification-badge">{notifications}</span>
                         </button>
 
@@ -211,128 +212,166 @@ const SCADReports = () => {
                         <li className="nav-item"><a href="/scad/students" className="nav-link">View Students</a></li>
                         <li className="nav-item">View Reports</li>
                         <li className="nav-item"><a href="/scad/Statistics" className="nav-link">Statistics</a></li>
-                        <li className="nav-item"><a href="/scad/Appointmnets" className="nav-link">Appointments</a></li>
+                        <li className="nav-item"><a href="/scad/Appointments" className="nav-link">Appointments</a></li>
                         <li className="nav-item"><a href="/scad/calls" className="nav-link">Calls</a></li>
                         <li className="nav-item"><a href="/scad/Workshop" className="nav-link">Workshop</a></li>
                     </ul>
                 </aside>
 
                 <main className="dashboard-main">
-                    <h2>Student Internship Reports</h2>
+                    <div className="browser-wrapper">
+                        <header className="browser-header">
+                            <h1 className="browser-title">Student Internship Reports</h1>
+                        </header>
 
-                    <div className="filters">
-                        <label>
-                            <p className="filters-title"> Filter by Major:</p>
-                            <select value={majorFilter} onChange={(e) => setMajorFilter(e.target.value)}>
-                                <option value="">All</option>
-                                <option value="Computer Science">Computer Science</option>
-                                <option value="Data Science">Data Science</option>
-                                <option value="UX Design">UX Design</option>
-                            </select>
-                        </label>
+                        <main className="browser-main">
+                            <section className="filter-section">
+                                <h2 className="section-title">Filters</h2>
+                                <div className="filter-row">
+                                    <label>
+                                        
+                                        <select
+                                            value={majorFilter}
+                                            onChange={(e) => setMajorFilter(e.target.value)}
+                                            className="filter-select"
+                                        >
+                                            <option value="">All Major</option>
+                                            <option value="Computer Science">Computer Science</option>
+                                            <option value="Data Science">Data Science</option>
+                                            <option value="UX Design">UX Design</option>
+                                        </select>
+                                    </label>
 
-                        <label>
-                            <p className="filters-title"> Filter by Status:</p>
-                            <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)}>
-                                <option value="">All</option>
-                                <option value="pending">Pending</option>
-                                <option value="approved">Approved</option>
-                                <option value="rejected">Rejected</option>
-                                <option value="flagged">Flagged</option>
-                            </select>
-                        </label>
+                                    <label>
+                                       
+                                        <select
+                                            value={statusFilter}
+                                            onChange={(e) => setStatusFilter(e.target.value)}
+                                            className="filter-select"
+                                        >
+                                            <option value="">All Status</option>
+                                            <option value="pending">Pending</option>
+                                            <option value="approved">Approved</option>
+                                            <option value="rejected">Rejected</option>
+                                            <option value="flagged">Flagged</option>
+                                        </select>
+                                    </label>
+                                </div>
+                            </section>
+
+                            <section className="list-section">
+                                <div className="table-container">
+                                    <table className="student-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Student Name</th>
+                                                <th>Major</th>
+                                                <th>Company</th>
+                                                <th>Cycle</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {filteredStudents.length > 0 ? (
+                                                filteredStudents.map(student => (
+                                                    <tr key={student.id}>
+                                                        <td>{student.studentName}</td>
+                                                        <td>{student.major}</td>
+                                                        <td>{student.company}</td>
+                                                        <td>{student.cycle}</td>
+                                                        <td className="action-buttons">
+                                                            <button
+                                                                onClick={() => openModal(student, 'internship')}
+                                                                className="table-button"
+                                                            >
+                                                                <FaFileAlt /> Internship Report
+                                                            </button>
+                                                            <button
+                                                                onClick={() => openModal(student, 'evaluation')}
+                                                                className="table-button"
+                                                            >
+                                                                <FaClipboardList /> Evaluation Report
+                                                            </button>
+                                                        </td>
+                                                    </tr>
+                                                ))
+                                            ) : (
+                                                <tr>
+                                                    <td colSpan="5">No students match the selected filters.</td>
+                                                </tr>
+                                            )}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </section>
+                        </main>
                     </div>
-
-                    <table className="student-table">
-                        <thead>
-                            <tr>
-                                <th>Student Name</th>
-                                <th>Major</th>
-                                <th>Company</th>
-                                <th>Cycle</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {filteredStudents.length > 0 ? (
-                                filteredStudents.map(student => (
-                                    <tr key={student.id}>
-                                        <td>{student.studentName}</td>
-                                        <td>{student.major}</td>
-                                        <td>{student.company}</td>
-                                        <td>{student.cycle}</td>
-                                        <td className="action-buttons">
-                                            <button onClick={() => openModal(student, 'internship')}>
-                                                <FaFileAlt /> Internship Report
-                                            </button>
-                                            <button onClick={() => openModal(student, 'evaluation')}>
-                                                <FaClipboardList /> Evaluation Report
-                                            </button>
-                                        </td>
-                                    </tr>
-                                ))
-                            ) : (
-                                <tr>
-                                    <td colSpan="5">No students match the selected filters.</td>
-                                </tr>
-                            )}
-                        </tbody>
-                    </table>
-
-                    {selectedStudent && modalType === 'internship' && (
-                        <Modal onClose={closeModal}>
-                            <br />
-                            <br />
-                            <h3>Internship Report</h3>
-                            <p><strong>Title:</strong> {selectedStudent.internshipReport.title}</p>
-                            <p><strong>Introduction:</strong> {selectedStudent.internshipReport.introduction}</p>
-                            <p><strong>Body:</strong> {selectedStudent.internshipReport.body}</p>
-                            <p><strong>Status:</strong> {selectedStudent.internshipReport.status}</p>
-
-                            {(selectedStudent.internshipReport.status === "flagged" ||
-                                selectedStudent.internshipReport.status === "rejected") && (
-                                    <div className="comment-section">
-                                        <strong>Comment:</strong>
-                                        {selectedStudent.internshipReport.commentSaved ? (
-                                            <div className="comment-display">
-                                                {selectedStudent.internshipReport.comment || "No comment provided"}
-                                            </div>
-                                        ) : (
-                                            <>
-                                                <textarea
-                                                    value={currentComment}
-                                                    onChange={(e) => setCurrentComment(e.target.value)}
-                                                    placeholder="Enter your comments here..."
-                                                />
-                                                <button
-                                                    className="save-comment-button"
-                                                    onClick={handleCommentSubmit}
-                                                >
-                                                    Save Comment
-                                                </button>
-                                            </>
-                                        )}
-                                    </div>
-                                )}
-                            <button className="download-button" onClick={() => downloadReport('internship')}>Download Report</button>
-                        </Modal>
-                    )}
-
-                    {selectedStudent && modalType === 'evaluation' && (
-                        <Modal onClose={closeModal}>
-                            <br />
-                            <br />
-                            <h3>Evaluation Report</h3>
-                            <p><strong>Student:</strong> {selectedStudent.studentName}</p>
-                            <p><strong>Company:</strong> {selectedStudent.company}</p>
-                            <p><strong>Supervisor:</strong> {selectedStudent.evaluationReport.companySupervisor}</p>
-                            <p><strong>Start Date:</strong> {selectedStudent.evaluationReport.startDate}</p>
-                            <p><strong>End Date:</strong> {selectedStudent.evaluationReport.endDate}</p>
-                            <button className="download-button" onClick={() => downloadReport('evaluation')}>Download Report</button>
-                        </Modal>
-                    )}
                 </main>
             </div>
+
+            {selectedStudent && modalType === 'internship' && (
+                <Modal onClose={closeModal}>
+                    <h2>Internship Report - {selectedStudent.studentName}</h2>
+                    <div className="report-content">
+                        <p><strong>Title:</strong> {selectedStudent.internshipReport.title}</p>
+                        <p><strong>Introduction:</strong> {selectedStudent.internshipReport.introduction}</p>
+                        <p><strong>Body:</strong> {selectedStudent.internshipReport.body}</p>
+                        <p><strong>Status:</strong> {selectedStudent.internshipReport.status}</p>
+
+                        {(selectedStudent.internshipReport.status === "flagged" ||
+                            selectedStudent.internshipReport.status === "rejected") && (
+                                <div className="comment-section">
+                                    <strong>Comment:</strong>
+                                    {selectedStudent.internshipReport.commentSaved ? (
+                                        <div className="comment-display">
+                                            {selectedStudent.internshipReport.comment || "No comment provided"}
+                                        </div>
+                                    ) : (
+                                        <>
+                                            <textarea
+                                                value={currentComment}
+                                                onChange={(e) => setCurrentComment(e.target.value)}
+                                                placeholder="Enter your comments here..."
+                                                className="comment-textarea"
+                                            />
+                                            <button
+                                                className="save-comment-button"
+                                                onClick={handleCommentSubmit}
+                                            >
+                                                Save Comment
+                                            </button>
+                                        </>
+                                    )}
+                                </div>
+                            )}
+                    </div>
+                    <button
+                        className="download-button"
+                        onClick={() => downloadReport('internship')}
+                    >
+                        Download Report
+                    </button>
+                </Modal>
+            )}
+
+            {selectedStudent && modalType === 'evaluation' && (
+                <Modal onClose={closeModal}>
+                    <h2>Evaluation Report - {selectedStudent.studentName}</h2>
+                    <div className="report-content">
+                        <p><strong>Student:</strong> {selectedStudent.studentName}</p>
+                        <p><strong>Company:</strong> {selectedStudent.company}</p>
+                        <p><strong>Supervisor:</strong> {selectedStudent.evaluationReport.companySupervisor}</p>
+                        <p><strong>Start Date:</strong> {selectedStudent.evaluationReport.startDate}</p>
+                        <p><strong>End Date:</strong> {selectedStudent.evaluationReport.endDate}</p>
+                    </div>
+                    <button
+                        className="download-button"
+                        onClick={() => downloadReport('evaluation')}
+                    >
+                        Download Report
+                    </button>
+                </Modal>
+            )}
 
             <footer className="dashboard-footer">
                 <p>&copy; 2025 SCAD System. All rights reserved.</p>

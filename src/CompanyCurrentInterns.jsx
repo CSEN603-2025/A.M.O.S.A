@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 import './CSS/CompanyDashboard.css';
+import { useNavigate } from 'react-router-dom';
+import { FiBell } from 'react-icons/fi';
+
 
 const sampleInterns = [
     { id: 1, name: 'Alice Johnson', title: 'Frontend Developer', status: 'Current', evaluation: '' },
@@ -44,6 +47,17 @@ const CompanyCurrentInterns = () => {
         setEvaluationText('');
     };
 
+    const navigate = useNavigate();
+
+    const handleBellClick = () => {
+        navigate('/CompanyNotifications');
+    };
+
+    const handleLogout = () => {
+        navigate('/');
+    };
+
+
     const deleteEvaluation = (internId) => {
         setInterns(prev =>
             prev.map(intern =>
@@ -57,8 +71,18 @@ const CompanyCurrentInterns = () => {
     return (
         <div className="dashboard-wrapper">
             <header className="dashboard-header">
-                <h1 className="dashboard-title">Current Interns</h1>
-            </header>
+            <h1 className="dashboard-title">Current Interns</h1>
+            <div className="dashboard-actions">
+                <button className="notification-bell" onClick={handleBellClick} title="Notifications">
+                    <FiBell size={24} />
+                    <span className="notification-count">3</span>
+                </button>
+                <button className="signout-button" onClick={handleLogout}>
+                    Sign Out
+                </button>
+            </div>
+        </header>
+
 
             <div className="dashboard-content wide">
                 <aside className="dashboard-sidebar">

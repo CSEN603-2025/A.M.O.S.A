@@ -30,6 +30,7 @@ const CompanyDashboard = () => {
                 </div>
             </header>
 
+
             <div className="dashboard-content">
                 <aside className="dashboard-sidebar">
                     <h2 className="sidebar-title">Navigation</h2>

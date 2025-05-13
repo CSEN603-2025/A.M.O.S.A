@@ -1,12 +1,9 @@
 import React, { useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
-import { FaPhone, FaBell } from "react-icons/fa";
-import {  FiBell } from "react-icons/fi";
-import './CSS/SCADOfficeDashboard.css';
+import './CSS/StudentDashboard.css';
 import './CSS/browseInternships.css';
 
-const SCADInternships = () => {
-    const [internships, setInternships] = useState([
+const PROStudentinternship = () => {
+    const [internships] = useState([
         {
             id: 1,
             companyName: "TechCorp",
@@ -41,17 +38,15 @@ const SCADInternships = () => {
             description: "Analyze and visualize large datasets.",
         },
     ]);
-    const [searchTerm, setSearchTerm] = useState("");
-    const [filter, setFilter] = useState({ industry: "All", paid: "Filter by pay" });
-    const [selectedInternship, setSelectedInternship] = useState(null);
-    const [showModal, setShowModal] = useState(false);
-    const [applications, setApplications] = useState([]);
-    const navigate = useNavigate();
-    const location = useLocation();
 
-    // Example numbers for calls and notifications
-    const missedCalls = 5;
-    const notifications = 3;
+    const [searchTerm, setSearchTerm] = useState("");
+    const [filter, setFilter] = useState({ industry: "All", paid: "All" });
+    const [selectedInternship, setSelectedInternship] = useState(null);
+    const [applications, setApplications] = useState(() => {
+        const saved = localStorage.getItem("StudentApplied");
+        return saved ? JSON.parse(saved) : [];
+    });
+    const [uploadedFiles, setUploadedFiles] = useState([]);
 
     const handleSearchChange = (e) => {
         setSearchTerm(e.target.value);
@@ -63,17 +58,14 @@ const SCADInternships = () => {
     };
 
     const handleApply = (internship) => {
-        setApplications([...applications, internship]);
-        alert('Applied');
+        const updatedApps = [...applications, internship.id];
+        setApplications(updatedApps);
         setSelectedInternship(null);
-    };
+        setUploadedFiles([]);
 
-    const goToCalls = () => {
-        navigate("/scad/Calls", { state: { from: location.pathname } });
-    };
-
-    const goToNotifications = () => {
-        navigate("/scad/noti", { state: { from: location.pathname } });
+        // Save to localStorage using "StudentApplied" and internships
+        localStorage.setItem("StudentApplied", JSON.stringify(updatedApps));
+        localStorage.setItem("internships", JSON.stringify(internships));
     };
 
     const filteredInternships = internships.filter((internship) => {
@@ -83,7 +75,7 @@ const SCADInternships = () => {
         const matchesIndustry =
             filter.industry === "All" || internship.industry === filter.industry;
         const matchesPaid =
-            filter.paid === "Filter by pay" ||
+            filter.paid === "All" ||
             (filter.paid === "Paid" && internship.paid) ||
             (filter.paid === "Unpaid" && !internship.paid);
         return matchesSearch && matchesIndustry && matchesPaid;
@@ -93,40 +85,30 @@ const SCADInternships = () => {
         <div className="dashboard-wrapper">
             <header className="dashboard-header">
                 <div className="header-left">
-                    <h1 className="dashboard-title">SCAD Office Dashboard</h1>
+                    <h1 className="dashboard-title">PRO Student Dashboard</h1>
                 </div>
                 <div className="header-right">
-                    <div className="header-icons">
-                        {/* Calls Button with Badge */}
-                        <button onClick={goToCalls} className="notification-bell">
-                            <FaPhone />
-                            <span className="call-badge">{missedCalls}</span>
-                        </button>
-
-                        {/* Notifications Button with Badge */}
-                        <button onClick={goToNotifications} className="notification-bell">
-                            <FiBell size={24} />
-                            <span className="notification-badge">{notifications}</span>
-                        </button>
-
-                        <a href="/" className="signout-button">Sign Out</a>
-                    </div>
+                    <a href="/" className="signout-button">Sign Out</a>
                 </div>
             </header>
             <div className="dashboard-content">
                 <aside className="dashboard-sidebar">
                     <h2 className="sidebar-title">Navigation</h2>
                     <ul className="nav-list">
-                        <li className="nav-item"><a href="/scadOfficeDashboard" className="nav-link">Home</a></li>
-                        <li className="nav-item"><a href="/scad/companies" className="nav-link">Pending Company Applications</a></li>
-                        <li className="nav-item">All Internships</li>
-                        <li className="nav-item"><a href="/scad/cycle" className="nav-link">Current Cycle Information</a></li>
-                        <li className="nav-item"><a href="/scad/students" className="nav-link">View Students</a></li>
-                        <li className="nav-item"><a href="/scad/reports" className="nav-link">View Reports</a></li>
-                        <li className="nav-item"><a href="/scad/Statistics" className="nav-link">Statistics</a></li>
-                        <li className="nav-item"><a href="/scad/Appointmnets" className="nav-link">Appointmnets</a></li>
-                        <li className="nav-item"><a href="/scad/Calls" className="nav-link">Calls</a></li>
-                        <li className="nav-item"><a href="/scad/Workshop" className="nav-link">Worshop</a></li>
+                        <li className="nav-item"><a href="/PROStudentDashboard" className="nav-link">Home</a></li>
+                        <li className="nav-item">Browse Internships</li>
+                        <li className="nav-item"><a href="/PROStudentApplied" className="nav-link">View Applied Internships</a></li>
+                        <li className="nav-item"><a href="/student/proprofile" className="nav-link">My Profile</a></li>
+                        <li className="nav-item"><a href="/PROMyInternships" className="nav-link">My Internships</a></li>
+                        <li className="nav-item"><a href="/student/appointments" className="nav-link">Appointments</a></li>
+
+                        <li className="nav-item"><a href="/student/Calls" className="nav-link">Calls</a></li>
+                        <li className="nav-item"><a href="/student/viewed" className="nav-link">Viewed my profile</a></li>
+                        <li className="nav-item"><a href="/student/assessment" className="nav-link">Online assessments</a></li>
+
+                        <li className="nav-item"><a href="/student/workshop" className="nav-link">Workshop</a></li>
+                        <li className="nav-item"><a href="/PreRecord" className="nav-link">Pre-recorded workshops</a></li>
+
                     </ul>
                 </aside>
                 <main className="dashboard-main">
@@ -161,7 +143,7 @@ const SCADInternships = () => {
                                     onChange={handleFilterChange}
                                     className="filter-select"
                                 >
-                                    <option value="Filter by pay">Filter by Pay</option>
+                                    <option value="All">All</option>
                                     <option value="Paid">Paid</option>
                                     <option value="Unpaid">Unpaid</option>
                                 </select>
@@ -183,17 +165,10 @@ const SCADInternships = () => {
                                 </ul>
                             </section>
                         </main>
+
                         {selectedInternship && (
-                            <div className="workshop-modal-backdrop">
-                                <div className="workshop-modal">
-                                    <div className="modal-buttons">
-                                        <button
-                                            onClick={() => setSelectedInternship(null)}
-                                            
-                                        >
-                                            Close
-                                        </button>
-                                    </div>
+                            <div className="modal">
+                                <div className="modal-content">
                                     <h2>{selectedInternship.jobTitle}</h2>
                                     <p><strong>Company:</strong> {selectedInternship.companyName}</p>
                                     <p><strong>Duration:</strong> {selectedInternship.duration}</p>
@@ -202,7 +177,49 @@ const SCADInternships = () => {
                                     <p><strong>Industry:</strong> {selectedInternship.industry}</p>
                                     <p><strong>Skills:</strong> {selectedInternship.skills}</p>
                                     <p><strong>Description:</strong> {selectedInternship.description}</p>
-                                   
+
+                                    <div className="upload-section">
+                                        <label htmlFor="doc-upload" className="upload-label">
+                                            Upload Documents (CV, Certificates, etc.):
+                                        </label>
+                                        <input
+                                            type="file"
+                                            id="doc-upload"
+                                            multiple
+                                            onChange={(e) => setUploadedFiles(Array.from(e.target.files))}
+                                            className="upload-input"
+                                        />
+                                        {uploadedFiles.length > 0 && (
+                                            <ul className="file-list">
+                                                {uploadedFiles.map((file, index) => (
+                                                    <li key={index} className="file-name">
+                                                        📎 {file.name}
+                                                    </li>
+                                                ))}
+                                            </ul>
+                                        )}
+                                    </div>
+
+                                    {applications.includes(selectedInternship.id) ? (
+                                        <p className="applied-message">✅ Applied</p>
+                                    ) : (
+                                        <button
+                                            onClick={() => handleApply(selectedInternship)}
+                                            className="accept-button"
+                                        >
+                                            Apply
+                                        </button>
+                                    )}
+
+                                    <button
+                                        onClick={() => {
+                                            setSelectedInternship(null);
+                                            setUploadedFiles([]);
+                                        }}
+                                        className="close-button"
+                                    >
+                                        Close
+                                    </button>
                                 </div>
                             </div>
                         )}
@@ -216,4 +233,4 @@ const SCADInternships = () => {
     );
 };
 
-export default SCADInternships;
+export default PROStudentinternship;

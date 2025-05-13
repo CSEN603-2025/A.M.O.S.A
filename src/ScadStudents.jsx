@@ -1,11 +1,14 @@
 import React, { useState } from "react";
 import { FaPhone, FaBell } from "react-icons/fa";
+import { FiBell } from "react-icons/fi";
 import { useNavigate, useLocation } from "react-router-dom";
 import './CSS/SCADOfficeDashboard.css';
+import './CSS/browseInternships.css';
 
 const SCADStudent = () => {
     const [selectedStudent, setSelectedStudent] = useState(null);
     const [filterStatus, setFilterStatus] = useState("All");
+    const [searchTerm, setSearchTerm] = useState("");
     const navigate = useNavigate();
     const location = useLocation();
 
@@ -60,8 +63,18 @@ const SCADStudent = () => {
         },
     ];
 
+    const handleSearchChange = (e) => {
+        setSearchTerm(e.target.value);
+    };
+
+    const handleFilterChange = (e) => {
+        setFilterStatus(e.target.value);
+    };
+
     const filteredStudents = students.filter((student) => {
-        return filterStatus === "All" || student.internshipStatus === filterStatus;
+        return (filterStatus === "All" || student.internshipStatus === filterStatus) &&
+            (student.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                student.major.toLowerCase().includes(searchTerm.toLowerCase()));
     });
 
     return (
@@ -73,14 +86,14 @@ const SCADStudent = () => {
                 <div className="header-right">
                     <div className="header-icons">
                         {/* Calls Button with Badge */}
-                        <button onClick={goToCalls} className="icon-button call-button">
+                        <button onClick={goToCalls} className="notification-bell">
                             <FaPhone />
                             <span className="call-badge">{missedCalls}</span>
                         </button>
 
                         {/* Notifications Button with Badge */}
-                        <button onClick={goToNotifications} className="icon-button notification-button">
-                            <FaBell />
+                        <button onClick={goToNotifications} className="notification-bell">
+                            <FiBell size={24} />
                             <span className="notification-badge">{notifications}</span>
                         </button>
 
@@ -100,54 +113,84 @@ const SCADStudent = () => {
                         <li className="nav-item">View Students</li>
                         <li className="nav-item"><a href="/scad/reports" className="nav-link">View Reports</a></li>
                         <li className="nav-item"><a href="/scad/Statistics" className="nav-link">Statistics</a></li>
-                        <li className="nav-item"><a href="/scad/Appointments" className="nav-link">Appointments</a></li>
+                        <li className="nav-item"><a href="/scad/Appointmnets" className="nav-link">Appointments</a></li>
                         <li className="nav-item"><a href="/scad/Calls" className="nav-link">Calls</a></li>
                         <li className="nav-item"><a href="/scad/Workshop" className="nav-link">Workshop</a></li>
                     </ul>
                 </aside>
 
                 <main className="dashboard-main">
-                    <div className="students-container">
-                        <div className="filter-section">
-                            <label htmlFor="filter">Filter by Internship Status: </label>
-                            <select
-                                id="filter"
-                                value={filterStatus}
-                                onChange={(e) => setFilterStatus(e.target.value)}
-                            >
-                                <option value="All">All</option>
-                                <option value="Accepted">Accepted</option>
-                                <option value="Pending">Pending</option>
-                                <option value="Rejected">Rejected</option>
-                            </select>
-                        </div>
-
-                        <ul className="student-list">
-                            {filteredStudents.map((student) => (
-                                <li
-                                    key={student.id}
-                                    className="student-item"
-                                    onClick={() => setSelectedStudent(student)}
+                    <div className="browser-wrapper">
+                        <header className="browser-header">
+                            <h1 className="browser-title">Students Directory</h1>
+                        </header>
+                        <main className="browser-main">
+                            <section className="filter-section">
+                                <h2 className="section-title">Search and Filter</h2>
+                                <input
+                                    type="text"
+                                    placeholder="Search by name or major"
+                                    value={searchTerm}
+                                    onChange={handleSearchChange}
+                                    className="search-input"
+                                />
+                                <select
+                                    name="status"
+                                    value={filterStatus}
+                                    onChange={handleFilterChange}
+                                    className="filter-select"
                                 >
-                                    <strong>{student.name}</strong>  {student.major}
-                                </li>
-                            ))}
-                        </ul>
-
+                                    <option value="All">All Students Status</option>
+                                    <option value="Accepted">Accepted</option>
+                                    <option value="Pending">Pending</option>
+                                    <option value="Rejected">Rejected</option>
+                                </select>
+                            </section>
+                            <section className="list-section">
+                                <h2 className="section-title">Student List</h2>
+                                <ul className="internship-list">
+                                    {filteredStudents.map((student) => (
+                                        <li
+                                            key={student.id}
+                                            className="internship-item"
+                                            onClick={() => setSelectedStudent(student)}
+                                        >
+                                            <p><strong>{student.name}</strong></p>
+                                            <p><strong>Major:</strong> {student.major}</p>
+                                            <p><strong>Status:</strong>
+                                                <span className={`status-${student.internshipStatus.toLowerCase()}`}>
+                                                    {student.internshipStatus}
+                                                </span>
+                                            </p>
+                                            {student.hasProBadge && (
+                                                <span className="pro-badge">PRO</span>
+                                            )}
+                                        </li>
+                                    ))}
+                                </ul>
+                            </section>
+                        </main>
                         {selectedStudent && (
-                            <div className="student-popup">
-                                <div className="popup-content">
-                                    <button className="close-button" onClick={() => setSelectedStudent(null)}>
-                                        X
-                                    </button>
+                            <div className="workshop-modal-backdrop">
+                                <div className="workshop-modal">
+                                    <div className="modal-buttons">
+                                    <button
+                                        onClick={() => setSelectedStudent(null)}
+                                       
+                                    >
+                                        Close
+                                        </button>
+                                    </div>
                                     <h2>{selectedStudent.name}</h2>
                                     <p><strong>Email:</strong> {selectedStudent.email}</p>
                                     <p><strong>Phone:</strong> {selectedStudent.phone}</p>
-                                    <p><strong>Job Interests:</strong> {selectedStudent.jobInterests}</p>
-                                    <p><strong>Past Experience:</strong> {selectedStudent.experience}</p>
                                     <p><strong>Major:</strong> {selectedStudent.major}</p>
                                     <p><strong>Semester:</strong> {selectedStudent.semester}</p>
-                                    <p><strong>Pro Badge:</strong> {selectedStudent.hasProBadge ? " Yes" : " No"}</p>
+                                    <p><strong>Job Interests:</strong> {selectedStudent.jobInterests}</p>
+                                    <p><strong>Past Experience:</strong> {selectedStudent.experience}</p>
+                                    <p><strong>Internship Status:</strong> {selectedStudent.internshipStatus}</p>
+                                    <p><strong>Pro Badge:</strong> {selectedStudent.hasProBadge ? "Yes" : "No"}</p>
+                                    
                                 </div>
                             </div>
                         )}

@@ -1,6 +1,17 @@
-import React from "react";
-import { useState } from "react";
-//import './CSS/FacultyDashboard.css';
+import React, { useState } from "react";
+import {
+    BarChart,
+    Bar,
+    XAxis,
+    YAxis,
+    CartesianGrid,
+    Tooltip,
+    Legend,
+    PieChart,
+    Pie,
+    Cell,
+    ResponsiveContainer
+} from 'recharts';
 import './CSS/SCADOfficeDashboard.css';
 
 const FacultyStatistics = () => {
@@ -45,19 +56,15 @@ const FacultyStatistics = () => {
     };
 
     const [selectedCycle, setSelectedCycle] = useState("Winter 2024");
-    const [showReport, setShowReport] = useState(false);
     const [openPopup, setOpenPopup] = useState(false);
 
     const handleCycleChange = (e) => {
         setSelectedCycle(e.target.value);
-        setShowReport(false); // Reset report view on cycle change
     };
 
     const handleGenerateReport = () => {
-        setOpenPopup(true); // Open the popup when "Generate Report" is clicked
+        setOpenPopup(true);
     };
-
-    const statistics = cycleData[selectedCycle];
 
     const handleDownload = (stats, cycleName) => {
         const content = `
@@ -87,18 +94,36 @@ ${stats.topCompaniesByCount.map((company, i) => `  ${i + 1}. ${company}`).join("
         URL.revokeObjectURL(url);
     };
 
+    // Prepare data for reports and charts
+    const allCyclesReportsData = Object.keys(cycleData).map(cycle => ({
+        name: cycle,
+        Accepted: cycleData[cycle].acceptedReports,
+        Rejected: cycleData[cycle].rejectedReports,
+        Flagged: cycleData[cycle].flaggedReports
+    }));
+
+    const statistics = cycleData[selectedCycle];
+
+    // Pie chart data for selected cycle
+    const pieChartData = [
+        { name: 'Accepted', value: statistics.acceptedReports },
+        { name: 'Rejected', value: statistics.rejectedReports },
+        { name: 'Flagged', value: statistics.flaggedReports }
+    ];
+
+    const COLORS = ['#00C49F', '#FF6384', '#FFBB28'];
+
     return (
         <div className="dashboard-wrapper">
             <header className="dashboard-header">
-
                 <div className="header-left">
                     <h1 className="dashboard-title">Faculty Member Dashboard</h1>
                 </div>
                 <div className="header-right">
                     <a href="/" className="signout-button">Sign Out</a>
                 </div>
-
             </header>
+
             <div className="dashboard-content">
                 <aside className="dashboard-sidebar">
                     <h2 className="sidebar-title">Navigation</h2>
@@ -106,63 +131,122 @@ ${stats.topCompaniesByCount.map((company, i) => `  ${i + 1}. ${company}`).join("
                         <li className="nav-item"><a href="/Facultydashboard" className="nav-link">Home</a></li>
                         <li className="nav-item"><a href="/faculty/reports" className="nav-link">Review Reports</a></li>
                         <li className="nav-item">Statistics</li>
-                       
                     </ul>
                 </aside>
+
                 <main className="dashboard-main">
-                    <h2 className="main-title">Real-Time Statistics</h2>
+                    <div className="browser-wrapper">
+                        <header className="browser-header">
+                            <h1 className="browser-title">Internship Cycle Statistics</h1>
+                        </header>
 
-                    {/* Dropdown to choose cycle */}
-                    <div className="cycle-selector">
-                        <label htmlFor="cycleSelect">Select Cycle: </label>
-                        <select id="cycleSelect" value={selectedCycle} onChange={handleCycleChange}>
-                            {Object.keys(cycleData).map((cycle) => (
-                                <option key={cycle} value={cycle}>{cycle}</option>
-                            ))}
-                        </select>
+                        <main className="browser-main">
+                            <section className="filter-section">
+                                <h2 className="section-title">Select Cycle</h2>
+                                <select
+                                    id="cycleSelect"
+                                    value={selectedCycle}
+                                    onChange={handleCycleChange}
+                                    className="filter-select"
+                                >
+                                    {Object.keys(cycleData).map((cycle) => (
+                                        <option key={cycle} value={cycle}>{cycle}</option>
+                                    ))}
+                                </select>
+                            </section>
+
+                            <section className="list-section">
+                                <h2 className="section-title">Statistics for {selectedCycle}</h2>
+
+                                <div className="chart-container">
+                                    <h3>Reports Across Cycles</h3>
+                                    <ResponsiveContainer width="100%" height={300}>
+                                        <BarChart data={allCyclesReportsData}>
+                                            <CartesianGrid strokeDasharray="3 3" />
+                                            <XAxis dataKey="name" />
+                                            <YAxis />
+                                            <Tooltip />
+                                            <Legend />
+                                            <Bar dataKey="Accepted" fill="#00C49F" />
+                                            <Bar dataKey="Rejected" fill="#FF6384" />
+                                            <Bar dataKey="Flagged" fill="#FFBB28" />
+                                        </BarChart>
+                                    </ResponsiveContainer>
+                                </div>
+
+                                <div className="chart-container">
+                                    <h3>Report Distribution</h3>
+                                    <ResponsiveContainer width="100%" height={300}>
+                                        <PieChart>
+                                            <Pie
+                                                data={pieChartData}
+                                                cx="50%"
+                                                cy="50%"
+                                                labelLine={false}
+                                                outerRadius={80}
+                                                fill="#8884d8"
+                                                dataKey="value"
+                                                label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                                            >
+                                                {pieChartData.map((entry, index) => (
+                                                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                                                ))}
+                                            </Pie>
+                                            <Tooltip />
+                                            <Legend />
+                                        </PieChart>
+                                    </ResponsiveContainer>
+                                </div>
+
+                                <div className="statistics-details">
+                                    <p><strong>Accepted Reports:</strong> {statistics.acceptedReports}</p>
+                                    <p><strong>Rejected Reports:</strong> {statistics.rejectedReports}</p>
+                                    <p><strong>Flagged Reports:</strong> {statistics.flaggedReports}</p>
+                                    <p><strong>Average Review Time:</strong> {statistics.averageReviewTime}</p>
+                                    <p><strong>Top Courses:</strong> {statistics.topCourses.join(", ")}</p>
+                                    <p><strong>Top Rated Companies:</strong> {statistics.topRatedCompanies.join(", ")}</p>
+                                    <p><strong>Top Companies by Internship Count:</strong> {statistics.topCompaniesByCount.join(", ")}</p>
+                                </div>
+
+                                <button
+                                    className="generate-report-button"
+                                    onClick={handleGenerateReport}
+                                    style={{ marginTop: '20px' }}
+                                >
+                                    Generate Report
+                                </button>
+                            </section>
+                        </main>
                     </div>
-
-                    {/* Display selected cycle statistics */}
-                    <div className="statistics-section">
-                        <p><strong>Accepted Reports:</strong> {statistics.acceptedReports}</p>
-                        <p><strong>Rejected Reports:</strong> {statistics.rejectedReports}</p>
-                        <p><strong>Flagged Reports:</strong> {statistics.flaggedReports}</p>
-                        <p><strong>Average Review Time:</strong> {statistics.averageReviewTime}</p>
-                        <p><strong>Top Courses:</strong> {statistics.topCourses.join(", ")}</p>
-                        <p><strong>Top Rated Companies:</strong> {statistics.topRatedCompanies.join(", ")}</p>
-                        <p><strong>Top Companies by Internship Count:</strong> {statistics.topCompaniesByCount.join(", ")}</p>
-                    </div>
-
-                    {/* Button to simulate report generation */}
-                    <button className="generate-report-button" onClick={handleGenerateReport}>
-                        Generate Report
-                    </button>
                 </main>
             </div>
 
-            {/* Popup with statistics and dummy download button */}
             {openPopup && (
-                <div className="modal-overlay">
-                    <div className="modal-content">
-                        <br></br>
-                    <br></br>
-                        <h3>Generated Report for {selectedCycle}</h3>
-                        <p><strong>Accepted Reports:</strong> {statistics.acceptedReports}</p>
-                        <p><strong>Rejected Reports:</strong> {statistics.rejectedReports}</p>
-                        <p><strong>Flagged Reports:</strong> {statistics.flaggedReports}</p>
-                        <p><strong>Average Review Time:</strong> {statistics.averageReviewTime}</p>
-                        <p><strong>Top Courses:</strong> {statistics.topCourses.join(", ")}</p>
-                        <p><strong>Top Rated Companies:</strong> {statistics.topRatedCompanies.join(", ")}</p>
-                        <p><strong>Top Companies by Internship Count:</strong> {statistics.topCompaniesByCount.join(", ")}</p>
-
-                        {/* Dummy Download Button */}
-                        <button className="download-button" onClick={handleDownload(statistics, selectedCycle)}>Download Report</button>
-
-                        {/* Close button for popup */}
-                        <button className="close-button" onClick={() => setOpenPopup(false)}>Close</button>
+                <div className="workshop-modal-backdrop">
+                    <div className="workshop-modal">
+                        <div className="modal-buttons">
+                            <button onClick={() => setOpenPopup(false)}>Close</button>
+                        </div>
+                        <h2>Generated Report for {selectedCycle}</h2>
+                        <div className="report-content">
+                            <p><strong>Accepted Reports:</strong> {statistics.acceptedReports}</p>
+                            <p><strong>Rejected Reports:</strong> {statistics.rejectedReports}</p>
+                            <p><strong>Flagged Reports:</strong> {statistics.flaggedReports}</p>
+                            <p><strong>Average Review Time:</strong> {statistics.averageReviewTime}</p>
+                            <p><strong>Top Courses:</strong> {statistics.topCourses.join(", ")}</p>
+                            <p><strong>Top Rated Companies:</strong> {statistics.topRatedCompanies.join(", ")}</p>
+                            <p><strong>Top Companies by Internship Count:</strong> {statistics.topCompaniesByCount.join(", ")}</p>
+                        </div>
+                        <button
+                            className="download-button"
+                            onClick={() => handleDownload(statistics, selectedCycle)}
+                        >
+                            Download Report
+                        </button>
                     </div>
                 </div>
             )}
+
             <footer className="dashboard-footer">
                 <p>&copy; 2025 SCAD System. All rights reserved.</p>
             </footer>
@@ -171,4 +255,3 @@ ${stats.topCompaniesByCount.map((company, i) => `  ${i + 1}. ${company}`).join("
 };
 
 export default FacultyStatistics;
-

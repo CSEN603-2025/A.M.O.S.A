@@ -1,21 +1,35 @@
 import React from "react";
-import './CSS/SCADOfficeDashboard.css';
+import './CSS/StudentDashboard.css';
+import { FiBell } from 'react-icons/fi'; // Bell icon
 
 const PROStudentDashboard = () => {
     return (
         <div className="dashboard-wrapper">
             <header className="dashboard-header">
-                <h1 className="dashboard-title"> PRO Student Dashboard</h1>
+                <div className="header-left">
+                    <h1 className="dashboard-title">PRO Student Dashboard</h1>
+                </div>
+                <div className="header-right">
+                    <a href="/" className="signout-button">Sign Out</a>
+                </div>
             </header>
             <div className="dashboard-content">
                 <aside className="dashboard-sidebar">
+                    {/* Notification Icon Section */}
+                    <div className="notification-widget">
+                        <a href="/PROStudentNotifications" className="notification-link">
+                            <FiBell size={18} className="bell-icon" />
+                            <span>Notifications</span>
+                        </a>
+                    </div>
+
                     <h2 className="sidebar-title">Navigation</h2>
                     <ul className="nav-list">
-                        <li className="nav-item"><a href="/student/recommendations" className="nav-link">Internship Recommendations</a></li>
-                        <li className="nav-item"><a href="/student/current-internship" className="nav-link">Current Internship</a></li>
-                        <li className="nav-item"><a href="/student/deadlines" className="nav-link">Upcoming Deadlines</a></li>
+                        <li className="nav-item">Home</li>
+                        <li className="nav-item"><a href="/PROStudentinternship" className="nav-link">Browse Internships</a></li>
+                        <li className="nav-item"><a href="/PROStudentApplied" className="nav-link">View Applied Internships</a></li>
                         <li className="nav-item"><a href="/student/proprofile" className="nav-link">My Profile</a></li>
-                        <li className="nav-item"><a href="/student/settings" className="nav-link">Settings</a></li>
+                        <li className="nav-item"><a href="/PROMyInternships" className="nav-link">My Internships</a></li>
                         <li className="nav-item"><a href="/student/appointments" className="nav-link">Appointments</a></li>
 
                         <li className="nav-item"><a href="/student/Calls" className="nav-link">Calls</a></li>
@@ -23,10 +37,11 @@ const PROStudentDashboard = () => {
                         <li className="nav-item"><a href="/student/assessment" className="nav-link">Online assessments</a></li>
 
                         <li className="nav-item"><a href="/student/workshop" className="nav-link">Workshop</a></li>
+                        <li className="nav-item"><a href="/PreRecord" className="nav-link">Pre-recorded workshops</a></li>
                         
-
                     </ul>
                 </aside>
+
                 <main className="dashboard-main">
                     <section className="recommendations-section">
                         <h2 className="section-title">Internship Recommendations</h2>
@@ -36,12 +51,22 @@ const PROStudentDashboard = () => {
                             <li>Data Analyst Intern at DataWorks</li>
                         </ul>
                     </section>
+
+                    <section className="video-section">
+                        <h2 className="section-title">Introduction Video</h2>
+                        <div className="video-placeholder">
+                            <p>Video cannot be played. No video link provided.</p>
+                            <button className="play-button" disabled>Play</button>
+                        </div>
+                    </section>
+
                     <section className="status-section">
                         <h2 className="section-title">Current Internship</h2>
                         <p>Status: Active</p>
                         <p>Company: TechCorp</p>
                         <p>Role: Software Engineer Intern</p>
                     </section>
+
                     <section className="deadlines-section">
                         <h2 className="section-title">Upcoming Deadlines</h2>
                         <ul>
