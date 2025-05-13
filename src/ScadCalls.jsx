@@ -1,5 +1,6 @@
 import React, { useState, useRef } from "react";
 import { FaPhone, FaBell } from "react-icons/fa";
+import { FiBell } from "react-icons/fi";
 import { useNavigate, useLocation } from "react-router-dom";
 import './CSS/SCADOfficeDashboard.css';
 
@@ -23,10 +24,10 @@ const SCADCalls = () => {
     const location = useLocation();
 
     const missedCalls = 0;
-    const notifications = 3;
+    const notifications = 5;
 
     const goToCalls = () => {
-        navigate("/scad/Calls");
+        navigate("/scad/Calls", { state: { from: location.pathname } });
     };
 
     const goToNotifications = () => {
@@ -126,17 +127,15 @@ const SCADCalls = () => {
                 </div>
                 <div className="header-right">
                     <div className="header-icons">
-                        <button
-                            onClick={location.pathname === "/scad/Calls" ? undefined : goToCalls}
-                            className={`icon-button call-button ${location.pathname === "/scad/Calls" ? "disabled" : ""}`}
-                            disabled={location.pathname === "/scad/Calls"}
-                        >
+                        {/* Calls Button with Badge - always shown with badge */}
+                        <button onClick={goToCalls} className="notification-bell">
                             <FaPhone />
-                            {location.pathname !== "/scad/Calls" && <span className="call-badge">{missedCalls}</span>}
+                            {/*<span className="call-badge">{missedCalls}</span>*/}
                         </button>
 
-                        <button onClick={goToNotifications} className="icon-button notification-button">
-                            <FaBell />
+                        {/* Notifications Button with Badge */}
+                        <button onClick={goToNotifications} className="notification-bell">
+                            <FiBell size={24} />
                             <span className="notification-badge">{notifications}</span>
                         </button>
 
@@ -163,53 +162,60 @@ const SCADCalls = () => {
                 </aside>
 
                 <main className="dashboard-main">
-                    <h2>Incoming Calls</h2>
+                    <div className="browser-wrapper">
+                        <header className="browser-header">
+                            <h1 className="browser-title">Incoming Calls</h1>
+                        </header>
 
-                    {incomingCalls.length === 0 && !activeCall && <p>No incoming calls.</p>}
+                        <main className="browser-main">
+                            {incomingCalls.length === 0 && !activeCall && <p>No incoming calls.</p>}
 
-                    <div className="calls-container">
-                        {incomingCalls.map((caller) => (
-                            <div key={caller.id} className="incoming-call-card ringing">
-                                <p><strong>{caller.name}</strong> is calling you...</p>
-                                <button onClick={() => acceptCall(caller)} className="btn accept">Accept</button>
-                                <button onClick={() => rejectCall(caller)} className="btn reject">Reject</button>
+                            <div className="calls-container">
+                                {incomingCalls.map((caller) => (
+                                    <div key={caller.id} className="incoming-call-card ringing">
+                                        <p><strong>{caller.name}</strong> is calling you...</p>
+                                        <div className="call-buttons">
+                                            <button onClick={() => acceptCall(caller)} className="accept-button">Accept</button>
+                                            <button onClick={() => rejectCall(caller)} className="reject-button">Reject</button>
+                                        </div>
+                                    </div>
+                                ))}
                             </div>
-                        ))}
-                    </div>
 
-                    {activeCall && (
-                        <div className="call-popup">
-                            <div className="popup-content">
-                                <h2>In Call with {activeCall.name}</h2>
-                                <div className="call-controls">
-                                    <button onClick={toggleMic} className="btn control">{micOn ? "Mute Mic" : "Unmute Mic"}</button>
-                                    <button onClick={toggleCamera} className="btn control">{cameraOn ? "Turn Off Camera" : "Turn On Camera"}</button>
-                                    <button onClick={toggleScreen} className="btn control">{screenOn ? "Stop Screen" : "Share Screen"}</button>
-                                    <button onClick={simulateCallerLeft} className="btn control">Simulate Caller Left</button>
-                                    <button onClick={endCall} className="btn leave">End Call</button>
+                            {activeCall && (
+                                <div className="call-popup">
+                                    <div className="popup-content">
+                                        <h2>In Call with {activeCall.name}</h2>
+                                        <div className="call-controls">
+                                            <button onClick={toggleMic} className="control-button">{micOn ? "Mute Mic" : "Unmute Mic"}</button>
+                                            <button onClick={toggleCamera} className="control-button">{cameraOn ? "Turn Off Camera" : "Turn On Camera"}</button>
+                                            <button onClick={toggleScreen} className="control-button">{screenOn ? "Stop Screen" : "Share Screen"}</button>
+                                            <button onClick={simulateCallerLeft} className="control-button">Simulate Caller Left</button>
+                                            <button onClick={endCall} className="leave-button">End Call</button>
+                                        </div>
+                                        <div className="video-container">
+                                            <div className="video-wrapper">
+                                                <video ref={videoRef} autoPlay playsInline muted className="video-element" />
+                                                <p className="video-label">Camera</p>
+                                            </div>
+                                            <div className="video-wrapper">
+                                                <video
+                                                    autoPlay
+                                                    playsInline
+                                                    muted
+                                                    className="video-element"
+                                                    ref={el => {
+                                                        if (el && screenStream) el.srcObject = screenStream;
+                                                    }}
+                                                />
+                                                <p className="video-label">Shared Screen</p>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div className="video-container">
-    <div className="video-wrapper">
-        <video ref={videoRef} autoPlay playsInline muted className="video-element" />
-        <p className="video-label">Camera</p>
-    </div>
-    <div className="video-wrapper">
-        <video
-            autoPlay
-            playsInline
-            muted
-            className="video-element"
-            ref={el => {
-                if (el && screenStream) el.srcObject = screenStream;
-            }}
-        />
-        <p className="video-label">Shared Screen</p>
-    </div>
-</div>
-
-                            </div>
-                        </div>
-                    )}
+                            )}
+                        </main>
+                    </div>
                 </main>
             </div>
 
@@ -222,7 +228,7 @@ const SCADCalls = () => {
                     <div className="caller-left-popup">
                         <h2>Call Ended</h2>
                         <p>{activeCall?.name} has left the call.</p>
-                        <button onClick={closeCallerLeftPopup} className="btn close-popup">Close</button>
+                        <button onClick={closeCallerLeftPopup} className="close-popup-button">Close</button>
                     </div>
                 </div>
             )}
