@@ -1,27 +1,23 @@
 import React, { useState } from "react";
-import { FaPhone, FaBell } from "react-icons/fa";
 import { useNavigate, useLocation } from "react-router-dom";
+import { FaPhone } from "react-icons/fa";
+import { FiBell } from "react-icons/fi";
 import './CSS/SCADOfficeDashboard.css';
+import './CSS/browseInternships.css'; // Reusing styles
 
 const AppointmentsScad = () => {
-    // Default scheduled appointments (these should trigger notifications)
     const [appointmentsScheduledByDefault, setAppointmentsScheduledByDefault] = useState([
         { id: 1, username: "JohnDoe", date: "2025-05-08", timing: "10:00 AM", subject: "Internship Interview", online: true },
         { id: 2, username: "JaneSmith", date: "2025-05-09", timing: "2:00 PM", subject: "Resume Review", online: false }
     ]);
-
-    // Incoming appointment requests (you can accept/reject them)
     const [appointmentRequests, setAppointmentRequests] = useState([
         { id: 101, username: "AliAhmed", date: "2025-05-10", timing: "3:00 PM", subject: "Internship Discussion" },
         { id: 102, username: "SaraTamer", date: "2025-05-11", timing: "4:30 PM", subject: "General Inquiry" }
     ]);
-
-    // Notifications (only for people who already have scheduled appointments by default)
     const [notifications, setNotifications] = useState([
         { id: 1, message: "JohnDoe has an upcoming appointment on 2025-05-08 at 10:00 AM for Internship Interview." },
         { id: 2, message: "JaneSmith has an upcoming appointment on 2025-05-09 at 2:00 PM for Resume Review." }
     ]);
-
     const [showRequestForm, setShowRequestForm] = useState(false);
     const [newAppointment, setNewAppointment] = useState({
         username: "",
@@ -33,13 +29,11 @@ const AppointmentsScad = () => {
 
     const navigate = useNavigate();
     const location = useLocation();
-
-    // Example numbers for calls and notifications
     const missedCalls = 2;
     const unreadNotifications = notifications.length;
 
     const goToCalls = () => {
-        navigate("/scad/Calls");
+        navigate("/scad/Calls", { state: { from: location.pathname } });
     };
 
     const goToNotifications = () => {
@@ -56,19 +50,15 @@ const AppointmentsScad = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        // Just clear the form without doing anything for notifications and sent requests
         setNewAppointment({ username: "", date: "", timing: "", subject: "", online: true });
         setShowRequestForm(false);
     };
 
     const handleAcceptRequest = (request) => {
-        // Add to scheduled appointments but don't trigger a notification
         setAppointmentsScheduledByDefault(prev => [
             ...prev,
             { ...request, id: prev.length + 1, online: false }
         ]);
-
-        // Remove from incoming requests
         setAppointmentRequests(prev => prev.filter(req => req.id !== request.id));
     };
 
@@ -78,29 +68,27 @@ const AppointmentsScad = () => {
 
     return (
         <div className="dashboard-wrapper">
+            {/* Header */}
             <header className="dashboard-header">
                 <div className="header-left">
                     <h1 className="dashboard-title">SCAD Office Dashboard</h1>
                 </div>
                 <div className="header-right">
                     <div className="header-icons">
-                        {/* Calls Button with Badge */}
-                        <button onClick={goToCalls} className="icon-button call-button">
+                        <button onClick={goToCalls} className="notification-bell">
                             <FaPhone />
                             <span className="call-badge">{missedCalls}</span>
                         </button>
-
-                        {/* Notifications Button with Badge */}
-                        <button onClick={goToNotifications} className="icon-button notification-button">
-                            <FaBell />
+                        <button onClick={goToNotifications} className="notification-bell">
+                            <FiBell size={24} />
                             <span className="notification-badge">{unreadNotifications}</span>
                         </button>
-
                         <a href="/" className="signout-button">Sign Out</a>
                     </div>
                 </div>
             </header>
 
+            {/* Sidebar and Main */}
             <div className="dashboard-content">
                 <aside className="dashboard-sidebar">
                     <h2 className="sidebar-title">Navigation</h2>
@@ -119,94 +107,95 @@ const AppointmentsScad = () => {
                 </aside>
 
                 <main className="dashboard-main">
-                    {/* Notifications Section */}
-                    <section className="notifications">
-                        <h2>Notifications</h2>
-                        {notifications.length === 0 ? (
-                            <p>No notifications.</p>
-                        ) : (
-                            <ul>
-                                {notifications.map(note => (
-                                    <li key={note.id}>
-                                        {note.message}
-                                    </li>
-                                ))}
-                            </ul>
-                        )}
-                    </section>
+                    <div className="browser-wrapper">
+                        {/* Title Header */}
+                        <header className="browser-header">
+                            <h1 className="browser-title">Appointments</h1>
+                        </header>
 
-                    {/* Scheduled Appointments Section */}
-                    <section className="scheduled-appointments">
-                        <h2>Scheduled Appointments</h2>
-                        <ul>
-                            {appointmentsScheduledByDefault.map(app => (
-                                <li key={app.id}>
-                                    <strong>{app.username}</strong> on <em>{app.date}</em> at <em>{app.timing}</em> - {app.subject}
-                                    <span className={`status ${app.online ? "online" : "offline"}`}>
-                                        {app.online ? "Online" : "Offline"}
-                                    </span>
-                                </li>
-                            ))}
-                        </ul>
-                    </section>
+                        {/* Main Appointment Sections */}
+                        <main className="browser-main">
+                            <section className="list-section">
+                                <h2 className="section-title">Notifications</h2>
+                                {notifications.length === 0 ? (
+                                    <p>No notifications.</p>
+                                ) : (
+                                    <ul>
+                                        {notifications.map(note => (
+                                            <li key={note.id}>{note.message}</li>
+                                        ))}
+                                    </ul>
+                                )}
+                            </section>
 
-                    {/* Appointment Requests Section */}
-                    <section className="appointment-requests">
-                        <h2>Appointment Requests (Incoming)</h2>
-                        {appointmentRequests.length === 0 ? (
-                            <p>No incoming requests.</p>
-                        ) : (
-                            <ul>
-                                {appointmentRequests.map(req => (
-                                    <li key={req.id}>
-                                        <div>
-                                            <strong>{req.username}</strong> requests <em>{req.subject}</em> on <em>{req.date}</em> at <em>{req.timing}</em>
-                                        </div>
-                                        <button className="accept-btn" onClick={() => handleAcceptRequest(req)}>Accept</button>
-                                        <button className="reject-btn" onClick={() => handleRejectRequest(req.id)}>Reject</button>
-                                    </li>
-                                ))}
-                            </ul>
-                        )}
-                    </section>
+                            <section className="list-section">
+                                <h2 className="section-title">Scheduled Appointments</h2>
+                                <ul>
+                                    {appointmentsScheduledByDefault.map(app => (
+                                        <li key={app.id}>
+                                            <strong>{app.username}</strong> on <em>{app.date}</em> at <em>{app.timing}</em> - {app.subject}
+                                            <span className={`status ${app.online ? "online" : "offline"}`}>
+                                                {app.online ? "Online" : "Offline"}
+                                            </span>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </section>
 
-                    {/* Request New Appointment Section */}
-                    <section className="request-section">
-                        <button className="request-button" onClick={() => setShowRequestForm(true)}>
-                            Request Appointment
-                        </button>
+                            <section className="list-section">
+                                <h2 className="section-title">Appointment Requests (Incoming)</h2>
+                                {appointmentRequests.length === 0 ? (
+                                    <p>No incoming requests.</p>
+                                ) : (
+                                    <ul>
+                                        {appointmentRequests.map(req => (
+                                            <li key={req.id}>
+                                                <div>
+                                                    <strong>{req.username}</strong> requests <em>{req.subject}</em> on <em>{req.date}</em> at <em>{req.timing}</em>
+                                                </div>
+                                                <button className="accept-btn" onClick={() => handleAcceptRequest(req)}>Accept</button>
+                                                <button className="reject-btn" onClick={() => handleRejectRequest(req.id)}>Reject</button>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                )}
+                            </section>
 
-                        {showRequestForm && (
-                            <div className="popup-form">
-                                <form onSubmit={handleSubmit}>
-                                    <h3>Request New Appointment</h3>
-                                    <label>
-                                        Username:
-                                        <input type="text" name="username" value={newAppointment.username} onChange={handleInputChange} required />
-                                    </label>
-                                    <label>
-                                        Date:
-                                        <input type="date" name="date" value={newAppointment.date} onChange={handleInputChange} required />
-                                    </label>
-                                    <label>
-                                        Timing:
-                                        <input type="time" name="timing" value={newAppointment.timing} onChange={handleInputChange} required />
-                                    </label>
-                                    <label>
-                                        Subject:
-                                        <input type="text" name="subject" value={newAppointment.subject} onChange={handleInputChange} required />
-                                    </label>
-                                    <div className="form-buttons">
-                                        <button type="submit">Submit</button>
-                                        <button type="button" onClick={() => setShowRequestForm(false)}>Cancel</button>
+                            <section className="list-section">
+                                <button className="request-button" onClick={() => setShowRequestForm(true)}>
+                                    Request Appointment
+                                </button>
+
+                                {showRequestForm && (
+                                    <div className="popup-form">
+                                        <form onSubmit={handleSubmit}>
+                                            <h3>Request New Appointment</h3>
+                                            <label>Username:
+                                                <input type="text" name="username" value={newAppointment.username} onChange={handleInputChange} required />
+                                            </label>
+                                            <label>Date:
+                                                <input type="date" name="date" value={newAppointment.date} onChange={handleInputChange} required />
+                                            </label>
+                                            <label>Timing:
+                                                <input type="time" name="timing" value={newAppointment.timing} onChange={handleInputChange} required />
+                                            </label>
+                                            <label>Subject:
+                                                <input type="text" name="subject" value={newAppointment.subject} onChange={handleInputChange} required />
+                                            </label>
+                                            <div className="form-buttons">
+                                                <button type="submit">Submit</button>
+                                                <button type="button" onClick={() => setShowRequestForm(false)}>Cancel</button>
+                                            </div>
+                                        </form>
                                     </div>
-                                </form>
-                            </div>
-                        )}
-                    </section>
+                                )}
+                            </section>
+                        </main>
+                    </div>
                 </main>
             </div>
 
+            {/* Footer */}
             <footer className="dashboard-footer">
                 <p>&copy; 2025 SCAD System. All rights reserved.</p>
             </footer>

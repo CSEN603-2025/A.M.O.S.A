@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { FaPhone, FaBell } from "react-icons/fa";
+import { FaPhone } from "react-icons/fa";
+import { FiBell } from "react-icons/fi";
 import { useNavigate, useLocation } from "react-router-dom";
 import './CSS/SCADOfficeDashboard.css';
 
@@ -17,7 +18,7 @@ const SCADCalls = () => {
     const [callerLeft, setCallerLeft] = useState(false);
     const navigate = useNavigate();
     const location = useLocation();
-    // Example numbers for calls and notifications
+
     const missedCalls = 0;
     const notifications = 3;
 
@@ -36,9 +37,7 @@ const SCADCalls = () => {
 
     const rejectCall = (caller) => {
         setIncomingCalls(prev => prev.filter(call => call.id !== caller.id));
-        if (activeCall && activeCall.id === caller.id) {
-            setActiveCall(null);
-        }
+        if (activeCall?.id === caller.id) setActiveCall(null);
     };
 
     const endCall = () => {
@@ -54,9 +53,7 @@ const SCADCalls = () => {
     const toggleScreen = () => setScreenOn(prev => !prev);
 
     const simulateCallerLeft = () => {
-        if (activeCall) {
-            setCallerLeft(true);
-        }
+        if (activeCall) setCallerLeft(true);
     };
 
     const closeCallerLeftPopup = () => {
@@ -73,29 +70,27 @@ const SCADCalls = () => {
                 </div>
                 <div className="header-right">
                     <div className="header-icons">
-                        {/* Calls Button with Badge */}
                         <button
                             onClick={location.pathname === "/scad/Calls" ? undefined : goToCalls}
-                            className={`icon-button call-button ${location.pathname === "/scad/Calls" ? "disabled" : ""}`}
+                            className={`notification-bell ${location.pathname === "/scad/Calls" ? "disabled" : ""}`}
                             disabled={location.pathname === "/scad/Calls"}
                         >
                             <FaPhone />
-                            {location.pathname !== "/scad/Calls" && <span className="call-badge">{missedCalls}</span>}
+                            {location.pathname !== "/scad/Calls" && (
+                                <span className="call-badge">{missedCalls}</span>
+                            )}
                         </button>
-
-                        {/* Notifications Button with Badge */}
-                        <button onClick={goToNotifications} className="icon-button notification-button">
-                            <FaBell />
+                        <button onClick={goToNotifications} className="notification-bell">
+                            <FiBell size={24} />
                             <span className="notification-badge">{notifications}</span>
                         </button>
-
                         <a href="/" className="signout-button">Sign Out</a>
                     </div>
                 </div>
             </header>
 
-            {/* Main Content */}
             <div className="dashboard-content">
+                {/* Sidebar */}
                 <aside className="dashboard-sidebar">
                     <h2 className="sidebar-title">Navigation</h2>
                     <ul className="nav-list">
@@ -112,36 +107,57 @@ const SCADCalls = () => {
                     </ul>
                 </aside>
 
+                {/* Main */}
                 <main className="dashboard-main">
-                    <h2>Incoming Calls</h2>
+                    <div className="browser-wrapper">
+                        {/* Page Title */}
+                        <header className="browser-header">
+                            <h1 className="browser-title">Incoming Calls</h1>
+                        </header>
+                        
+                      
+                        {/* Calls and Popups */}
+                        <main className="browser-main">
+                        <br/>
+                            {incomingCalls.length === 0 && !activeCall && (
+                                <p>No incoming calls.</p>
+                            )}
 
-                    {incomingCalls.length === 0 && !activeCall && <p>No incoming calls.</p>}
-
-                    <div className="calls-container">
-                        {incomingCalls.map((caller) => (
-                            <div key={caller.id} className="incoming-call-card ringing">
-                                <p><strong>{caller.name}</strong> is calling you...</p>
-                                <button onClick={() => acceptCall(caller)} className="btn accept">Accept</button>
-                                <button onClick={() => rejectCall(caller)} className="btn reject">Reject</button>
+                            <div className="calls-container">
+                                {incomingCalls.map(caller => (
+                                    <div key={caller.id} className="incoming-call-card ringing">
+                                        <p><strong>{caller.name}</strong> is calling you...</p>
+                                        <button onClick={() => acceptCall(caller)} className="btn accept">Accept</button>
+                                        <button onClick={() => rejectCall(caller)} className="btn reject">Reject</button>
+                                       
+                                    </div>
+                                ))}
                             </div>
-                        ))}
-                    </div>
 
-                    {/* Active Call UI */}
-                    {activeCall && (
-                        <div className="call-popup">
-                            <div className="popup-content">
-                                <h2>In Call with {activeCall.name}</h2>
-                                <div className="call-controls">
-                                    <button onClick={toggleMic} className="btn control">{micOn ? "Mute Mic" : "Unmute Mic"}</button>
-                                    <button onClick={toggleCamera} className="btn control">{cameraOn ? "Turn Off Camera" : "Turn On Camera"}</button>
-                                    <button onClick={toggleScreen} className="btn control">{screenOn ? "Stop Screen" : "Share Screen"}</button>
-                                    <button onClick={simulateCallerLeft} className="btn control">Simulate Caller Left</button>
-                                    <button onClick={endCall} className="btn leave">End Call</button>
+                            {activeCall && (
+                                <div className="call-popup">
+                                    <div className="popup-content">
+                                        <h2>In Call with {activeCall.name}</h2>
+                                        <div className="call-controls">
+                                            <button onClick={toggleMic} className="btn control">
+                                                {micOn ? "Mute Mic" : "Unmute Mic"}
+                                            </button>
+                                            <button onClick={toggleCamera} className="btn control">
+                                                {cameraOn ? "Turn Off Camera" : "Turn On Camera"}
+                                            </button>
+                                            <button onClick={toggleScreen} className="btn control">
+                                                {screenOn ? "Stop Screen" : "Share Screen"}
+                                            </button>
+                                            <button onClick={simulateCallerLeft} className="btn control">
+                                                Simulate Caller Left
+                                            </button>
+                                            <button onClick={endCall} className="btn leave">End Call</button>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
-                    )}
+                            )}
+                        </main>
+                    </div>
                 </main>
             </div>
 
