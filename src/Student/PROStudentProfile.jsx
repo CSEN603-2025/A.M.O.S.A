@@ -116,6 +116,21 @@ const PROStudentProfile = () => {
                         <p className="badge-not-earned">You have not earned the PRO badge yet.</p>
                     )}
                 </section>
+                <section className="grades-section">
+    <h2 className="section-title">My Assessment Grades</h2>
+    <ul className="grades-list">
+        <li className="grade-item">
+            <strong>Technical Skills Evaluation:</strong> 88%
+        </li>
+        <li className="grade-item">
+            <strong>Personality Assessment:</strong> 92%
+        </li>
+        <li className="grade-item">
+            <strong>Design Challenge:</strong> 85%
+        </li>
+    </ul>
+</section>
+
                 <button onClick={handleSave} className="action-button">Save Profile</button>
             </main>
         </div>
