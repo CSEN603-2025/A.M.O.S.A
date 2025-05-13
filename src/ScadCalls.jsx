@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { FaPhone, FaBell } from "react-icons/fa";
 import { useNavigate, useLocation } from "react-router-dom";
 import './CSS/SCADOfficeDashboard.css';
@@ -12,12 +12,16 @@ const SCADCalls = () => {
 
     const [activeCall, setActiveCall] = useState(null);
     const [micOn, setMicOn] = useState(true);
-    const [screenOn, setScreenOn] = useState(true);
+    const [screenOn, setScreenOn] = useState(false);
     const [cameraOn, setCameraOn] = useState(true);
     const [callerLeft, setCallerLeft] = useState(false);
+    const [mediaStream, setMediaStream] = useState(null);
+    const [screenStream, setScreenStream] = useState(null);
+
+    const videoRef = useRef(null);
     const navigate = useNavigate();
     const location = useLocation();
-    // Example numbers for calls and notifications
+
     const missedCalls = 0;
     const notifications = 3;
 
@@ -32,6 +36,7 @@ const SCADCalls = () => {
     const acceptCall = (caller) => {
         setIncomingCalls(prev => prev.filter(call => call.id !== caller.id));
         setActiveCall(caller);
+        startCamera();
     };
 
     const rejectCall = (caller) => {
@@ -45,13 +50,43 @@ const SCADCalls = () => {
         setActiveCall(null);
         setMicOn(true);
         setCameraOn(true);
-        setScreenOn(true);
+        setScreenOn(false);
         setCallerLeft(false);
+        stopCamera();
+        stopScreenShare();
     };
 
     const toggleMic = () => setMicOn(prev => !prev);
-    const toggleCamera = () => setCameraOn(prev => !prev);
-    const toggleScreen = () => setScreenOn(prev => !prev);
+
+    const toggleCamera = () => {
+        if (cameraOn) {
+            stopCamera();
+        } else {
+            startCamera();
+        }
+        setCameraOn(prev => !prev);
+    };
+
+    const toggleScreen = async () => {
+        if (screenOn) {
+            stopScreenShare();
+        } else {
+            try {
+                const stream = await navigator.mediaDevices.getDisplayMedia({ video: true });
+                setScreenStream(stream);
+            } catch (err) {
+                console.error("Failed to share screen:", err);
+            }
+        }
+        setScreenOn(prev => !prev);
+    };
+
+    const stopScreenShare = () => {
+        if (screenStream) {
+            screenStream.getTracks().forEach(track => track.stop());
+            setScreenStream(null);
+        }
+    };
 
     const simulateCallerLeft = () => {
         if (activeCall) {
@@ -64,16 +99,33 @@ const SCADCalls = () => {
         endCall();
     };
 
+    const startCamera = async () => {
+        try {
+            const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+            setMediaStream(stream);
+            if (videoRef.current) {
+                videoRef.current.srcObject = stream;
+            }
+        } catch (err) {
+            console.error("Failed to access camera:", err);
+        }
+    };
+
+    const stopCamera = () => {
+        if (mediaStream) {
+            mediaStream.getTracks().forEach(track => track.stop());
+            setMediaStream(null);
+        }
+    };
+
     return (
         <div className="dashboard-wrapper">
-            {/* Header */}
             <header className="dashboard-header">
                 <div className="header-left">
                     <h1 className="dashboard-title">SCAD Office Dashboard</h1>
                 </div>
                 <div className="header-right">
                     <div className="header-icons">
-                        {/* Calls Button with Badge */}
                         <button
                             onClick={location.pathname === "/scad/Calls" ? undefined : goToCalls}
                             className={`icon-button call-button ${location.pathname === "/scad/Calls" ? "disabled" : ""}`}
@@ -83,7 +135,6 @@ const SCADCalls = () => {
                             {location.pathname !== "/scad/Calls" && <span className="call-badge">{missedCalls}</span>}
                         </button>
 
-                        {/* Notifications Button with Badge */}
                         <button onClick={goToNotifications} className="icon-button notification-button">
                             <FaBell />
                             <span className="notification-badge">{notifications}</span>
@@ -94,7 +145,6 @@ const SCADCalls = () => {
                 </div>
             </header>
 
-            {/* Main Content */}
             <div className="dashboard-content">
                 <aside className="dashboard-sidebar">
                     <h2 className="sidebar-title">Navigation</h2>
@@ -127,7 +177,6 @@ const SCADCalls = () => {
                         ))}
                     </div>
 
-                    {/* Active Call UI */}
                     {activeCall && (
                         <div className="call-popup">
                             <div className="popup-content">
@@ -139,18 +188,35 @@ const SCADCalls = () => {
                                     <button onClick={simulateCallerLeft} className="btn control">Simulate Caller Left</button>
                                     <button onClick={endCall} className="btn leave">End Call</button>
                                 </div>
+                                <div className="video-container">
+    <div className="video-wrapper">
+        <video ref={videoRef} autoPlay playsInline muted className="video-element" />
+        <p className="video-label">Camera</p>
+    </div>
+    <div className="video-wrapper">
+        <video
+            autoPlay
+            playsInline
+            muted
+            className="video-element"
+            ref={el => {
+                if (el && screenStream) el.srcObject = screenStream;
+            }}
+        />
+        <p className="video-label">Shared Screen</p>
+    </div>
+</div>
+
                             </div>
                         </div>
                     )}
                 </main>
             </div>
 
-            {/* Footer */}
             <footer className="dashboard-footer">
                 <p>&copy; 2025 SCAD System. All rights reserved.</p>
             </footer>
 
-            {/* Caller Left Popup */}
             {callerLeft && (
                 <div className="popup-overlay">
                     <div className="caller-left-popup">
