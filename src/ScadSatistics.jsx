@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import { FaPhone, FaBell } from "react-icons/fa";
 import { useNavigate, useLocation } from "react-router-dom";
+import { FaPhone, FaBell } from "react-icons/fa";
+import { FiBell } from "react-icons/fi";
 import {
     BarChart,
     Bar,
@@ -15,6 +16,7 @@ import {
     ResponsiveContainer
 } from 'recharts';
 import './CSS/SCADOfficeDashboard.css';
+import './CSS/browseInternships.css';
 
 const SCADStatistics = () => {
     const [selectedCycle, setSelectedCycle] = useState("Winter 2024");
@@ -137,14 +139,14 @@ ${stats.topCompaniesByCount.map((company, i) => `  ${i + 1}. ${company}`).join("
                 <div className="header-right">
                     <div className="header-icons">
                         {/* Calls Button with Badge */}
-                        <button onClick={goToCalls} className="icon-button call-button">
+                        <button onClick={goToCalls} className="notification-bell">
                             <FaPhone />
                             <span className="call-badge">{missedCalls}</span>
                         </button>
 
                         {/* Notifications Button with Badge */}
-                        <button onClick={goToNotifications} className="icon-button notification-button">
-                            <FaBell />
+                        <button onClick={goToNotifications} className="notification-bell">
+                            <FiBell size={24} />
                             <span className="notification-badge">{notifications}</span>
                         </button>
 
@@ -171,91 +173,114 @@ ${stats.topCompaniesByCount.map((company, i) => `  ${i + 1}. ${company}`).join("
                 </aside>
 
                 <main className="dashboard-main">
-                    <h2 className="main-title">Real-Time Statistics</h2>
+                    <div className="browser-wrapper">
+                        <header className="browser-header">
+                            <h1 className="browser-title">Internship Cycle Statistics</h1>
+                        </header>
 
-                    <div className="cycle-selector">
-                        <label htmlFor="cycleSelect">Select Cycle: </label>
-                        <select id="cycleSelect" value={selectedCycle} onChange={handleCycleChange}>
-                            {Object.keys(cycleData).map((cycle) => (
-                                <option key={cycle} value={cycle}>{cycle}</option>
-                            ))}
-                        </select>
-                    </div>
-
-                    {/* Bar Chart for All Cycles */}
-                    <div className="chart-container">
-                        <h3>Reports Across Cycles</h3>
-                        <ResponsiveContainer width="100%" height={300}>
-                            <BarChart data={allCyclesReportsData}>
-                                <CartesianGrid strokeDasharray="3 3" />
-                                <XAxis dataKey="name" />
-                                <YAxis />
-                                <Tooltip />
-                                <Legend />
-                                <Bar dataKey="Accepted" fill="#00C49F" />
-                                <Bar dataKey="Rejected" fill="#FF6384" />
-                                <Bar dataKey="Flagged" fill="#FFBB28" />
-                            </BarChart>
-                        </ResponsiveContainer>
-                    </div>
-
-                    {/* Pie Chart for Selected Cycle */}
-                    <div className="chart-container">
-                        <h3>Report Distribution for {selectedCycle}</h3>
-                        <ResponsiveContainer width="100%" height={300}>
-                            <PieChart>
-                                <Pie
-                                    data={pieChartData}
-                                    cx="50%"
-                                    cy="50%"
-                                    labelLine={false}
-                                    outerRadius={80}
-                                    fill="#8884d8"
-                                    dataKey="value"
-                                    label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                        <main className="browser-main">
+                            <section className="filter-section">
+                                <h2 className="section-title">Select Cycle</h2>
+                                <select
+                                    id="cycleSelect"
+                                    value={selectedCycle}
+                                    onChange={handleCycleChange}
+                                    className="filter-select"
                                 >
-                                    {pieChartData.map((entry, index) => (
-                                        <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                                    {Object.keys(cycleData).map((cycle) => (
+                                        <option key={cycle} value={cycle}>{cycle}</option>
                                     ))}
-                                </Pie>
-                                <Tooltip />
-                                <Legend />
-                            </PieChart>
-                        </ResponsiveContainer>
-                    </div>
+                                </select>
+                            </section>
 
-                    <div className="statistics-section">
-                        <p><strong>Accepted Reports:</strong> {statistics.acceptedReports}</p>
-                        <p><strong>Rejected Reports:</strong> {statistics.rejectedReports}</p>
-                        <p><strong>Flagged Reports:</strong> {statistics.flaggedReports}</p>
-                        <p><strong>Average Review Time:</strong> {statistics.averageReviewTime}</p>
-                        <p><strong>Top Courses:</strong> {statistics.topCourses.join(", ")}</p>
-                        <p><strong>Top Rated Companies:</strong> {statistics.topRatedCompanies.join(", ")}</p>
-                        <p><strong>Top Companies by Internship Count:</strong> {statistics.topCompaniesByCount.join(", ")}</p>
-                    </div>
+                            <section className="list-section">
+                                <h2 className="section-title">Statistics for {selectedCycle}</h2>
 
-                    <button className="generate-report-button" onClick={handleGenerateReport}>
-                        Generate Report
-                    </button>
+                                <div className="chart-container">
+                                    <h3>Reports Across Cycles</h3>
+                                    <ResponsiveContainer width="100%" height={300}>
+                                        <BarChart data={allCyclesReportsData}>
+                                            <CartesianGrid strokeDasharray="3 3" />
+                                            <XAxis dataKey="name" />
+                                            <YAxis />
+                                            <Tooltip />
+                                            <Legend />
+                                            <Bar dataKey="Accepted" fill="#00C49F" />
+                                            <Bar dataKey="Rejected" fill="#FF6384" />
+                                            <Bar dataKey="Flagged" fill="#FFBB28" />
+                                        </BarChart>
+                                    </ResponsiveContainer>
+                                </div>
+
+                                <div className="chart-container">
+                                    <h3>Report Distribution</h3>
+                                    <ResponsiveContainer width="100%" height={300}>
+                                        <PieChart>
+                                            <Pie
+                                                data={pieChartData}
+                                                cx="50%"
+                                                cy="50%"
+                                                labelLine={false}
+                                                outerRadius={80}
+                                                fill="#8884d8"
+                                                dataKey="value"
+                                                label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                                            >
+                                                {pieChartData.map((entry, index) => (
+                                                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                                                ))}
+                                            </Pie>
+                                            <Tooltip />
+                                            <Legend />
+                                        </PieChart>
+                                    </ResponsiveContainer>
+                                </div>
+
+                                <div className="statistics-details">
+                                    <p><strong>Accepted Reports:</strong> {statistics.acceptedReports}</p>
+                                    <p><strong>Rejected Reports:</strong> {statistics.rejectedReports}</p>
+                                    <p><strong>Flagged Reports:</strong> {statistics.flaggedReports}</p>
+                                    <p><strong>Average Review Time:</strong> {statistics.averageReviewTime}</p>
+                                    <p><strong>Top Courses:</strong> {statistics.topCourses.join(", ")}</p>
+                                    <p><strong>Top Rated Companies:</strong> {statistics.topRatedCompanies.join(", ")}</p>
+                                    <p><strong>Top Companies by Internship Count:</strong> {statistics.topCompaniesByCount.join(", ")}</p>
+                                </div>
+
+                                <button
+                                    className="generate-report-button"
+                                    onClick={handleGenerateReport}
+                                    style={{ marginTop: '20px' }}
+                                >
+                                    Generate Report
+                                </button>
+                            </section>
+                        </main>
+                    </div>
                 </main>
             </div>
 
             {openPopup && (
-                <div className="modal-overlay">
-                    <div className="modal-content">
-                        <h3>Generated Report for {selectedCycle}</h3>
-                        <p><strong>Accepted Reports:</strong> {statistics.acceptedReports}</p>
-                        <p><strong>Rejected Reports:</strong> {statistics.rejectedReports}</p>
-                        <p><strong>Flagged Reports:</strong> {statistics.flaggedReports}</p>
-                        <p><strong>Average Review Time:</strong> {statistics.averageReviewTime}</p>
-                        <p><strong>Top Courses:</strong> {statistics.topCourses.join(", ")}</p>
-                        <p><strong>Top Rated Companies:</strong> {statistics.topRatedCompanies.join(", ")}</p>
-                        <p><strong>Top Companies by Internship Count:</strong> {statistics.topCompaniesByCount.join(", ")}</p>
-
-                        <button className="download-button" onClick={() => handleDownload(statistics, selectedCycle)}>
+                <div className="workshop-modal-backdrop">
+                    <div className="workshop-modal">
+                        <div className="modal-buttons">
+                            <button onClick={() => setOpenPopup(false)}>Close</button>
+                        </div>
+                        <h2>Generated Report for {selectedCycle}</h2>
+                        <div className="report-content">
+                            <p><strong>Accepted Reports:</strong> {statistics.acceptedReports}</p>
+                            <p><strong>Rejected Reports:</strong> {statistics.rejectedReports}</p>
+                            <p><strong>Flagged Reports:</strong> {statistics.flaggedReports}</p>
+                            <p><strong>Average Review Time:</strong> {statistics.averageReviewTime}</p>
+                            <p><strong>Top Courses:</strong> {statistics.topCourses.join(", ")}</p>
+                            <p><strong>Top Rated Companies:</strong> {statistics.topRatedCompanies.join(", ")}</p>
+                            <p><strong>Top Companies by Internship Count:</strong> {statistics.topCompaniesByCount.join(", ")}</p>
+                        </div>
+                        <button
+                            className="download-button"
+                            onClick={() => handleDownload(statistics, selectedCycle)}
+                        >
                             Download Report
                         </button>
-                        <button className="close-button" onClick={() => setOpenPopup(false)}>Close</button>
                     </div>
                 </div>
             )}

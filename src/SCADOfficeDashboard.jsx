@@ -1,6 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { FaPhone, FaBell } from "react-icons/fa"; // icons
+import { FiBell } from "react-icons/fi"; // icons
 import './CSS/SCADOfficeDashboard.css';
 
 const SCADOfficeDashboard = () => {
@@ -28,15 +29,15 @@ const SCADOfficeDashboard = () => {
                 <div className="header-right">
                     <div className="header-icons">
                         {/* Calls Button with Badge */}
-                        <button onClick={goToCalls} className="icon-button call-button">
+                        <button onClick={goToCalls} className="notification-bell">
                             <FaPhone />
                             <span className="call-badge">{missedCalls}</span>
                         </button>
 
                         {/* Notifications Button with Badge */}
-                        <button onClick={goToNotifications} className="icon-button notification-button">
-                            <FaBell />
-                            <span className="notification-badge">{notifications}</span>
+                        <button onClick={goToNotifications} className="notification-bell">
+                            <FiBell size={24} />
+                            <span className="notification-count">3</span>
                         </button>
 
                         {/* Sign Out */}

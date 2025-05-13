@@ -1,7 +1,9 @@
 ﻿import React, { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { FaPhone, FaBell } from "react-icons/fa";
+import { FiBell } from "react-icons/fi";
 import './CSS/SCADOfficeDashboard.css';
+import './CSS/browseInternships.css';
 
 const SCADPendingCompany = () => {
     // Dummy data for companies with types and details
@@ -20,7 +22,7 @@ const SCADPendingCompany = () => {
 
     const [companies, setCompanies] = useState(dummyCompanies);
     const [searchTerm, setSearchTerm] = useState("");
-    const [selectedType, setSelectedType] = useState("All");
+    const [selectedType, setSelectedType] = useState("Filter by Type");
     const [selectedCompany, setSelectedCompany] = useState(null);
     const navigate = useNavigate();
     const location = useLocation();
@@ -47,12 +49,20 @@ const SCADPendingCompany = () => {
         navigate("/scad/noti", { state: { from: location.pathname } });
     };
 
+    const handleSearchChange = (e) => {
+        setSearchTerm(e.target.value);
+    };
+
+    const handleTypeChange = (e) => {
+        setSelectedType(e.target.value);
+    };
+
     const filteredCompanies = companies.filter(company =>
-        (selectedType === "All" || company.type === selectedType) &&
+        (selectedType === "Filter by Type" || company.type === selectedType) &&
         company.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
-    const companyTypes = ["All", ...new Set(dummyCompanies.map(company => company.type))];
+    const companyTypes = ["Filter by Type", ...new Set(dummyCompanies.map(company => company.type))];
 
     return (
         <div className="dashboard-wrapper">
@@ -63,14 +73,14 @@ const SCADPendingCompany = () => {
                 <div className="header-right">
                     <div className="header-icons">
                         {/* Calls Button with Badge */}
-                        <button onClick={goToCalls} className="icon-button call-button">
+                        <button onClick={goToCalls} className="notification-bell">
                             <FaPhone />
                             <span className="call-badge">{missedCalls}</span>
                         </button>
 
                         {/* Notifications Button with Badge */}
-                        <button onClick={goToNotifications} className="icon-button notification-button">
-                            <FaBell />
+                        <button onClick={goToNotifications} className="notification-bell">
+                            <FiBell size={24} />
                             <span className="notification-badge">{notifications}</span>
                         </button>
 
@@ -95,42 +105,71 @@ const SCADPendingCompany = () => {
                     </ul>
                 </aside>
                 <main className="dashboard-main">
-                    <div className="filters">
-                        <select value={selectedType} onChange={(e) => setSelectedType(e.target.value)} className="filter-select">
-                            {companyTypes.map((type, index) => (
-                                <option key={index} value={type}>{type}</option>
-                            ))}
-                        </select>
-                        <input
-                            type="text"
-                            placeholder="Search companies..."
-                            value={searchTerm}
-                            onChange={(e) => setSearchTerm(e.target.value)}
-                            className="search-input"
-                        />
-                    </div>
-
-                    {selectedCompany ? (
-                        <div className="company-details">
-                            <h2>{selectedCompany.name}</h2>
-                            <p><strong>Type:</strong> {selectedCompany.type}</p>
-                            <p><strong>Description:</strong> {selectedCompany.description}</p>
-                            <button onClick={handleAccept} className="accept-button">Accept</button>
-                            <button onClick={handleReject} className="reject-button">Reject</button>
-                        </div>
-                    ) : (
-                        <ul className="company-list">
-                            {filteredCompanies.map((company, index) => (
-                                <li
-                                    key={index}
-                                    className="company-item"
-                                    onClick={() => setSelectedCompany(company)}
+                    <div className="browser-wrapper">
+                        <header className="browser-header">
+                            <h1 className="browser-title">Pending Company Requests</h1>
+                        </header>
+                        <main className="browser-main">
+                            <section className="filter-section">
+                                <h2 className="section-title">Search and Filter</h2>
+                                <input
+                                    type="text"
+                                    placeholder="Search companies..."
+                                    value={searchTerm}
+                                    onChange={handleSearchChange}
+                                    className="search-input"
+                                />
+                                <select
+                                    name="type"
+                                    value={selectedType}
+                                    onChange={handleTypeChange}
+                                    className="filter-select"
                                 >
-                                    {company.name}
-                                </li>
-                            ))}
-                        </ul>
-                    )}
+                                    {companyTypes.map((type, index) => (
+                                        <option key={index} value={type}>{type}</option>
+                                    ))}
+                                </select>
+                            </section>
+                            <section className="list-section">
+                                <h2 className="section-title">Available Companies</h2>
+                                <ul className="internship-list">
+                                    {filteredCompanies.map((company, index) => (
+                                        <li
+                                            key={index}
+                                            className="internship-item"
+                                            onClick={() => setSelectedCompany(company)}
+                                        >
+                                            <p><strong>{company.name}</strong></p>
+                                            <p><strong>Type:</strong> {company.type}</p>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </section>
+                        </main>
+                        {selectedCompany && (
+                            <div className="workshop-modal-backdrop">
+                                
+                                <div className="workshop-modal">
+                                    <div className="modal-buttons">
+                                    <button
+                                        onClick={() => setSelectedCompany(null)}
+                                        
+                                    >
+                                        Close
+                                        </button>
+                                    </div>
+                                    <h2>{selectedCompany.name}</h2>
+                                    <p><strong>Type:</strong> {selectedCompany.type}</p>
+                                    <p><strong>Description:</strong> {selectedCompany.description}</p>
+                                    <div className="modal-buttons">
+                                        <button onClick={handleAccept} className="accept-button">Accept</button>
+                                        <button onClick={handleReject} className="reject-button">Reject</button>
+                                      
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+                    </div>
                 </main>
             </div>
             <footer className="dashboard-footer">

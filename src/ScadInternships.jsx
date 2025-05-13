@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { FaPhone, FaBell } from "react-icons/fa";
+import {  FiBell } from "react-icons/fi";
 import './CSS/SCADOfficeDashboard.css';
 import './CSS/browseInternships.css';
 
@@ -41,7 +42,7 @@ const SCADInternships = () => {
         },
     ]);
     const [searchTerm, setSearchTerm] = useState("");
-    const [filter, setFilter] = useState({ industry: "All", paid: "All" });
+    const [filter, setFilter] = useState({ industry: "All", paid: "Filter by pay" });
     const [selectedInternship, setSelectedInternship] = useState(null);
     const [showModal, setShowModal] = useState(false);
     const [applications, setApplications] = useState([]);
@@ -82,7 +83,7 @@ const SCADInternships = () => {
         const matchesIndustry =
             filter.industry === "All" || internship.industry === filter.industry;
         const matchesPaid =
-            filter.paid === "All" ||
+            filter.paid === "Filter by pay" ||
             (filter.paid === "Paid" && internship.paid) ||
             (filter.paid === "Unpaid" && !internship.paid);
         return matchesSearch && matchesIndustry && matchesPaid;
@@ -97,14 +98,14 @@ const SCADInternships = () => {
                 <div className="header-right">
                     <div className="header-icons">
                         {/* Calls Button with Badge */}
-                        <button onClick={goToCalls} className="icon-button call-button">
+                        <button onClick={goToCalls} className="notification-bell">
                             <FaPhone />
                             <span className="call-badge">{missedCalls}</span>
                         </button>
 
                         {/* Notifications Button with Badge */}
-                        <button onClick={goToNotifications} className="icon-button notification-button">
-                            <FaBell />
+                        <button onClick={goToNotifications} className="notification-bell">
+                            <FiBell size={24} />
                             <span className="notification-badge">{notifications}</span>
                         </button>
 
@@ -160,7 +161,7 @@ const SCADInternships = () => {
                                     onChange={handleFilterChange}
                                     className="filter-select"
                                 >
-                                    <option value="All">All</option>
+                                    <option value="Filter by pay">Filter by Pay</option>
                                     <option value="Paid">Paid</option>
                                     <option value="Unpaid">Unpaid</option>
                                 </select>
@@ -183,8 +184,16 @@ const SCADInternships = () => {
                             </section>
                         </main>
                         {selectedInternship && (
-                            <div className="modal">
-                                <div className="modal-content">
+                            <div className="workshop-modal-backdrop">
+                                <div className="workshop-modal">
+                                    <div className="modal-buttons">
+                                        <button
+                                            onClick={() => setSelectedInternship(null)}
+                                            
+                                        >
+                                            Close
+                                        </button>
+                                    </div>
                                     <h2>{selectedInternship.jobTitle}</h2>
                                     <p><strong>Company:</strong> {selectedInternship.companyName}</p>
                                     <p><strong>Duration:</strong> {selectedInternship.duration}</p>
@@ -193,13 +202,7 @@ const SCADInternships = () => {
                                     <p><strong>Industry:</strong> {selectedInternship.industry}</p>
                                     <p><strong>Skills:</strong> {selectedInternship.skills}</p>
                                     <p><strong>Description:</strong> {selectedInternship.description}</p>
-                                    <button
-                                        onClick={() => setSelectedInternship(null)}
-                                        className="close-button"
-                                    >
-                                        Close
-                                    </button>
-
+                                   
                                 </div>
                             </div>
                         )}

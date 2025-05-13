@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { FaPhone, FaBell } from "react-icons/fa";
+import { FiBell } from "react-icons/fi";
 import { Pencil } from "lucide-react"; // edit icon
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import './CSS/SCADOfficeDashboard.css';
+import './CSS/browseInternships.css';
 
 const SCADCurrentCycle = () => {
     const [editing, setEditing] = useState(false);
@@ -43,6 +45,15 @@ const SCADCurrentCycle = () => {
         navigate("/scad/noti", { state: { from: location.pathname } });
     };
 
+    // Format dates for display
+    const formatDate = (date) => {
+        return date.toLocaleDateString('en-US', {
+            month: 'numeric',
+            day: 'numeric',
+            year: 'numeric'
+        });
+    };
+
     return (
         <div className="dashboard-wrapper">
             <header className="dashboard-header">
@@ -52,14 +63,14 @@ const SCADCurrentCycle = () => {
                 <div className="header-right">
                     <div className="header-icons">
                         {/* Calls Button with Badge */}
-                        <button onClick={goToCalls} className="icon-button call-button">
+                        <button onClick={goToCalls} className="notification-bell">
                             <FaPhone />
                             <span className="call-badge">{missedCalls}</span>
                         </button>
 
                         {/* Notifications Button with Badge */}
-                        <button onClick={goToNotifications} className="icon-button notification-button">
-                            <FaBell />
+                        <button onClick={goToNotifications} className="notification-bell">
+                            <FiBell size={24} />
                             <span className="notification-badge">{notifications}</span>
                         </button>
 
@@ -84,42 +95,78 @@ const SCADCurrentCycle = () => {
                     </ul>
                 </aside>
                 <main className="dashboard-main">
-                    <div className="cycle-header">
-                        <h2 className="section-title">Current Cycle Information</h2>
+                    <div className="browser-wrapper">
+                        <header className="browser-header">
+                            <h1 className="browser-title">Current Cycle Information</h1>
+                        </header>
+                        <main className="browser-main">
+                            <section className="list-section cycle-content">
+                                <div className="cycle-container">
+                                    {editing ? (
+                                        <div className="edit-form-container">
+                                            <h2 className="section-title">Edit Cycle Dates</h2>
+                                            <div className="date-picker-group">
+                                                <div className="date-picker-section">
+                                                    <label>Start Date:</label>
+                                                    <DatePicker
+                                                        selected={tempStartDate}
+                                                        onChange={(date) => setTempStartDate(date)}
+                                                        className="date-picker"
+                                                    />
+                                                </div>
+                                                <div className="date-picker-section">
+                                                    <label>End Date:</label>
+                                                    <DatePicker
+                                                        selected={tempEndDate}
+                                                        onChange={(date) => setTempEndDate(date)}
+                                                        className="date-picker"
+                                                    />
+                                                </div>
+                                            </div>
+                                            <div className="edit-buttons">
+                                                <button onClick={handleSaveClick} className="accept-button">Save Changes</button>
+                                                <button onClick={handleCancelClick} className="reject-button">Cancel</button>
+                                            </div>
+                                        </div>
+                                    ) : (
+                                        <div className="cycle-info">
+                                            <div className="internship-item cycle-item">
+                                                <h2 className="section-title">Current Internship Cycle</h2>
+                                                <p><strong>Start Date:</strong> {formatDate(startDate)}</p>
+                                                <p><strong>End Date:</strong> {formatDate(endDate)}</p>
+                                                <p><strong>Status:</strong> Active</p>
+                                                <button className="edit-button" onClick={handleEditClick}>
+                                                    <Pencil size={16} />
+                                                    <span>Edit Dates</span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    )}
+                                </div>
+                            </section>
+                            <section className="list-section">
+                                <h2 className="section-title">Important Deadlines</h2>
+                                <ul className="internship-list">
+                                    <li className="internship-item">
+                                        <p><strong>Company Registration Deadline</strong></p>
+                                        <p>June 1, 2025</p>
+                                    </li>
+                                    <li className="internship-item">
+                                        <p><strong>Student Application Deadline</strong></p>
+                                        <p>June 15, 2025</p>
+                                    </li>
+                                    <li className="internship-item">
+                                        <p><strong>Interview Period</strong></p>
+                                        <p>June 20 - July 10, 2025</p>
+                                    </li>
+                                    <li className="internship-item">
+                                        <p><strong>Final Placement Notification</strong></p>
+                                        <p>July 15, 2025</p>
+                                    </li>
+                                </ul>
+                            </section>
+                        </main>
                     </div>
-                    <section className="cycle-section">
-                        <div className="cycle-content-centered">
-                            {editing ? (
-                                <div className="cycle-edit-container">
-                                    <div className="date-picker-section">
-                                        <label>Start Date:</label>
-                                        <DatePicker selected={tempStartDate} onChange={(date) => setTempStartDate(date)} />
-                                    </div>
-                                    <div className="date-picker-section">
-                                        <label>End Date:</label>
-                                        <DatePicker selected={tempEndDate} onChange={(date) => setTempEndDate(date)} />
-                                    </div>
-                                    <div className="edit-buttons">
-                                        <button onClick={handleSaveClick} className="save-button">Save Changes</button>
-                                        <button onClick={handleCancelClick} className="cancel-button">Cancel</button>
-                                    </div>
-                                </div>
-                            ) : (
-                                <div className="cycle-info-container">
-                                    <div className="cycle-dates">
-                                        <p>Start Date: 5/1/2025</p>
-                                        <p>End Date: 8/31/2025</p>
-                                    </div>
-                                    <div className="edit-section">
-                                        <button className="edit-button" onClick={handleEditClick}>
-                                            <Pencil size={20} />
-                                            Edit
-                                        </button>
-                                    </div>
-                                </div>
-                            )}
-                        </div>
-                    </section>
                 </main>
             </div>
             <footer className="dashboard-footer">
