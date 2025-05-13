@@ -1,7 +1,11 @@
 import React, { useState } from "react";
 import './CSS/CompanyDashboard.css';
+import { useNavigate } from 'react-router-dom';
+import { FiBell } from 'react-icons/fi';
 
 const CompanyInternships = () => {
+    const navigate = useNavigate();
+
     const [posts, setPosts] = useState([
         {
             id: 1,
@@ -103,11 +107,29 @@ const CompanyInternships = () => {
         return matchesSearch && matchesFilter;
     });
 
+    const handleBellClick = () => {
+        navigate('/CompanyNotifications');
+    };
+
+    const handleLogout = () => {
+        navigate('/');
+    };
+
     return (
         <div className="dashboard-wrapper">
             <header className="dashboard-header">
                 <h1 className="dashboard-title">Company Internships</h1>
+                <div className="dashboard-actions">
+                    <button className="notification-bell" onClick={handleBellClick} title="Notifications">
+                        <FiBell size={24} />
+                        <span className="notification-count">3</span>
+                    </button>
+                    <button className="signout-button" onClick={handleLogout}>
+                        Sign Out
+                    </button>
+                </div>
             </header>
+
             <div className="dashboard-content">
                 <aside className="dashboard-sidebar">
                     <h2 className="sidebar-title">Navigation</h2>
@@ -120,6 +142,7 @@ const CompanyInternships = () => {
                         <li className="nav-item"><a href="/CompanyDocs" className="nav-link">Reports and Documents</a></li>
                     </ul>
                 </aside>
+
                 <main className="dashboard-main">
                     <div className="filter-bar" style={{ marginBottom: "20px", display: "flex", gap: "10px", alignItems: "center" }}>
                         <input
@@ -217,6 +240,7 @@ const CompanyInternships = () => {
                     )}
                 </main>
             </div>
+
             <footer className="dashboard-footer">
                 <p>&copy; 2025 SCAD System. All rights reserved.</p>
             </footer>

@@ -1,5 +1,8 @@
 import React, { useState } from "react";
 import '../CSS/ApplicationsReview.css';
+import { useNavigate } from 'react-router-dom';
+import { FiBell } from 'react-icons/fi';
+
 
 const ApplicationsReview = () => {
     const [applications, setApplications] = useState([
@@ -61,6 +64,17 @@ const ApplicationsReview = () => {
         ));
     };
 
+    const navigate = useNavigate();
+
+    const handleBellClick = () => {
+        navigate('/CompanyNotifications');
+    };
+
+    const handleLogout = () => {
+        navigate('/');
+    };
+
+
     const filteredApplications = applications.filter(app => {
         const matchesStatus = filterStatus === "All" || app.status === filterStatus;
         const matchesInternship = filterInternshipId === "All" || app.internshipId.toString() === filterInternshipId;
@@ -71,7 +85,17 @@ const ApplicationsReview = () => {
         <div className="dashboard-wrapper">
             <header className="dashboard-header">
                 <h1 className="dashboard-title">Applications Review</h1>
+                <div className="dashboard-actions">
+                    <button className="notification-bell" onClick={handleBellClick} title="Notifications">
+                        <FiBell size={24} />
+                        <span className="notification-count">3</span>
+                    </button>
+                    <button className="signout-button" onClick={handleLogout}>
+                        Sign Out
+                    </button>
+                </div>
             </header>
+
 
             <div className="dashboard-content">
                 <aside className="dashboard-sidebar">

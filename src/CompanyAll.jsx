@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import './CSS/CompanyDashboard.css';
 import './CSS/browseInternships.css';
+import { useNavigate } from 'react-router-dom';
+import { FiBell } from 'react-icons/fi';
+
 
 const CompanyAll = () => {
     const [internships, setInternships] = useState([
@@ -57,6 +60,17 @@ const CompanyAll = () => {
         setFilter({ ...filter, [name]: value });
     };
 
+    const navigate = useNavigate();
+
+    const handleBellClick = () => {
+        navigate('/CompanyNotifications');
+    };
+
+    const handleLogout = () => {
+        navigate('/');
+    };
+
+
     const handleApply = (internship) => {
         setApplications([...applications, internship]);
         alert('Applied');
@@ -82,13 +96,18 @@ const CompanyAll = () => {
     return (
         <div className="dashboard-wrapper">
             <header className="dashboard-header">
-                <div className="header-left">
-                    <h1 className="dashboard-title">Company Dashboard</h1>
-                </div>
-                <div className="header-right">
-                    <a href="/" className="signout-button">Sign Out</a>
-                </div>
-            </header>
+            <h1 className="dashboard-title">All Internships</h1>
+            <div className="dashboard-actions">
+                <button className="notification-bell" onClick={handleBellClick} title="Notifications">
+                    <FiBell size={24} />
+                    <span className="notification-count">3</span>
+                </button>
+                <button className="signout-button" onClick={handleLogout}>
+                    Sign Out
+                </button>
+            </div>
+        </header>
+
             <div className="dashboard-content">
                 <aside className="dashboard-sidebar">
                     <h2 className="sidebar-title">Navigation</h2>
