@@ -1,7 +1,9 @@
 import React, { useState } from "react";
-import { useLocation } from 'react-router-dom';
-
-import './CSS/ProStudent.css';
+import { useNavigate, useLocation } from "react-router-dom";
+import { FaPhone } from "react-icons/fa";
+import { FiBell } from "react-icons/fi";
+import './CSS/PROStudentDashboard.css';
+import './CSS/browseInternships.css';
 
 const AppointmentsStudent = () => {
     const [notifications, setNotifications] = useState([
@@ -26,6 +28,19 @@ const AppointmentsStudent = () => {
         online: true
     });
 
+    const navigate = useNavigate();
+    const location = useLocation();
+    const missedCalls = 0;
+    const unreadNotifications = notifications.length;
+
+    const goToCalls = () => {
+        navigate("/student/Calls", { state: { from: location.pathname } });
+    };
+
+    const goToNotifications = () => {
+        navigate("/PROStudentNotifications", { state: { from: location.pathname } });
+    };
+
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setNewAppointment(prev => ({
@@ -48,9 +63,6 @@ const AppointmentsStudent = () => {
     const handleRejectOffer = (id) => {
         setIncomingOffers(prev => prev.filter(o => o.id !== id));
     };
-    const location = useLocation();
-    const currentPath = location.pathname;
-
 
     return (
         <div className="dashboard-wrapper">
@@ -59,7 +71,17 @@ const AppointmentsStudent = () => {
                     <h1 className="dashboard-title">PRO Student Dashboard</h1>
                 </div>
                 <div className="header-right">
-                    <a href="/" className="signout-button">Sign Out</a>
+                    <div className="header-icons">
+                        <button onClick={goToCalls} className="notification-bell">
+                            <FaPhone />
+                            <span className="call-badge">{missedCalls}</span>
+                        </button>
+                        <button onClick={goToNotifications} className="notification-bell">
+                            <FiBell size={24} />
+                            <span className="notification-badge">{unreadNotifications}</span>
+                        </button>
+                        <a href="/" className="signout-button">Sign Out</a>
+                    </div>
                 </div>
             </header>
 
@@ -67,112 +89,125 @@ const AppointmentsStudent = () => {
                 <aside className="dashboard-sidebar">
                     <h2 className="sidebar-title">Navigation</h2>
                     <ul className="nav-list">
-                    <li className="nav-item"><a href="/student/recommendations" className="nav-link">Internship Recommendations</a></li>
-                        <li className="nav-item"><a href="/student/current-internship" className="nav-link">Current Internship</a></li>
-                        <li className="nav-item"><a href="/student/deadlines" className="nav-link">Upcoming Deadlines</a></li>
-                        <li className="nav-item"><a href="/student/profile" className="nav-link">My Profile</a></li>
-                        <li className="nav-item"><a href="/student/settings" className="nav-link">Settings</a></li>
-                        <li className="nav-item">
-    {currentPath === "/student/appointments" ? (
-        <span className="nav-link active">Appointments</span>
-    ) : (
-        <a href="/student/appointments" className="nav-link">Appointments</a>
-    )}
-</li>
-
-
-                        <li className="nav-item"><a href="/scad/Calls" className="nav-link">Calls</a></li>
+                        <li className="nav-item"><a href="/PROStudentDashboard" className="nav-link">Home</a></li>
+                        <li className="nav-item"><a href="/PROStudentinternship" className="nav-link">Browse Internships</a></li>
+                        <li className="nav-item"><a href="/PROStudentApplied" className="nav-link">View Applied Internships</a></li>
+                        <li className="nav-item"><a href="/student/proprofile" className="nav-link">My Profile</a></li>
+                        <li className="nav-item"><a href="/PROMyInternships" className="nav-link">My Internships</a></li>
+                        <li className="nav-item">Appointments</li>
+                        <li className="nav-item"><a href="/student/Calls" className="nav-link">Calls</a></li>
                         <li className="nav-item"><a href="/student/viewed" className="nav-link">Viewed my profile</a></li>
                         <li className="nav-item"><a href="/student/assessment" className="nav-link">Online assessments</a></li>
                         <li className="nav-item"><a href="/student/workshop" className="nav-link">Workshop</a></li>
+                        <li className="nav-item"><a href="/PreRecord" className="nav-link">Pre-recorded workshops</a></li>
                     </ul>
                 </aside>
 
                 <main className="dashboard-main">
-                    {/* Notifications */}
-                    <section className="notifications">
-                        <h2>Notifications</h2>
-                        {notifications.length === 0 ? (
-                            <p>No notifications.</p>
-                        ) : (
-                            <ul>
-                                {notifications.map(note => (
-                                    <li key={note.id}>{note.message}</li>
-                                ))}
-                            </ul>
-                        )}
-                    </section>
+                    <div className="browser-wrapper">
+                        <header className="browser-header">
+                            <h1 className="browser-title">Appointments</h1>
+                        </header>
 
-                    {/* Scheduled Appointments */}
-                    <section className="scheduled-appointments">
-                        <h2>My Scheduled Appointments</h2>
-                        <ul>
-                            {scheduledAppointments.map(app => (
-                                <li key={app.id}>
-                                    <strong>{app.subject}</strong> on <em>{app.date}</em> at <em>{app.timing}</em>
-                                    <span className={`status ${app.online ? "online" : "offline"}`}>
-                                        {app.online ? "Online" : "Offline"}
-                                    </span>
-                                </li>
-                            ))}
-                        </ul>
-                    </section>
+                        <main className="browser-main">
+                            <section className="list-section">
+                                <h2 className="section-title">Notifications</h2>
+                                {notifications.length === 0 ? (
+                                    <p>No notifications.</p>
+                                ) : (
+                                    <ul className="notification-list">
+                                        {notifications.map(note => (
+                                            <li key={note.id} className="notification-item">{note.message}</li>
+                                        ))}
+                                    </ul>
+                                )}
+                            </section>
 
-                    {/* Incoming Appointment Offers */}
-                    <section className="appointment-requests">
-                        <h2>Appointment Offers</h2>
-                        {incomingOffers.length === 0 ? (
-                            <p>No new appointment offers.</p>
-                        ) : (
-                            <ul>
-                                {incomingOffers.map(offer => (
-                                    <li key={offer.id}>
-                                        <div>
-                                            <strong>{offer.subject}</strong> offered for <em>{offer.date}</em> at <em>{offer.timing}</em>
-                                        </div>
-                                        <button className="accept-btn" onClick={() => handleAcceptOffer(offer)}>Accept</button>
-                                        <button className="reject-btn" onClick={() => handleRejectOffer(offer.id)}>Reject</button>
-                                    </li>
-                                ))}
-                            </ul>
-                        )}
-                    </section>
+                            <section className="list-section">
+                                <h2 className="section-title">My Scheduled Appointments</h2>
+                                {scheduledAppointments.length === 0 ? (
+                                    <p>No scheduled appointments.</p>
+                                ) : (
+                                    <ul className="appointment-list">
+                                        {scheduledAppointments.map(app => (
+                                            <li key={app.id} className="appointment-item">
+                                                <div className="appointment-details">
+                                                    <strong>{app.subject}</strong>
+                                                    <div className="appointment-meta">
+                                                        <span>Date: {app.date}</span>
+                                                        <span>Time: {app.timing}</span>
+                                                    </div>
+                                                </div>
+                                                <span className={`status ${app.online ? "online" : "offline"}`}>
+                                                    {app.online ? "Online" : "Offline"}
+                                                </span>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                )}
+                            </section>
 
-                    {/* Request New Appointment */}
-                    <section className="request-section">
-                        <button className="request-button" onClick={() => setShowRequestForm(true)}>
-                            Request Appointment
-                        </button>
+                            <section className="list-section">
+                                <h2 className="section-title">Appointment Offers</h2>
+                                {incomingOffers.length === 0 ? (
+                                    <p>No new appointment offers.</p>
+                                ) : (
+                                    <ul className="offer-list">
+                                        {incomingOffers.map(offer => (
+                                            <li key={offer.id} className="offer-item">
+                                                <div className="offer-details">
+                                                    <strong>{offer.subject}</strong>
+                                                    <div className="offer-meta">
+                                                        <span>Date: {offer.date}</span>
+                                                        <span>Time: {offer.timing}</span>
+                                                    </div>
+                                                </div>
+                                                <div className="offer-actions">
+                                                    <button className="accept-btn" onClick={() => handleAcceptOffer(offer)}>Accept</button>
+                                                    <button className="reject-btn" onClick={() => handleRejectOffer(offer.id)}>Reject</button>
+                                                </div>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                )}
+                            </section>
 
-                        {showRequestForm && (
-                            <div className="popup-form">
-                                <form onSubmit={handleSubmit}>
-                                    <h3>Request New Appointment</h3>
-                                    <label>
-                                        Date:
-                                        <input type="date" name="date" value={newAppointment.date} onChange={handleInputChange} required />
-                                    </label>
-                                    <label>
-                                        Timing:
-                                        <input type="time" name="timing" value={newAppointment.timing} onChange={handleInputChange} required />
-                                    </label>
-                                    <label>
-                                        Subject:
-                                        <input type="text" name="subject" value={newAppointment.subject} onChange={handleInputChange} required />
-                                    </label>
-                                    <div className="form-buttons">
-                                        <button type="submit">Submit</button>
-                                        <button type="button" onClick={() => setShowRequestForm(false)}>Cancel</button>
+                            <section className="list-section">
+                                <button className="request-button" onClick={() => setShowRequestForm(true)}>
+                                    Request Appointment
+                                </button>
+
+                                {showRequestForm && (
+                                    <div className="popup-form">
+                                        <form onSubmit={handleSubmit}>
+                                            <h3>Request New Appointment</h3>
+                                            <div className="form-group">
+                                                <label>Date:</label>
+                                                <input type="date" name="date" value={newAppointment.date} onChange={handleInputChange} required />
+                                            </div>
+                                            <div className="form-group">
+                                                <label>Timing:</label>
+                                                <input type="time" name="timing" value={newAppointment.timing} onChange={handleInputChange} required />
+                                            </div>
+                                            <div className="form-group">
+                                                <label>Subject:</label>
+                                                <input type="text" name="subject" value={newAppointment.subject} onChange={handleInputChange} required />
+                                            </div>
+                                            <div className="form-buttons">
+                                                <button type="submit" className="submit-btn">Submit</button>
+                                                <button type="button" className="cancel-btn" onClick={() => setShowRequestForm(false)}>Cancel</button>
+                                            </div>
+                                        </form>
                                     </div>
-                                </form>
-                            </div>
-                        )}
-                    </section>
+                                )}
+                            </section>
+                        </main>
+                    </div>
                 </main>
             </div>
 
             <footer className="dashboard-footer">
-                <p>&copy; 2025 Student System. All rights reserved.</p>
+                <p>&copy; 2025 PRO Student System. All rights reserved.</p>
             </footer>
         </div>
     );

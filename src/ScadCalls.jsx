@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { FaPhone } from "react-icons/fa";
+import React, { useState, useRef } from "react";
+import { FaPhone, FaBell } from "react-icons/fa";
 import { FiBell } from "react-icons/fi";
 import { useNavigate, useLocation } from "react-router-dom";
 import './CSS/SCADOfficeDashboard.css';
@@ -13,17 +13,21 @@ const SCADCalls = () => {
 
     const [activeCall, setActiveCall] = useState(null);
     const [micOn, setMicOn] = useState(true);
-    const [screenOn, setScreenOn] = useState(true);
+    const [screenOn, setScreenOn] = useState(false);
     const [cameraOn, setCameraOn] = useState(true);
     const [callerLeft, setCallerLeft] = useState(false);
+    const [mediaStream, setMediaStream] = useState(null);
+    const [screenStream, setScreenStream] = useState(null);
+
+    const videoRef = useRef(null);
     const navigate = useNavigate();
     const location = useLocation();
 
     const missedCalls = 0;
-    const notifications = 3;
+    const notifications = 5;
 
     const goToCalls = () => {
-        navigate("/scad/Calls");
+        navigate("/scad/Calls", { state: { from: location.pathname } });
     };
 
     const goToNotifications = () => {
@@ -33,27 +37,62 @@ const SCADCalls = () => {
     const acceptCall = (caller) => {
         setIncomingCalls(prev => prev.filter(call => call.id !== caller.id));
         setActiveCall(caller);
+        startCamera();
     };
 
     const rejectCall = (caller) => {
         setIncomingCalls(prev => prev.filter(call => call.id !== caller.id));
-        if (activeCall?.id === caller.id) setActiveCall(null);
+        if (activeCall && activeCall.id === caller.id) {
+            setActiveCall(null);
+        }
     };
 
     const endCall = () => {
         setActiveCall(null);
         setMicOn(true);
         setCameraOn(true);
-        setScreenOn(true);
+        setScreenOn(false);
         setCallerLeft(false);
+        stopCamera();
+        stopScreenShare();
     };
 
     const toggleMic = () => setMicOn(prev => !prev);
-    const toggleCamera = () => setCameraOn(prev => !prev);
-    const toggleScreen = () => setScreenOn(prev => !prev);
+
+    const toggleCamera = () => {
+        if (cameraOn) {
+            stopCamera();
+        } else {
+            startCamera();
+        }
+        setCameraOn(prev => !prev);
+    };
+
+    const toggleScreen = async () => {
+        if (screenOn) {
+            stopScreenShare();
+        } else {
+            try {
+                const stream = await navigator.mediaDevices.getDisplayMedia({ video: true });
+                setScreenStream(stream);
+            } catch (err) {
+                console.error("Failed to share screen:", err);
+            }
+        }
+        setScreenOn(prev => !prev);
+    };
+
+    const stopScreenShare = () => {
+        if (screenStream) {
+            screenStream.getTracks().forEach(track => track.stop());
+            setScreenStream(null);
+        }
+    };
 
     const simulateCallerLeft = () => {
-        if (activeCall) setCallerLeft(true);
+        if (activeCall) {
+            setCallerLeft(true);
+        }
     };
 
     const closeCallerLeftPopup = () => {
@@ -61,36 +100,51 @@ const SCADCalls = () => {
         endCall();
     };
 
+    const startCamera = async () => {
+        try {
+            const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+            setMediaStream(stream);
+            if (videoRef.current) {
+                videoRef.current.srcObject = stream;
+            }
+        } catch (err) {
+            console.error("Failed to access camera:", err);
+        }
+    };
+
+    const stopCamera = () => {
+        if (mediaStream) {
+            mediaStream.getTracks().forEach(track => track.stop());
+            setMediaStream(null);
+        }
+    };
+
     return (
         <div className="dashboard-wrapper">
-            {/* Header */}
             <header className="dashboard-header">
                 <div className="header-left">
                     <h1 className="dashboard-title">SCAD Office Dashboard</h1>
                 </div>
                 <div className="header-right">
                     <div className="header-icons">
-                        <button
-                            onClick={location.pathname === "/scad/Calls" ? undefined : goToCalls}
-                            className={`notification-bell ${location.pathname === "/scad/Calls" ? "disabled" : ""}`}
-                            disabled={location.pathname === "/scad/Calls"}
-                        >
+                        {/* Calls Button with Badge - always shown with badge */}
+                        <button onClick={goToCalls} className="notification-bell">
                             <FaPhone />
-                            {location.pathname !== "/scad/Calls" && (
-                                <span className="call-badge">{missedCalls}</span>
-                            )}
+                            {/*<span className="call-badge">{missedCalls}</span>*/}
                         </button>
+
+                        {/* Notifications Button with Badge */}
                         <button onClick={goToNotifications} className="notification-bell">
                             <FiBell size={24} />
                             <span className="notification-badge">{notifications}</span>
                         </button>
+
                         <a href="/" className="signout-button">Sign Out</a>
                     </div>
                 </div>
             </header>
 
             <div className="dashboard-content">
-                {/* Sidebar */}
                 <aside className="dashboard-sidebar">
                     <h2 className="sidebar-title">Navigation</h2>
                     <ul className="nav-list">
@@ -107,29 +161,23 @@ const SCADCalls = () => {
                     </ul>
                 </aside>
 
-                {/* Main */}
                 <main className="dashboard-main">
                     <div className="browser-wrapper">
-                        {/* Page Title */}
                         <header className="browser-header">
                             <h1 className="browser-title">Incoming Calls</h1>
                         </header>
-                        
-                      
-                        {/* Calls and Popups */}
+
                         <main className="browser-main">
-                        <br/>
-                            {incomingCalls.length === 0 && !activeCall && (
-                                <p>No incoming calls.</p>
-                            )}
+                            {incomingCalls.length === 0 && !activeCall && <p>No incoming calls.</p>}
 
                             <div className="calls-container">
-                                {incomingCalls.map(caller => (
+                                {incomingCalls.map((caller) => (
                                     <div key={caller.id} className="incoming-call-card ringing">
                                         <p><strong>{caller.name}</strong> is calling you...</p>
-                                        <button onClick={() => acceptCall(caller)} className="btn accept">Accept</button>
-                                        <button onClick={() => rejectCall(caller)} className="btn reject">Reject</button>
-                                       
+                                        <div className="call-buttons">
+                                            <button onClick={() => acceptCall(caller)} className="accept-button">Accept</button>
+                                            <button onClick={() => rejectCall(caller)} className="reject-button">Reject</button>
+                                        </div>
                                     </div>
                                 ))}
                             </div>
@@ -139,19 +187,29 @@ const SCADCalls = () => {
                                     <div className="popup-content">
                                         <h2>In Call with {activeCall.name}</h2>
                                         <div className="call-controls">
-                                            <button onClick={toggleMic} className="btn control">
-                                                {micOn ? "Mute Mic" : "Unmute Mic"}
-                                            </button>
-                                            <button onClick={toggleCamera} className="btn control">
-                                                {cameraOn ? "Turn Off Camera" : "Turn On Camera"}
-                                            </button>
-                                            <button onClick={toggleScreen} className="btn control">
-                                                {screenOn ? "Stop Screen" : "Share Screen"}
-                                            </button>
-                                            <button onClick={simulateCallerLeft} className="btn control">
-                                                Simulate Caller Left
-                                            </button>
-                                            <button onClick={endCall} className="btn leave">End Call</button>
+                                            <button onClick={toggleMic} className="control-button">{micOn ? "Mute Mic" : "Unmute Mic"}</button>
+                                            <button onClick={toggleCamera} className="control-button">{cameraOn ? "Turn Off Camera" : "Turn On Camera"}</button>
+                                            <button onClick={toggleScreen} className="control-button">{screenOn ? "Stop Screen" : "Share Screen"}</button>
+                                            <button onClick={simulateCallerLeft} className="control-button">Simulate Caller Left</button>
+                                            <button onClick={endCall} className="leave-button">End Call</button>
+                                        </div>
+                                        <div className="video-container">
+                                            <div className="video-wrapper">
+                                                <video ref={videoRef} autoPlay playsInline muted className="video-element" />
+                                                <p className="video-label">Camera</p>
+                                            </div>
+                                            <div className="video-wrapper">
+                                                <video
+                                                    autoPlay
+                                                    playsInline
+                                                    muted
+                                                    className="video-element"
+                                                    ref={el => {
+                                                        if (el && screenStream) el.srcObject = screenStream;
+                                                    }}
+                                                />
+                                                <p className="video-label">Shared Screen</p>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -161,18 +219,16 @@ const SCADCalls = () => {
                 </main>
             </div>
 
-            {/* Footer */}
             <footer className="dashboard-footer">
                 <p>&copy; 2025 SCAD System. All rights reserved.</p>
             </footer>
 
-            {/* Caller Left Popup */}
             {callerLeft && (
                 <div className="popup-overlay">
                     <div className="caller-left-popup">
                         <h2>Call Ended</h2>
                         <p>{activeCall?.name} has left the call.</p>
-                        <button onClick={closeCallerLeftPopup} className="btn close-popup">Close</button>
+                        <button onClick={closeCallerLeftPopup} className="close-popup-button">Close</button>
                     </div>
                 </div>
             )}
