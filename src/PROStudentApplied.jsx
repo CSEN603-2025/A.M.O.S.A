@@ -1,8 +1,23 @@
 import React, { useState, useEffect } from "react";
 import './CSS/StudentDashboard.css';
 import './CSS/browseInternships.css';
+import { FiBell } from 'react-icons/fi';
+import { FaPhone } from "react-icons/fa";
+import { useNavigate } from 'react-router-dom';
 
 const PROStudentApplied = () => {
+    const navigate = useNavigate();
+
+    const goToCalls = () => {
+        navigate("/student/Calls");
+    };
+
+    const goToNotifications = () => {
+        navigate("/PROStudentNotifications");
+    };
+
+    const missedCalls = 5;
+    const notifications = 3;
     const [appliedIds, setAppliedIds] = useState([]);
     const [internships, setInternships] = useState([]);
     const [selectedInternship, setSelectedInternship] = useState(null);
@@ -33,6 +48,21 @@ const PROStudentApplied = () => {
                 </div>
                 <div className="header-right">
                     <a href="/" className="signout-button">Sign Out</a>
+                </div>
+                <div className="header-right">
+                    <div className="header-icons">
+                        <button onClick={goToCalls} className="notification-bell">
+                            <FaPhone />
+                            <span className="call-badge">{missedCalls}</span>
+                        </button>
+
+                        <button onClick={goToNotifications} className="notification-bell">
+                            <FiBell size={24} />
+                            <span className="notification-count">{notifications}</span>
+                        </button>
+
+                        <a href="/" className="signout-button">Sign Out</a>
+                    </div>
                 </div>
             </header>
             <div className="dashboard-content">

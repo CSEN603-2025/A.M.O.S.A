@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import './CSS/StudentDashboard.css';
 import { FiBell } from 'react-icons/fi';
+import { FaPhone } from "react-icons/fa";
+import { useNavigate } from 'react-router-dom';
 
 const internshipsData = [
     { id: 1, company: "TechCorp", status: "Completed", duration: "Jan 2023 - Jun 2023", title: "Software Engineer Intern", current: false },
@@ -13,6 +15,18 @@ const courses = ["Software Engineering", "Database", "Management", "Computer Sys
 
 
 const PROMyInternships = () => {
+    const navigate = useNavigate();
+
+    const goToCalls = () => {
+        navigate("/student/Calls");
+    };
+
+    const goToNotifications = () => {
+        navigate("/PROStudentNotifications");
+    };
+
+    const missedCalls = 5;
+    const notifications = 3;
     const [selectedInternship, setSelectedInternship] = useState(null);
     const [evaluations, setEvaluations] = useState({});
     const [reports, setReports] = useState({});
@@ -113,16 +127,26 @@ const PROMyInternships = () => {
                 <div className="header-right">
                     <a href="/" className="signout-button">Sign Out</a>
                 </div>
+                <div className="header-right">
+                    <div className="header-icons">
+                        <button onClick={goToCalls} className="notification-bell">
+                            <FaPhone />
+                            <span className="call-badge">{missedCalls}</span>
+                        </button>
+
+                        <button onClick={goToNotifications} className="notification-bell">
+                            <FiBell size={24} />
+                            <span className="notification-count">{notifications}</span>
+                        </button>
+
+                        <a href="/" className="signout-button">Sign Out</a>
+                    </div>
+                </div>
             </header>
 
             <div className="dashboard-content">
                 <aside className="dashboard-sidebar">
-                    <div className="notification-widget">
-                        <a href="/PROStudentNotifications" className="notification-link">
-                            <FiBell size={18} className="bell-icon" />
-                            <span>Notifications</span>
-                        </a>
-                    </div>
+                    
                     <h2 className="sidebar-title">Navigation</h2>
                     <ul className="nav-list">
                         <li className="nav-item"><a href="/PROStudentDashboard" className="nav-link">Home</a></li>

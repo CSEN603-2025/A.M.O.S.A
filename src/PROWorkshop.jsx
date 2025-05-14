@@ -1,8 +1,15 @@
 import React, { useState } from "react";
 import "./CSS/PROStudentDashboard.css";
-import { useLocation } from 'react-router-dom';
+import { FiBell } from 'react-icons/fi';
+import { FaPhone } from "react-icons/fa";
+import { useNavigate } from 'react-router-dom';
 
 const PROWorkshop = () => {
+    const navigate = useNavigate();
+
+    const missedCalls = 5;
+    const notifications = 3;
+
     const upcomingWorkshops = [
         {
             id: 1,
@@ -34,7 +41,7 @@ const PROWorkshop = () => {
             description: "Practice your interview skills with real-time feedback",
             agenda: "Introduction > Mock Interviews > Q&A Session",
             currentTopic: "Mock Interviews: Behavioral Questions",
-            chat: [{ sender: "Aly Ewida", message: "Good morning everyone! " }]
+            chat: [{ sender: "Aly Ewida", message: "Good morning everyone!" }]
         }
     ];
 
@@ -48,6 +55,7 @@ const PROWorkshop = () => {
     const [rating, setRating] = useState(0);
     const [feedback, setFeedback] = useState("");
     const [submittedFeedback, setSubmittedFeedback] = useState(false);
+    const [showCertificate, setShowCertificate] = useState(false);
 
     const toggleWorkshop = (id) => {
         setExpandedWorkshop(expandedWorkshop === id ? null : id);
@@ -84,8 +92,9 @@ const PROWorkshop = () => {
             setSubmittedFeedback(false);
             setRating(0);
             setFeedback("");
-            setActiveLiveWorkshop(null);
             setShowPopup(false);
+            setShowCertificate(true);
+            setActiveLiveWorkshop(null);
         }, 2000);
     };
 
@@ -94,7 +103,18 @@ const PROWorkshop = () => {
         setShowPopup(false);
     };
 
-    const location = useLocation();
+    const handleDownloadCertificate = () => {
+        const element = document.createElement("a");
+        const file = new Blob(
+            ["Certificate of Participation\n\nThis certifies that you have completed the workshop."],
+            { type: "text/plain" }
+        );
+        element.href = URL.createObjectURL(file);
+        element.download = "Certificate.txt";
+        document.body.appendChild(element);
+        element.click();
+        document.body.removeChild(element);
+    };
 
     return (
         <div className="dashboard-wrapper">
@@ -103,7 +123,17 @@ const PROWorkshop = () => {
                     <h1 className="dashboard-title">PRO Student Dashboard</h1>
                 </div>
                 <div className="header-right">
-                    <a href="/" className="signout-button">Sign Out</a>
+                    <div className="header-icons">
+                        <button type="button" onClick={() => navigate("/student/Calls")} className="notification-bell">
+                            <FaPhone />
+                            <span className="call-badge">{missedCalls}</span>
+                        </button>
+                        <button type="button" onClick={() => navigate("/PROStudentNotifications")} className="notification-bell">
+                            <FiBell size={24} />
+                            <span className="notification-count">{notifications}</span>
+                        </button>
+                        <a href="/" className="signout-button">Sign Out</a>
+                    </div>
                 </div>
             </header>
 
@@ -135,7 +165,7 @@ const PROWorkshop = () => {
                                         <h3>{workshop.name}</h3>
                                         <p><strong>Time:</strong> {new Date(workshop.startDate).toLocaleString()} to {new Date(workshop.endDate).toLocaleString()}</p>
                                         <p><strong>Description:</strong> {workshop.description}</p>
-                                        <button className="learn-more-button" onClick={() => toggleWorkshop(workshop.id)}>
+                                        <button type="button" className="learn-more-button" onClick={() => toggleWorkshop(workshop.id)}>
                                             {expandedWorkshop === workshop.id ? "Show Less" : "Learn More"}
                                         </button>
                                     </div>
@@ -144,7 +174,7 @@ const PROWorkshop = () => {
                                             <p><strong>Speaker:</strong> {workshop.speakerBio}</p>
                                             <p><strong>Agenda:</strong> {workshop.agenda}</p>
                                             <p><strong>Full Details:</strong> {workshop.details}</p>
-                                            <button className="register-button" onClick={(e) => handleRegister(e, workshop.id)}>
+                                            <button type="button" className="register-button" onClick={(e) => handleRegister(e, workshop.id)}>
                                                 Register
                                             </button>
                                         </div>
@@ -165,7 +195,7 @@ const PROWorkshop = () => {
                                         <p><strong>Description:</strong> {workshop.description}</p>
                                         <p><strong>Current Topic:</strong> {workshop.currentTopic}</p>
                                         <p><strong>Agenda:</strong> {workshop.agenda}</p>
-                                        <button className="register-button" onClick={() => handleJoinLive(workshop)}>
+                                        <button type="button" className="register-button" onClick={() => handleJoinLive(workshop)}>
                                             Join Workshop
                                         </button>
                                     </div>
@@ -181,9 +211,9 @@ const PROWorkshop = () => {
                     <div className="modal-content">
                         <div className="modal-header">
                             <h3>Live: {activeLiveWorkshop.name}</h3>
-                            <button className="cancel-button" onClick={handleCancelWorkshop}>✕</button>
+                            <button type="button" className="cancel-button" onClick={handleCancelWorkshop}>✕</button>
                         </div>
-                        <div style={{ background: "#000", height: "200px", marginBottom: "1rem", color: "white", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                        <div className="video-placeholder">
                             <p>📹 Video Placeholder</p>
                         </div>
                         <div className="live-section">
@@ -210,10 +240,10 @@ const PROWorkshop = () => {
                                     onChange={(e) => setChatInput(e.target.value)}
                                     onKeyDown={(e) => e.key === "Enter" && handleSendChat()}
                                 />
-                                <button onClick={handleSendChat}>Send</button>
+                                <button type="button" onClick={handleSendChat}>Send</button>
                             </div>
                         </div>
-                        <button onClick={handleFinishWorkshop} style={{ marginTop: "1rem", background: "#4CAF50", color: "white", padding: "10px", borderRadius: "8px" }}>
+                        <button type="button" onClick={handleFinishWorkshop} className="finish-button">
                             Finish Workshop
                         </button>
                     </div>
@@ -226,8 +256,7 @@ const PROWorkshop = () => {
                         {!submittedFeedback ? (
                             <>
                                 <h3>Rate this Workshop</h3>
-                                <div style={{ marginBottom: "1rem" }}>
-                                    <label>Rating: </label>
+                                <div className="rating-stars">
                                     {[1, 2, 3, 4, 5].map((star) => (
                                         <span
                                             key={star}
@@ -249,11 +278,28 @@ const PROWorkshop = () => {
                                     placeholder="Leave your feedback here..."
                                     style={{ width: "100%", padding: "10px", borderRadius: "8px", marginBottom: "1rem" }}
                                 />
-                                <button onClick={handleSubmitFeedback}>Submit Feedback</button>
+                                <button type="button" onClick={handleSubmitFeedback}>Submit Feedback</button>
                             </>
                         ) : (
-                            <h3 style={{ textAlign: "center", color: "#4CAF50" }}>✅ Thank you for your feedback!</h3>
+                            <h3 className="thank-you-msg">✅ Thank you for your feedback!</h3>
                         )}
+                    </div>
+                </div>
+            )}
+
+            {showCertificate && (
+                <div className="modal-overlay">
+                    <div className="modal-content">
+                        <h2>🎉 Congratulations!</h2>
+                        <p>You’ve successfully completed the workshop.</p>
+                        <p>Click below to download your certificate of participation.</p>
+                        <button onClick={handleDownloadCertificate}>Download Certificate</button>
+                        <button
+                            style={{ marginTop: "1rem" }}
+                            onClick={() => setShowCertificate(false)}
+                        >
+                            Close
+                        </button>
                     </div>
                 </div>
             )}

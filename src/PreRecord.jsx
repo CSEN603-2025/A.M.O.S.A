@@ -1,39 +1,46 @@
 import React, { useState } from "react";
 import "./CSS/PROStudentDashboard.css";
+import { FiBell } from 'react-icons/fi';
+import { FaPhone } from "react-icons/fa";
+import { useNavigate, Link } from 'react-router-dom';
 
 const PROPreRecordedWorkshops = () => {
+    const navigate = useNavigate();
+
+    const missedCalls = 5;
+    const notifications = 3;
+
     const preRecordedWorkshops = [
         {
-            "id": 1,
-    "name": "Resume Writing Masterclass",
-    "duration": "45 min",
-    "description": "Learn to craft a professional resume that stands out.",
-    "speakerBio": "Jane Doe, Career Coach",
-    "uploadDate": "2025-05-01",
-    "videoUrl": "#",
-    "details": "This session covers resume structure, impactful language, and formatting tips. Ideal for students and professionals aiming to enhance job prospects."
+            id: 1,
+            name: "Resume Writing Masterclass",
+            duration: "45 min",
+            description: "Learn to craft a professional resume that stands out.",
+            speakerBio: "Jane Doe, Career Coach",
+            uploadDate: "2025-05-01",
+            videoUrl: "#",
+            details: "This session covers resume structure, impactful language, and formatting tips. Ideal for students and professionals aiming to enhance job prospects."
         },
-       {
-    "id": 2,
-    "name": "Technical Interview Preparation",
-    "duration": "1h 20min",
-    "description": "Ace your technical interviews with these strategies.",
-    "speakerBio": "John Smith, Senior Developer",
-    "uploadDate": "2025-05-10",
-    "videoUrl": "#",
-    "details": "Learn how to approach coding problems, communicate your thought process, and handle common technical questions. Perfect for software job seekers at any level."
-},
-{
-    "id": 3,
-    "name": "Networking for Introverts",
-    "duration": "35 min",
-    "description": "Effective networking strategies for shy professionals.",
-    "speakerBio": "Alex Johnson, HR Specialist",
-    "uploadDate": "2025-05-15",
-    "videoUrl": "#",
-    "details": "Discover techniques to build meaningful connections without stepping out of your comfort zone. A must-watch for professionals who find traditional networking challenging."
-}
-
+        {
+            id: 2,
+            name: "Technical Interview Preparation",
+            duration: "1h 20min",
+            description: "Ace your technical interviews with these strategies.",
+            speakerBio: "John Smith, Senior Developer",
+            uploadDate: "2025-05-10",
+            videoUrl: "#",
+            details: "Learn how to approach coding problems, communicate your thought process, and handle common technical questions. Perfect for software job seekers at any level."
+        },
+        {
+            id: 3,
+            name: "Networking for Introverts",
+            duration: "35 min",
+            description: "Effective networking strategies for shy professionals.",
+            speakerBio: "Alex Johnson, HR Specialist",
+            uploadDate: "2025-05-15",
+            videoUrl: "#",
+            details: "Discover techniques to build meaningful connections without stepping out of your comfort zone. A must-watch for professionals who find traditional networking challenging."
+        }
     ];
 
     const [expandedWorkshop, setExpandedWorkshop] = useState(null);
@@ -46,7 +53,7 @@ const PROPreRecordedWorkshops = () => {
     const [submittedFeedback, setSubmittedFeedback] = useState(false);
 
     const toggleWorkshop = (id) => {
-        setExpandedWorkshop(expandedWorkshop === id ? null : id);
+        setExpandedWorkshop(prev => (prev === id ? null : id));
     };
 
     const handlePlayWorkshop = (workshop) => {
@@ -92,7 +99,19 @@ const PROPreRecordedWorkshops = () => {
                     <h1 className="dashboard-title">PRO Student Dashboard</h1>
                 </div>
                 <div className="header-right">
-                    <a href="/" className="signout-button">Sign Out</a>
+                    <div className="header-icons">
+                        <button onClick={() => navigate("/student/Calls")} className="notification-bell">
+                            <FaPhone />
+                            <span className="call-badge">{missedCalls}</span>
+                        </button>
+
+                        <button onClick={() => navigate("/PROStudentNotifications")} className="notification-bell">
+                            <FiBell size={24} />
+                            <span className="notification-count">{notifications}</span>
+                        </button>
+
+                        <Link to="/" className="signout-button">Sign Out</Link>
+                    </div>
                 </div>
             </header>
 
@@ -100,16 +119,16 @@ const PROPreRecordedWorkshops = () => {
                 <aside className="dashboard-sidebar">
                     <h2 className="sidebar-title">Navigation</h2>
                     <ul className="nav-list">
-                        <li className="nav-item"><a href="/PROStudentDashboard" className="nav-link">Home</a></li>
-                        <li className="nav-item"><a href="/PROStudentinternship" className="nav-link">Browse Internships</a></li>
-                        <li className="nav-item"><a href="/PROStudentApplied" className="nav-link">View Applied Internships</a></li>
-                        <li className="nav-item"><a href="/student/proprofile" className="nav-link">My Profile</a></li>
-                        <li className="nav-item"><a href="/PROMyInternships" className="nav-link">My Internships</a></li>
-                        <li className="nav-item"><a href="/student/appointments" className="nav-link">Appointments</a></li>
-                        <li className="nav-item"><a href="/student/Calls" className="nav-link">Calls</a></li>
-                        <li className="nav-item"><a href="/student/viewed" className="nav-link">Viewed my profile</a></li>
-                        <li className="nav-item"><a href="/student/assessment" className="nav-link">Online assessments</a></li>
-                        <li className="nav-item"><a href="/student/workshop" className="nav-link">Workshop</a></li>
+                        <li className="nav-item"><Link to="/PROStudentDashboard" className="nav-link">Home</Link></li>
+                        <li className="nav-item"><Link to="/PROStudentinternship" className="nav-link">Browse Internships</Link></li>
+                        <li className="nav-item"><Link to="/PROStudentApplied" className="nav-link">View Applied Internships</Link></li>
+                        <li className="nav-item"><Link to="/student/proprofile" className="nav-link">My Profile</Link></li>
+                        <li className="nav-item"><Link to="/PROMyInternships" className="nav-link">My Internships</Link></li>
+                        <li className="nav-item"><Link to="/student/appointments" className="nav-link">Appointments</Link></li>
+                        <li className="nav-item"><Link to="/student/Calls" className="nav-link">Calls</Link></li>
+                        <li className="nav-item"><Link to="/student/viewed" className="nav-link">Viewed my profile</Link></li>
+                        <li className="nav-item"><Link to="/student/assessment" className="nav-link">Online assessments</Link></li>
+                        <li className="nav-item"><Link to="/student/workshop" className="nav-link">Workshop</Link></li>
                         <li className="nav-item active">Pre-Recorded workshops</li>
                     </ul>
                 </aside>
@@ -133,10 +152,7 @@ const PROPreRecordedWorkshops = () => {
                                         <div className="workshop-details">
                                             <p><strong>Speaker:</strong> {workshop.speakerBio}</p>
                                             <p><strong>Full Details:</strong> {workshop.details}</p>
-                                            <button 
-                                                className="register-button" 
-                                                onClick={() => handlePlayWorkshop(workshop)}
-                                            >
+                                            <button className="register-button" onClick={() => handlePlayWorkshop(workshop)}>
                                                 Play Workshop
                                             </button>
                                         </div>
@@ -153,59 +169,15 @@ const PROPreRecordedWorkshops = () => {
                     <div className="modal-content">
                         <div className="modal-header">
                             <h3>Pre-Recorded: {activeWorkshop.name}</h3>
-                            <button 
-                                className="cancel-button" 
-                                onClick={handleCancelWorkshop}
-                                title="Close Workshop"
-                                aria-label="Close Workshop"
-                            >
-                                ✕
-                            </button>
+                            <button className="cancel-button" onClick={handleCancelWorkshop}>✕</button>
                         </div>
-                        <div style={{ 
-                            background: "#000", 
-                            height: "300px", 
-                            marginBottom: "1rem", 
-                            color: "white", 
-                            display: "flex", 
-                            alignItems: "center", 
-                            justifyContent: "center",
-                            position: "relative"
-                        }}>
+                        <div className="video-placeholder">
                             <p>🎥 Video Player - {activeWorkshop.name}</p>
-                            <div style={{
-                                position: "absolute",
-                                bottom: "10px",
-                                left: "10px",
-                                display: "flex",
-                                gap: "10px"
-                            }}>
-                                <button 
-                                    onClick={() => isPlaying ? handlePauseWorkshop() : handlePlayWorkshop(activeWorkshop)}
-                                    style={{
-                                        padding: "5px 15px",
-                                        background: "#4CAF50",
-                                        color: "white",
-                                        border: "none",
-                                        borderRadius: "4px",
-                                        cursor: "pointer"
-                                    }}
-                                >
+                            <div className="video-controls">
+                                <button onClick={() => isPlaying ? handlePauseWorkshop() : handlePlayWorkshop(activeWorkshop)}>
                                     {isPlaying ? "Pause" : "Play"}
                                 </button>
-                                <button 
-                                    onClick={handleStopWorkshop}
-                                    style={{
-                                        padding: "5px 15px",
-                                        background: "#f44336",
-                                        color: "white",
-                                        border: "none",
-                                        borderRadius: "4px",
-                                        cursor: "pointer"
-                                    }}
-                                >
-                                    Stop
-                                </button>
+                                <button onClick={handleStopWorkshop}>Stop</button>
                             </div>
                         </div>
                         <div className="live-section">
@@ -219,33 +191,9 @@ const PROPreRecordedWorkshops = () => {
                                 />
                             </div>
                         </div>
-                        <div style={{ display: "flex", justifyContent: "flex-end", gap: "10px", marginTop: "1rem" }}>
-                            <button 
-                                onClick={handleCancelWorkshop}
-                                style={{
-                                    padding: "10px",
-                                    background: "#f44336",
-                                    color: "white",
-                                    border: "none",
-                                    borderRadius: "8px",
-                                    cursor: "pointer"
-                                }}
-                            >
-                                Cancel
-                            </button>
-                            <button 
-                                onClick={handleFinishWorkshop}
-                                style={{
-                                    padding: "10px",
-                                    background: "#4CAF50",
-                                    color: "white",
-                                    border: "none",
-                                    borderRadius: "8px",
-                                    cursor: "pointer"
-                                }}
-                            >
-                                Finish Workshop
-                            </button>
+                        <div className="modal-actions">
+                            <button onClick={handleCancelWorkshop}>Cancel</button>
+                            <button onClick={handleFinishWorkshop}>Finish Workshop</button>
                         </div>
                     </div>
                 </div>
@@ -257,17 +205,12 @@ const PROPreRecordedWorkshops = () => {
                         {!submittedFeedback ? (
                             <>
                                 <h3>Rate this Workshop</h3>
-                                <div style={{ marginBottom: "1rem" }}>
-                                    <label>Rating: </label>
+                                <div className="rating-stars">
                                     {[1, 2, 3, 4, 5].map((star) => (
                                         <span
                                             key={star}
                                             onClick={() => setRating(star)}
-                                            style={{
-                                                cursor: "pointer",
-                                                fontSize: "24px",
-                                                color: star <= rating ? "#ffcc00" : "#ccc"
-                                            }}
+                                            style={{ cursor: "pointer", fontSize: "24px", color: star <= rating ? "#ffcc00" : "#ccc" }}
                                         >
                                             ★
                                         </span>
@@ -278,21 +221,8 @@ const PROPreRecordedWorkshops = () => {
                                     value={feedback}
                                     onChange={(e) => setFeedback(e.target.value)}
                                     placeholder="Leave your feedback here..."
-                                    style={{ width: "100%", padding: "10px", borderRadius: "8px", marginBottom: "1rem" }}
                                 />
-                                <button 
-                                    onClick={handleSubmitFeedback}
-                                    style={{
-                                        padding: "10px 20px",
-                                        background: "#4CAF50",
-                                        color: "white",
-                                        border: "none",
-                                        borderRadius: "8px",
-                                        cursor: "pointer"
-                                    }}
-                                >
-                                    Submit Feedback
-                                </button>
+                                <button onClick={handleSubmitFeedback}>Submit Feedback</button>
                             </>
                         ) : (
                             <h3 style={{ textAlign: "center", color: "#4CAF50" }}>✅ Thank you for your feedback!</h3>
