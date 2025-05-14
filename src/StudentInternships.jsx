@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import './CSS/StudentDashboard.css';
 import './CSS/browseInternships.css';
+import { useNavigate } from 'react-router-dom';
+import { FiBell } from 'react-icons/fi';
+
 
 const StudentInternships = () => {
     const [internships] = useState([
@@ -52,6 +55,17 @@ const StudentInternships = () => {
         setSearchTerm(e.target.value);
     };
 
+    const navigate = useNavigate();
+
+    const handleBellClick = () => {
+        navigate('/StudentNotifications');
+    };
+
+    const handleLogout = () => {
+        navigate('/');
+    };
+
+
     const handleFilterChange = (e) => {
         const { name, value } = e.target;
         setFilter({ ...filter, [name]: value });
@@ -84,13 +98,18 @@ const StudentInternships = () => {
     return (
         <div className="dashboard-wrapper">
             <header className="dashboard-header">
-                <div className="header-left">
-                    <h1 className="dashboard-title">Student Dashboard</h1>
-                </div>
-                <div className="header-right">
-                    <a href="/" className="signout-button">Sign Out</a>
-                </div>
-            </header>
+            <h1 className="dashboard-title">Browse Internships</h1>
+            <div className="dashboard-actions">
+                <button className="notification-bell" onClick={handleBellClick} title="Notifications">
+                    <FiBell size={24} />
+                    <span className="notification-count">3</span>
+                </button>
+                <button className="signout-button" onClick={handleLogout}>
+                    Sign Out
+                </button>
+            </div>
+        </header>
+
             <div className="dashboard-content">
                 <aside className="dashboard-sidebar">
                     <h2 className="sidebar-title">Navigation</h2>
@@ -104,9 +123,6 @@ const StudentInternships = () => {
                 </aside>
                 <main className="dashboard-main">
                     <div className="browser-wrapper">
-                        <header className="browser-header">
-                            <h1 className="browser-title">Browse Internships</h1>
-                        </header>
                         <main className="browser-main">
                             <section className="filter-section">
                                 <h2 className="section-title">Search and Filter</h2>

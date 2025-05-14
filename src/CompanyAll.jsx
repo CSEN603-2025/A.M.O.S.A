@@ -96,7 +96,7 @@ const CompanyAll = () => {
     return (
         <div className="dashboard-wrapper">
             <header className="dashboard-header">
-            <h1 className="dashboard-title">All Internships</h1>
+            <h1 className="dashboard-title">Browse Internships</h1>
             <div className="dashboard-actions">
                 <button className="notification-bell" onClick={handleBellClick} title="Notifications">
                     <FiBell size={24} />
@@ -122,9 +122,6 @@ const CompanyAll = () => {
                 </aside>
                 <main className="dashboard-main">
                     <div className="browser-wrapper">
-                        <header className="browser-header">
-                            <h1 className="browser-title">Browse Internships</h1>
-                        </header>
                         <main className="browser-main">
                             <section className="filter-section">
                                 <h2 className="section-title">Search and Filter</h2>
@@ -189,6 +186,12 @@ const CompanyAll = () => {
                         {selectedInternship && (
                             <div className="modal">
                                 <div className="modal-content">
+                                    <button
+                                        onClick={() => setSelectedInternship(null)}
+                                        className="close-button"
+                                    >
+                                        Close
+                                    </button>
                                     <h2>{selectedInternship.jobTitle}</h2>
                                     <p><strong>Company:</strong> {selectedInternship.companyName}</p>
                                     <p><strong>Duration:</strong> {selectedInternship.duration}</p>
@@ -197,13 +200,8 @@ const CompanyAll = () => {
                                     <p><strong>Industry:</strong> {selectedInternship.industry}</p>
                                     <p><strong>Skills:</strong> {selectedInternship.skills}</p>
                                     <p><strong>Description:</strong> {selectedInternship.description}</p>
-                                    <button
-                                        onClick={() => setSelectedInternship(null)}
-                                        className="close-button"
-                                    >
-                                        Close
-                                    </button>
                                 </div>
+
                             </div>
                         )}
                     </div>

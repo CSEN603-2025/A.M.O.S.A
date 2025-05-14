@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
 import './CSS/StudentDashboard.css';
 import './CSS/browseInternships.css';
+import { useNavigate } from 'react-router-dom';
+import { FiBell } from 'react-icons/fi';
+
 
 const StudentApplied = () => {
     const [appliedIds, setAppliedIds] = useState([]);
@@ -25,16 +28,34 @@ const StudentApplied = () => {
 
     const appliedInternships = internships.filter((internship) => appliedIds.includes(internship.id));
 
+    const navigate = useNavigate();
+
+    const handleBellClick = () => {
+        navigate('/StudentNotications');
+    };
+
+    const handleLogout = () => {
+        navigate('/');
+    };
+
+
+
     return (
         <div className="dashboard-wrapper">
             <header className="dashboard-header">
-                <div className="header-left">
-                    <h1 className="dashboard-title">Student Dashboard</h1>
-                </div>
-                <div className="header-right">
-                    <a href="/" className="signout-button">Sign Out</a>
-                </div>
-            </header>
+            <h1 className="dashboard-title">View Applied Internships</h1>
+            <div className="dashboard-actions">
+                <button className="notification-bell" onClick={handleBellClick} title="Notifications">
+                    <FiBell size={24} />
+                    <span className="notification-count">3</span>
+                </button>
+                <button className="signout-button" onClick={handleLogout}>
+                    Sign Out
+                </button>
+            </div>
+        </header>
+
+
             <div className="dashboard-content">
                 <aside className="dashboard-sidebar">
                     <h2 className="sidebar-title">Navigation</h2>
@@ -48,9 +69,6 @@ const StudentApplied = () => {
                 </aside>
                 <main className="dashboard-main">
                     <div className="browser-wrapper">
-                        <header className="browser-header">
-                            <h1 className="browser-title">My Applications</h1>
-                        </header>
                         <main className="browser-main">
                             <section className="list-section">
                                 <h2 className="section-title">Applied Internships</h2>

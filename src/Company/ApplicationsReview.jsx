@@ -172,7 +172,7 @@ const ApplicationsReview = () => {
             {selectedApplication && (
                 <div className="modal">
                     <div className="modal-content">
-                        <h2>Applicant Details</h2>
+                        <h2>Details</h2>
                         <p><strong>Name:</strong> {selectedApplication.applicantName}</p>
                         <p><strong>Internship:</strong> {selectedApplication.internshipTitle}</p>
                         <p><strong>Status:</strong> {selectedApplication.status}</p>

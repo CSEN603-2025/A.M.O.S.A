@@ -1,27 +1,39 @@
 import React from "react";
 import './CSS/StudentDashboard.css';
-import { FiBell } from 'react-icons/fi'; // Bell icon
+import { useNavigate } from 'react-router-dom';
+import { FiBell } from 'react-icons/fi';
+
 
 const StudentDashboard = () => {
+    const navigate = useNavigate();
+
+    const handleBellClick = () => {
+        navigate('/StudentNotifications');
+    };
+
+    const handleLogout = () => {
+        navigate('/');
+    };
+
     return (
         <div className="dashboard-wrapper">
             <header className="dashboard-header">
-                <div className="header-left">
-                    <h1 className="dashboard-title">Student Dashboard</h1>
-                </div>
-                <div className="header-right">
-                    <a href="/" className="signout-button">Sign Out</a>
-                </div>
-            </header>
+            <h1 className="dashboard-title">Student Dashboard</h1>
+            <div className="dashboard-actions">
+                <button className="notification-bell" onClick={handleBellClick} title="Notifications">
+                    <FiBell size={24} />
+                    <span className="notification-count">3</span>
+                </button>
+                <button className="signout-button" onClick={handleLogout}>
+                    Sign Out
+                </button>
+            </div>
+        </header>
+
             <div className="dashboard-content">
                 <aside className="dashboard-sidebar">
-                    {/* Notification Icon Section */}
-                    <div className="notification-widget">
-                        <a href="/StudentNotifications" className="notification-link">
-                            <FiBell size={18} className="bell-icon" />
-                            <span>Notifications</span>
-                        </a>
-                    </div>
+
+    
 
                     <h2 className="sidebar-title">Navigation</h2>
                     <ul className="nav-list">
