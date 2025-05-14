@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+﻿import React, { useState } from "react";
 import './CSS/StudentDashboard.css';
 import { FiBell } from 'react-icons/fi';
 import { FaPhone } from "react-icons/fa";
@@ -10,7 +10,7 @@ const internshipsData = [
     { id: 3, company: "DataWorks", status: "Current", duration: "Jan 2025 - Present", title: "Data Analyst Intern", current: true }
 ];
 
-const courses = ["Software Engineering", "Database", "Management", "Computer System Architecture","Operating Systems"];
+const courses = ["Software Engineering", "Database", "Management", "Computer System Architecture", "Operating Systems"];
 
 
 
@@ -146,7 +146,7 @@ const PROMyInternships = () => {
 
             <div className="dashboard-content">
                 <aside className="dashboard-sidebar">
-                    
+
                     <h2 className="sidebar-title">Navigation</h2>
                     <ul className="nav-list">
                         <li className="nav-item"><a href="/PROStudentDashboard" className="nav-link">Home</a></li>
@@ -226,67 +226,67 @@ const PROMyInternships = () => {
                                         </div>
 
                                         <div className="report-section">
-                                                <h3>Report</h3>
-                                                <label>Title</label>
-                                                <textarea
-                                                    placeholder="Title"
-                                                    value={reports[internship.id]?.conclusion || ""}
-                                                    onChange={e => setReports(prev => ({
-                                                        ...prev,
-                                                        [internship.id]: { ...prev[internship.id], conclusion: e.target.value }
-                                                    }))}
-                                                    readOnly={!isReportEditable(internship.id)}
-                                                />
-                                                <label>Introduction</label>
-                                                <textarea
-                                                    placeholder="Introduction"
-                                                    value={reports[internship.id]?.introduction || ""}
-                                                    onChange={e => setReports(prev => ({
-                                                        ...prev,
-                                                        [internship.id]: { ...prev[internship.id], introduction: e.target.value }
-                                                    }))}
-                                                    readOnly={!isReportEditable(internship.id)}
-                                                />
-                                                <label>Body</label>
-                                                <textarea
-                                                    placeholder="Body"
-                                                    value={reports[internship.id]?.body || ""}
-                                                    onChange={e => setReports(prev => ({
-                                                        ...prev,
-                                                        [internship.id]: { ...prev[internship.id], body: e.target.value }
-                                                    }))}
-                                                    readOnly={!isReportEditable(internship.id)}
-                                                />
+                                            <h3>Report</h3>
+                                            <label>Title</label>
+                                            <textarea
+                                                placeholder="Title"
+                                                value={reports[internship.id]?.conclusion || ""}
+                                                onChange={e => setReports(prev => ({
+                                                    ...prev,
+                                                    [internship.id]: { ...prev[internship.id], conclusion: e.target.value }
+                                                }))}
+                                                readOnly={!isReportEditable(internship.id)}
+                                            />
+                                            <label>Introduction</label>
+                                            <textarea
+                                                placeholder="Introduction"
+                                                value={reports[internship.id]?.introduction || ""}
+                                                onChange={e => setReports(prev => ({
+                                                    ...prev,
+                                                    [internship.id]: { ...prev[internship.id], introduction: e.target.value }
+                                                }))}
+                                                readOnly={!isReportEditable(internship.id)}
+                                            />
+                                            <label>Body</label>
+                                            <textarea
+                                                placeholder="Body"
+                                                value={reports[internship.id]?.body || ""}
+                                                onChange={e => setReports(prev => ({
+                                                    ...prev,
+                                                    [internship.id]: { ...prev[internship.id], body: e.target.value }
+                                                }))}
+                                                readOnly={!isReportEditable(internship.id)}
+                                            />
 
-                                                <div className="course-selection">
-                                                    <h4>Courses that helped:</h4>
-                                                    {courses.map(course => (
-                                                        <div key={course}>
-                                                            <label>
-                                                                <input
-                                                                    type="checkbox"
-                                                                    checked={helpfulCourses[internship.id]?.includes(course) || false}
-                                                                    onChange={() => handleCourseToggle(course, internship.id)}
-                                                                    disabled={!isReportEditable(internship.id)}
-                                                                />
-                                                                {course}
-                                                            </label>
-                                                        </div>
-                                                    ))}
-                                                </div>
-
-                                                {!submitted[internship.id]?.report ? (
-                                                    <button onClick={() => handleSubmitReport(internship.id)}>Submit Report</button>
-                                                ) : editable[internship.id]?.report ? (
-                                                    <button onClick={() => handleSaveReport(internship.id)}>Save</button>
-                                                ) : (
-                                                    <>
-                                                        <button onClick={() => handleEditReport(internship.id)}>Edit</button>
-                                                        <button onClick={() => handleDeleteReport(internship.id)}>Delete</button>
-                                                        <button onClick={() => downloadReport(internship.id)}>Download Report</button>
-                                                    </>
-                                                )}
+                                            <div className="course-selection">
+                                                <h4>Courses that helped:</h4>
+                                                {courses.map(course => (
+                                                    <div key={course}>
+                                                        <label>
+                                                            <input
+                                                                type="checkbox"
+                                                                checked={helpfulCourses[internship.id]?.includes(course) || false}
+                                                                onChange={() => handleCourseToggle(course, internship.id)}
+                                                                disabled={!isReportEditable(internship.id)}
+                                                            />
+                                                            {course}
+                                                        </label>
+                                                    </div>
+                                                ))}
                                             </div>
+
+                                            {!submitted[internship.id]?.report ? (
+                                                <button onClick={() => handleSubmitReport(internship.id)}>Submit Report</button>
+                                            ) : editable[internship.id]?.report ? (
+                                                <button onClick={() => handleSaveReport(internship.id)}>Save</button>
+                                            ) : (
+                                                <>
+                                                    <button onClick={() => handleEditReport(internship.id)}>Edit</button>
+                                                    <button onClick={() => handleDeleteReport(internship.id)}>Delete</button>
+                                                    <button onClick={() => downloadReport(internship.id)}>Download Report</button>
+                                                </>
+                                            )}
+                                        </div>
 
                                     </div>
                                 )}
