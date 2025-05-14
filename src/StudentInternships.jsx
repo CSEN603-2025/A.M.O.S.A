@@ -102,7 +102,7 @@ const StudentInternships = () => {
             <div className="dashboard-actions">
                 <button className="notification-bell" onClick={handleBellClick} title="Notifications">
                     <FiBell size={24} />
-                    <span className="notification-count">3</span>
+                    <span className="notification-count">4</span>
                 </button>
                 <button className="signout-button" onClick={handleLogout}>
                     Sign Out
