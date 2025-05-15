@@ -1,45 +1,131 @@
 import React from "react";
 import './CSS/StudentDashboard.css';
-import { FiBell } from 'react-icons/fi'; // Bell icon
+import { FiBell, FiBriefcase } from 'react-icons/fi'; // Bell icon
 import StudentLayout from './components/StudentLayout';
 
 const StudentDashboard = () => {
     return (
-       <StudentLayout>
-                <main className="dashboard-main">
-                    <section className="recommendations-section">
-                        <h2 className="section-title">Internship Recommendations</h2>
-                        <ul>
-                            <li>Software Engineer Intern at TechCorp</li>
-                            <li>Marketing Intern at Marketify</li>
-                            <li>Data Analyst Intern at DataWorks</li>
-                        </ul>
-                    </section>
+        <StudentLayout>
+            <main className="main-content" aria-label="Main Content">
+                <h1 className="main-welcome" style={{ marginTop: 0, marginBottom: 32 }}>Student Dashboard</h1>
 
-                    <section className="video-section">
-                        <h2 className="section-title">Introduction Video</h2>
-                        <div className="video-placeholder">
-                            <p>Video cannot be played. No video link provided.</p>
-                            <button className="play-button" disabled>Play</button>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24, width: '100%' }}>
+                    {/* Recommendations Section */}
+                    <div className="internship-item" style={{ background: '#fff', borderRadius: 12, boxShadow: '0 2px 8px rgba(30,41,59,0.06)', padding: 24, border: '1px solid var(--border)' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 16 }}>
+                            <FiBriefcase style={{ color: 'var(--primary)', fontSize: 22 }} />
+                            <span style={{ fontWeight: 700, fontSize: '1.1rem' }}>Internship Recommendations</span>
                         </div>
-                    </section>
+                        <div style={{ display: 'grid', gap: 12 }}>
+                            <div style={{
+                                padding: '12px 16px',
+                                background: 'rgba(0, 196, 159, 0.1)',
+                                borderRadius: 8,
+                                fontSize: 15
+                            }}>
+                                Software Engineer Intern at TechCorp
+                            </div>
+                            <div style={{
+                                padding: '12px 16px',
+                                background: 'transparent',
+                                borderRadius: 8,
+                                fontSize: 15
+                            }}>
+                                Marketing Intern at Marketify
+                            </div>
+                            <div style={{
+                                padding: '12px 16px',
+                                background: 'rgba(0, 196, 159, 0.1)',
+                                borderRadius: 8,
+                                fontSize: 15
+                            }}>
+                                Data Analyst Intern at DataWorks
+                            </div>
+                        </div>
+                    </div>
 
-                    <section className="status-section">
-                        <h2 className="section-title">Current Internship</h2>
-                        <p>Status: Active</p>
-                        <p>Company: TechCorp</p>
-                        <p>Role: Software Engineer Intern</p>
-                    </section>
+                    {/* Video Section */}
+                    <div className="internship-item" style={{ background: '#fff', borderRadius: 12, boxShadow: '0 2px 8px rgba(30,41,59,0.06)', padding: 24, border: '1px solid var(--border)' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 16 }}>
+                            <FiBriefcase style={{ color: 'var(--primary)', fontSize: 22 }} />
+                            <span style={{ fontWeight: 700, fontSize: '1.1rem' }}>Introduction Video</span>
+                        </div>
+                        <div style={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            height: '200px',
+                            background: 'rgba(0, 196, 159, 0.1)',
+                            borderRadius: 8,
+                            padding: 16
+                        }}>
+                            <p style={{ marginBottom: 16, textAlign: 'center' }}>Video cannot be played. No video link provided.</p>
+                            <button
+                                className="play-button"
+                                disabled
+                                style={{
+                                    background: '#ccc',
+                                    color: 'white',
+                                    border: 'none',
+                                    padding: '10px 24px',
+                                    borderRadius: 8,
+                                    cursor: 'not-allowed',
+                                    fontWeight: 600
+                                }}
+                            >
+                                Play
+                            </button>
+                        </div>
+                    </div>
 
-                    <section className="deadlines-section">
-                        <h2 className="section-title">Upcoming Deadlines</h2>
-                        <ul>
-                            <li>Submit Internship Report - May 15, 2025</li>
-                            <li>Apply for Summer Internships - June 1, 2025</li>
-                        </ul>
-                    </section>
-                </main>
-           </StudentLayout>
+                    {/* Current Internship Section */}
+                    <div className="internship-item" style={{ background: '#fff', borderRadius: 12, boxShadow: '0 2px 8px rgba(30,41,59,0.06)', padding: 24, border: '1px solid var(--border)' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 16 }}>
+                            <FiBriefcase style={{ color: 'var(--primary)', fontSize: 22 }} />
+                            <span style={{ fontWeight: 700, fontSize: '1.1rem' }}>Current Internship</span>
+                        </div>
+                        <div style={{ display: 'grid', gap: 12 }}>
+                            <div style={{ fontSize: 15 }}><strong>Status:</strong> <span style={{ color: '#00C49F', fontWeight: 600 }}>Active</span></div>
+                            <div style={{ fontSize: 15 }}><strong>Company:</strong> TechCorp</div>
+                            <div style={{ fontSize: 15 }}><strong>Role:</strong> Software Engineer Intern</div>
+                        </div>
+                    </div>
+
+                    {/* Deadlines Section */}
+                    <div className="internship-item" style={{ background: '#fff', borderRadius: 12, boxShadow: '0 2px 8px rgba(30,41,59,0.06)', padding: 24, border: '1px solid var(--border)' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 16 }}>
+                            <FiBriefcase style={{ color: 'var(--primary)', fontSize: 22 }} />
+                            <span style={{ fontWeight: 700, fontSize: '1.1rem' }}>Upcoming Deadlines</span>
+                        </div>
+                        <div style={{ display: 'grid', gap: 16 }}>
+                            <div style={{
+                                display: 'flex',
+                                justifyContent: 'space-between',
+                                alignItems: 'center',
+                                padding: '12px 16px',
+                                background: 'rgba(0, 196, 159, 0.1)',
+                                borderRadius: 8
+                            }}>
+                                <div style={{ fontSize: 15 }}>Submit Internship Report</div>
+                                <div style={{ fontSize: 15, fontWeight: 600 }}>May 15, 2025</div>
+                            </div>
+                            <div style={{
+                                display: 'flex',
+                                justifyContent: 'space-between',
+                                alignItems: 'center',
+                                padding: '12px 16px',
+                                background: 'transparent',
+                                borderRadius: 8
+                            }}>
+                                <div style={{ fontSize: 15 }}>Apply for Summer Internships</div>
+                                <div style={{ fontSize: 15, fontWeight: 600 }}>June 1, 2025</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </StudentLayout>
     );
 };
 
