@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { FiBriefcase, FiClock, FiCheckCircle, FiXCircle } from "react-icons/fi";
 import './CSS/StudentDashboard.css';
 import './CSS/browseInternships.css';
 import ProstudentLayout from "./components/prostudentLayout";
@@ -16,6 +17,7 @@ const PROStudentApplied = () => {
     }, []);
 
     const getStatus = (id) => {
+        // Simple mock status based on ID - in a real app this would come from backend
         const statusMap = {
             1: "Pending",
             2: "Finalized",
@@ -24,57 +26,136 @@ const PROStudentApplied = () => {
         return statusMap[id] || "Rejected";
     };
 
-    const appliedInternships = internships.filter((internship) => appliedIds.includes(internship.id));
+    const getStatusIcon = (id) => {
+        const status = getStatus(id);
+        switch (status) {
+            case "Pending":
+                return <FiClock style={{ color: "#FFBB28" }} />;
+            case "Accepted":
+                return <FiCheckCircle style={{ color: "#00C49F" }} />;
+            case "Rejected":
+                return <FiXCircle style={{ color: "#FF6384" }} />;
+            case "Finalized":
+                return <FiCheckCircle style={{ color: "#0088FE" }} />;
+            default:
+                return <FiClock style={{ color: "#FFBB28" }} />;
+        }
+    };
+
+    const appliedInternships = internships.filter((internship) =>
+        appliedIds.includes(internship.id)
+    );
 
     return (
-       <ProstudentLayout>
-                <main className="dashboard-main">
-                    <div className="browser-wrapper">
-                        <header className="browser-header">
-                            <h1 className="browser-title">My Applications</h1>
-                        </header>
-                        <main className="browser-main">
-                            <section className="list-section">
-                                <h2 className="section-title">Applied Internships</h2>
-                                <ul className="internship-list">
-                                    {appliedInternships.map((internship) => (
-                                        <li
-                                            key={internship.id}
-                                            className="internship-item"
-                                            onClick={() => setSelectedInternship(internship)}
-                                        >
-                                            <p><strong>{internship.jobTitle}</strong> at {internship.companyName}</p>
-                                            <p><strong>Status:</strong> {getStatus(internship.id)}</p>
-                                        </li>
-                                    ))}
-                                </ul>
-                            </section>
-                        </main>
+        <ProstudentLayout>
+            <main className="main-content" aria-label="Main Content">
+                <h1 className="main-welcome" style={{ marginTop: 0, marginBottom: 32 }}>My Applications</h1>
 
-                        {selectedInternship && (
-                            <div className="modal">
-                                <div className="modal-content">
-                                    <h2>{selectedInternship.jobTitle}</h2>
-                                    <p><strong>Company:</strong> {selectedInternship.companyName}</p>
-                                    <p><strong>Duration:</strong> {selectedInternship.duration}</p>
-                                    <p><strong>Paid:</strong> {selectedInternship.paid ? "Yes" : "No"}</p>
-                                    <p><strong>Salary:</strong> {selectedInternship.salary}</p>
-                                    <p><strong>Industry:</strong> {selectedInternship.industry}</p>
-                                    <p><strong>Skills:</strong> {selectedInternship.skills}</p>
-                                    <p><strong>Description:</strong> {selectedInternship.description}</p>
-                                    <p><strong>Status:</strong> {getStatus(selectedInternship.id)}</p>
-
-                                    <button
-                                        onClick={() => setSelectedInternship(null)}
-                                        className="close-button"
-                                    >
-                                        Close
-                                    </button>
+                <div style={{
+                    display: 'grid',
+                    gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))',
+                    gap: 24,
+                    width: '100%'
+                }}>
+                    {appliedInternships.length > 0 ? (
+                        appliedInternships.map((internship) => (
+                            <div
+                                key={internship.id}
+                                className="internship-item"
+                                style={{
+                                    background: '#fff',
+                                    borderRadius: 12,
+                                    boxShadow: '0 2px 8px rgba(30,41,59,0.06)',
+                                    padding: 24,
+                                    cursor: 'pointer',
+                                    border: '1px solid var(--border)',
+                                    height: '100%'
+                                }}
+                                onClick={() => setSelectedInternship(internship)}
+                            >
+                                <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 8 }}>
+                                    <FiBriefcase style={{ color: 'var(--primary)', fontSize: 22 }} />
+                                    <span style={{ fontWeight: 700, fontSize: '1.1rem' }}>{internship.jobTitle}</span>
+                                </div>
+                                <div style={{ fontSize: 14, marginBottom: 4 }}><strong>Company:</strong> {internship.companyName}</div>
+                                <div style={{ fontSize: 14, marginBottom: 4 }}><strong>Duration:</strong> {internship.duration}</div>
+                                <div style={{
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    gap: 6,
+                                    marginTop: 8,
+                                    fontSize: 14,
+                                    fontWeight: 600
+                                }}>
+                                    {getStatusIcon(internship.id)}
+                                    <span>Status: {getStatus(internship.id)}</span>
                                 </div>
                             </div>
-                        )}
+                        ))
+                    ) : (
+                        <div style={{
+                            gridColumn: '1 / -1',
+                            textAlign: 'center',
+                            padding: '40px 0',
+                            color: 'var(--text-light)'
+                        }}>
+                            <p style={{ fontSize: '1.2rem' }}>You haven't applied to any internships yet.</p>
+                        </div>
+                    )}
+                </div>
+
+                {selectedInternship && (
+                    <div className="modal">
+                        <div className="modal-content" style={{
+                            maxWidth: '500px',
+                            width: '90%',
+                            padding: '24px'
+                        }}>
+                            <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                                <button
+                                    onClick={() => setSelectedInternship(null)}
+                                    className="signout-btn"
+                                    style={{
+                                        background: 'var(--primary)',
+                                        marginBottom: '16px'
+                                    }}
+                                >
+                                    Close
+                                </button>
+                            </div>
+                            <h2 style={{ marginBottom: 16 }}>{selectedInternship.jobTitle}</h2>
+                            <div style={{
+                                display: 'grid',
+                                gridTemplateColumns: '1fr 1fr',
+                                gap: '12px',
+                                marginBottom: '16px'
+                            }}>
+                                <div style={{ fontSize: 15 }}><strong>Company:</strong> {selectedInternship.companyName}</div>
+                                <div style={{ fontSize: 15 }}><strong>Duration:</strong> {selectedInternship.duration}</div>
+                                <div style={{ fontSize: 15 }}><strong>Paid:</strong> {selectedInternship.paid ? "Yes" : "No"}</div>
+                                <div style={{ fontSize: 15 }}><strong>Salary:</strong> {selectedInternship.salary}</div>
+                                <div style={{ fontSize: 15 }}><strong>Industry:</strong> {selectedInternship.industry}</div>
+                                <div style={{
+                                    fontSize: 15,
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    gap: 6
+                                }}>
+                                    <strong>Status:</strong>
+                                    {getStatusIcon(selectedInternship.id)}
+                                    <span>{getStatus(selectedInternship.id)}</span>
+                                </div>
+                            </div>
+                            <div style={{ fontSize: 15, marginBottom: 8 }}>
+                                <strong>Skills:</strong> {selectedInternship.skills}
+                            </div>
+                            <div style={{ fontSize: 15, marginBottom: 16 }}>
+                                <strong>Description:</strong> {selectedInternship.description}
+                            </div>
+                        </div>
                     </div>
-                </main>
+                )}
+            </main>
         </ProstudentLayout>
     );
 };

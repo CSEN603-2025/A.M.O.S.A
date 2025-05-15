@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { FiBriefcase, FiDownload } from "react-icons/fi";
 import {
     BarChart,
     Bar,
@@ -16,7 +17,9 @@ import './CSS/SCADOfficeDashboard.css';
 import FacultyLayout from './components/FacultyLayout';
 
 const FacultyStatistics = () => {
-    // Dummy real-time statistics for different cycles
+    const [selectedCycle, setSelectedCycle] = useState("Winter 2024");
+    const [openPopup, setOpenPopup] = useState(false);
+
     const cycleData = {
         "Winter 2024": {
             acceptedReports: 100,
@@ -56,9 +59,6 @@ const FacultyStatistics = () => {
         }
     };
 
-    const [selectedCycle, setSelectedCycle] = useState("Winter 2024");
-    const [openPopup, setOpenPopup] = useState(false);
-
     const handleCycleChange = (e) => {
         setSelectedCycle(e.target.value);
     };
@@ -69,7 +69,7 @@ const FacultyStatistics = () => {
 
     const handleDownload = (stats, cycleName) => {
         const content = `
-SCAD Report - ${cycleName}
+Faculty Report - ${cycleName}
 
 Accepted Reports: ${stats.acceptedReports}
 Rejected Reports: ${stats.rejectedReports}
@@ -90,12 +90,11 @@ ${stats.topCompaniesByCount.map((company, i) => `  ${i + 1}. ${company}`).join("
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
-        a.download = `SCAD_Report_${cycleName.replace(/\s/g, "_")}.txt`;
+        a.download = `Faculty_Report_${cycleName.replace(/\s/g, "_")}.txt`;
         a.click();
         URL.revokeObjectURL(url);
     };
 
-    // Prepare data for reports and charts
     const allCyclesReportsData = Object.keys(cycleData).map(cycle => ({
         name: cycle,
         Accepted: cycleData[cycle].acceptedReports,
@@ -105,7 +104,6 @@ ${stats.topCompaniesByCount.map((company, i) => `  ${i + 1}. ${company}`).join("
 
     const statistics = cycleData[selectedCycle];
 
-    // Pie chart data for selected cycle
     const pieChartData = [
         { name: 'Accepted', value: statistics.acceptedReports },
         { name: 'Rejected', value: statistics.rejectedReports },
@@ -115,122 +113,187 @@ ${stats.topCompaniesByCount.map((company, i) => `  ${i + 1}. ${company}`).join("
     const COLORS = ['#00C49F', '#FF6384', '#FFBB28'];
 
     return (
-      <FacultyLayout>
+        <FacultyLayout>
+            <main className="main-content" aria-label="Main Content">
+                <h1 className="main-welcome" style={{ marginTop: 0, marginBottom: 32 }}>Internship Cycle Statistics</h1>
 
-                <main className="dashboard-main">
-                    <div className="browser-wrapper">
-                        <header className="browser-header">
-                            <h1 className="browser-title">Internship Cycle Statistics</h1>
-                        </header>
-
-                        <main className="browser-main">
-                            <section className="filter-section">
-                                <h2 className="section-title">Select Cycle</h2>
-                                <select
-                                    id="cycleSelect"
-                                    value={selectedCycle}
-                                    onChange={handleCycleChange}
-                                    className="filter-select"
-                                >
-                                    {Object.keys(cycleData).map((cycle) => (
-                                        <option key={cycle} value={cycle}>{cycle}</option>
-                                    ))}
-                                </select>
-                            </section>
-
-                            <section className="list-section">
-                                <h2 className="section-title">Statistics for {selectedCycle}</h2>
-
-                                <div className="chart-container">
-                                    <h3>Reports Across Cycles</h3>
-                                    <ResponsiveContainer width="100%" height={300}>
-                                        <BarChart data={allCyclesReportsData}>
-                                            <CartesianGrid strokeDasharray="3 3" />
-                                            <XAxis dataKey="name" />
-                                            <YAxis />
-                                            <Tooltip />
-                                            <Legend />
-                                            <Bar dataKey="Accepted" fill="#00C49F" />
-                                            <Bar dataKey="Rejected" fill="#FF6384" />
-                                            <Bar dataKey="Flagged" fill="#FFBB28" />
-                                        </BarChart>
-                                    </ResponsiveContainer>
-                                </div>
-
-                                <div className="chart-container">
-                                    <h3>Report Distribution</h3>
-                                    <ResponsiveContainer width="100%" height={300}>
-                                        <PieChart>
-                                            <Pie
-                                                data={pieChartData}
-                                                cx="50%"
-                                                cy="50%"
-                                                labelLine={false}
-                                                outerRadius={80}
-                                                fill="#8884d8"
-                                                dataKey="value"
-                                                label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
-                                            >
-                                                {pieChartData.map((entry, index) => (
-                                                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                                                ))}
-                                            </Pie>
-                                            <Tooltip />
-                                            <Legend />
-                                        </PieChart>
-                                    </ResponsiveContainer>
-                                </div>
-
-                                <div className="statistics-details">
-                                    <p><strong>Accepted Reports:</strong> {statistics.acceptedReports}</p>
-                                    <p><strong>Rejected Reports:</strong> {statistics.rejectedReports}</p>
-                                    <p><strong>Flagged Reports:</strong> {statistics.flaggedReports}</p>
-                                    <p><strong>Average Review Time:</strong> {statistics.averageReviewTime}</p>
-                                    <p><strong>Top Courses:</strong> {statistics.topCourses.join(", ")}</p>
-                                    <p><strong>Top Rated Companies:</strong> {statistics.topRatedCompanies.join(", ")}</p>
-                                    <p><strong>Top Companies by Internship Count:</strong> {statistics.topCompaniesByCount.join(", ")}</p>
-                                </div>
-
-                                <button
-                                    className="generate-report-button"
-                                    onClick={handleGenerateReport}
-                                    style={{ marginTop: '20px' }}
-                                >
-                                    Generate Report
-                                </button>
-                            </section>
-                        </main>
-                    </div>
-                </main>
-            
-
-            {openPopup && (
-                <div className="workshop-modal-backdrop">
-                    <div className="workshop-modal">
-                        <div className="modal-buttons">
-                            <button onClick={() => setOpenPopup(false)}>Close</button>
-                        </div>
-                        <h2>Generated Report for {selectedCycle}</h2>
-                        <div className="report-content">
-                            <p><strong>Accepted Reports:</strong> {statistics.acceptedReports}</p>
-                            <p><strong>Rejected Reports:</strong> {statistics.rejectedReports}</p>
-                            <p><strong>Flagged Reports:</strong> {statistics.flaggedReports}</p>
-                            <p><strong>Average Review Time:</strong> {statistics.averageReviewTime}</p>
-                            <p><strong>Top Courses:</strong> {statistics.topCourses.join(", ")}</p>
-                            <p><strong>Top Rated Companies:</strong> {statistics.topRatedCompanies.join(", ")}</p>
-                            <p><strong>Top Companies by Internship Count:</strong> {statistics.topCompaniesByCount.join(", ")}</p>
-                        </div>
-                        <button
-                            className="download-button"
-                            onClick={() => handleDownload(statistics, selectedCycle)}
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%', marginBottom: 24 }}>
+                    <h2 className="section-title" style={{ margin: 0 }}>Cycle Statistics</h2>
+                    <div style={{ display: 'flex', gap: 16 }}>
+                        <select
+                            id="cycleSelect"
+                            value={selectedCycle}
+                            onChange={handleCycleChange}
+                            style={{
+                                padding: '8px 12px',
+                                borderRadius: 8,
+                                border: '1px solid var(--border)',
+                                backgroundColor: 'white',
+                                fontSize: 14,
+                                cursor: 'pointer'
+                            }}
                         >
-                            Download Report
+                            {Object.keys(cycleData).map((cycle) => (
+                                <option key={cycle} value={cycle}>{cycle}</option>
+                            ))}
+                        </select>
+                        <button
+                            onClick={handleGenerateReport}
+                            style={{
+                                background: 'var(--primary)',
+                                color: 'white',
+                                border: 'none',
+                                padding: '8px 16px',
+                                borderRadius: 8,
+                                cursor: 'pointer',
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: 8,
+                                fontWeight: 600,
+                                fontSize: 14
+                            }}
+                        >
+                            <FiDownload size={16} /> Generate Report
                         </button>
                     </div>
                 </div>
-            )}
 
-          
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24, width: '100%', marginBottom: 24 }}>
+                    <div className="internship-item" style={{ background: '#fff', borderRadius: 12, boxShadow: '0 2px 8px rgba(30,41,59,0.06)', padding: 24, border: '1px solid var(--border)' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 16 }}>
+                            <FiBriefcase style={{ color: 'var(--primary)', fontSize: 22 }} />
+                            <span style={{ fontWeight: 700, fontSize: '1.1rem' }}>Reports Overview</span>
+                        </div>
+                        <ResponsiveContainer width="100%" height={300}>
+                            <BarChart data={allCyclesReportsData}>
+                                <CartesianGrid strokeDasharray="3 3" />
+                                <XAxis dataKey="name" />
+                                <YAxis />
+                                <Tooltip />
+                                <Legend />
+                                <Bar dataKey="Accepted" fill="#00C49F" />
+                                <Bar dataKey="Rejected" fill="#FF6384" />
+                                <Bar dataKey="Flagged" fill="#FFBB28" />
+                            </BarChart>
+                        </ResponsiveContainer>
+                    </div>
+
+                    <div className="internship-item" style={{ background: '#fff', borderRadius: 12, boxShadow: '0 2px 8px rgba(30,41,59,0.06)', padding: 24, border: '1px solid var(--border)' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 16 }}>
+                            <FiBriefcase style={{ color: 'var(--primary)', fontSize: 22 }} />
+                            <span style={{ fontWeight: 700, fontSize: '1.1rem' }}>Report Distribution ({selectedCycle})</span>
+                        </div>
+                        <ResponsiveContainer width="100%" height={300}>
+                            <PieChart>
+                                <Pie
+                                    data={pieChartData}
+                                    cx="50%"
+                                    cy="50%"
+                                    labelLine={false}
+                                    outerRadius={80}
+                                    fill="#8884d8"
+                                    dataKey="value"
+                                    label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                                >
+                                    {pieChartData.map((entry, index) => (
+                                        <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                                    ))}
+                                </Pie>
+                                <Tooltip />
+                                <Legend />
+                            </PieChart>
+                        </ResponsiveContainer>
+                    </div>
+                </div>
+
+                <div className="internship-item" style={{ background: '#fff', borderRadius: 12, boxShadow: '0 2px 8px rgba(30,41,59,0.06)', padding: 24, border: '1px solid var(--border)' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 16 }}>
+                        <FiBriefcase style={{ color: 'var(--primary)', fontSize: 22 }} />
+                        <span style={{ fontWeight: 700, fontSize: '1.1rem' }}>Detailed Statistics for {selectedCycle}</span>
+                    </div>
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24 }}>
+                        <div style={{ display: 'grid', gap: 12 }}>
+                            <div style={{ fontSize: 15 }}><strong>Accepted Reports:</strong> {statistics.acceptedReports}</div>
+                            <div style={{ fontSize: 15 }}><strong>Rejected Reports:</strong> {statistics.rejectedReports}</div>
+                            <div style={{ fontSize: 15 }}><strong>Flagged Reports:</strong> {statistics.flaggedReports}</div>
+                            <div style={{ fontSize: 15 }}><strong>Average Review Time:</strong> {statistics.averageReviewTime}</div>
+                        </div>
+                        <div style={{ display: 'grid', gap: 12 }}>
+                            <div style={{ fontSize: 15 }}><strong>Top Courses:</strong> {statistics.topCourses.join(", ")}</div>
+                            <div style={{ fontSize: 15 }}><strong>Top Rated Companies:</strong> {statistics.topRatedCompanies.join(", ")}</div>
+                            <div style={{ fontSize: 15 }}><strong>Top Companies by Count:</strong> {statistics.topCompaniesByCount.join(", ")}</div>
+                        </div>
+                    </div>
+                </div>
+
+                {openPopup && (
+                    <div style={{
+                        position: 'fixed',
+                        top: 0,
+                        left: 0,
+                        right: 0,
+                        bottom: 0,
+                        background: 'rgba(0,0,0,0.5)',
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        zIndex: 1000
+                    }}>
+                        <div style={{
+                            background: '#fff',
+                            borderRadius: 12,
+                            padding: 24,
+                            maxWidth: 800,
+                            width: '90%',
+                            boxShadow: '0 4px 20px rgba(0,0,0,0.1)'
+                        }}>
+                            <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                                <button onClick={() => setOpenPopup(false)} style={{
+                                    background: '#FF6384',
+                                    color: 'white',
+                                    border: 'none',
+                                    padding: '8px 16px',
+                                    borderRadius: 8,
+                                    cursor: 'pointer',
+                                    fontWeight: 600
+                                }}>
+                                    Close
+                                </button>
+                            </div>
+                            <h2 style={{ marginBottom: 16 }}>Generated Report for {selectedCycle}</h2>
+                            <div style={{ marginBottom: 24 }}>
+                                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
+                                    <div style={{ fontSize: 15 }}><strong>Accepted Reports:</strong> {statistics.acceptedReports}</div>
+                                    <div style={{ fontSize: 15 }}><strong>Rejected Reports:</strong> {statistics.rejectedReports}</div>
+                                    <div style={{ fontSize: 15 }}><strong>Flagged Reports:</strong> {statistics.flaggedReports}</div>
+                                    <div style={{ fontSize: 15 }}><strong>Average Review Time:</strong> {statistics.averageReviewTime}</div>
+                                    <div style={{ fontSize: 15 }}><strong>Top Courses:</strong> {statistics.topCourses.join(", ")}</div>
+                                    <div style={{ fontSize: 15 }}><strong>Top Rated Companies:</strong> {statistics.topRatedCompanies.join(", ")}</div>
+                                    <div style={{ fontSize: 15 }}><strong>Top Companies by Count:</strong> {statistics.topCompaniesByCount.join(", ")}</div>
+                                </div>
+                            </div>
+                            <button
+                                onClick={() => handleDownload(statistics, selectedCycle)}
+                                style={{
+                                    background: '#00C49F',
+                                    color: 'white',
+                                    border: 'none',
+                                    padding: '10px 24px',
+                                    borderRadius: 8,
+                                    cursor: 'pointer',
+                                    fontWeight: 600,
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    gap: 8,
+                                    margin: '0 auto'
+                                }}
+                            >
+                                <FiDownload size={16} /> Download Report
+                            </button>
+                        </div>
+                    </div>
+                )}
+            </main>
         </FacultyLayout>
     );
 };

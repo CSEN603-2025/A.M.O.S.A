@@ -1,7 +1,7 @@
 import React, { useState } from "react";
+import { FiClipboard, FiAward } from "react-icons/fi";
 import "./CSS/SCADOfficeDashboard.css";
-import "./CSS/AssessmentModal.css"; // create this file for styling
-import ProstudentLayout from "./components/prostudentLayout";
+import ProstudentLayout from "./components/ProstudentLayout";
 
 const PROAssessment = () => {
     const assessments = [
@@ -67,6 +67,8 @@ const PROAssessment = () => {
     const [openModal, setOpenModal] = useState(null);
     const [selectedAnswers, setSelectedAnswers] = useState({});
     const [scores, setScores] = useState({});
+    const [showAlert, setShowAlert] = useState(false);
+    const [alertMessage, setAlertMessage] = useState("");
 
     const handleOptionChange = (qIndex, value) => {
         setSelectedAnswers({ ...selectedAnswers, [qIndex]: value });
@@ -81,94 +83,225 @@ const PROAssessment = () => {
         setOpenModal(null);
         setSelectedAnswers({});
     };
-    const [showAlert, setShowAlert] = useState(false);
-const [alertMessage, setAlertMessage] = useState("");
 
-const handleShareGrade = (assessmentTitle) => {
-    setAlertMessage(`"${assessmentTitle}" grade has been shared on your profile.`);
-    setShowAlert(true);
-    setTimeout(() => {
-        setShowAlert(false);
-    }, 3000);
-};
+    const handleShareGrade = (assessmentTitle) => {
+        setAlertMessage(`"${assessmentTitle}" grade has been shared on your profile.`);
+        setShowAlert(true);
+        setTimeout(() => {
+            setShowAlert(false);
+        }, 3000);
+    };
 
     return (
-      <ProstudentLayout>
-                {/* Main Content */}
-                <main className="dashboard-main">
-                    <h2>Available Assessments</h2>
-                    <ul className="assessment-list">
+        <ProstudentLayout>
+            <main className="main-content" aria-label="Main Content">
+                <h1 className="main-welcome" style={{ marginTop: 0, marginBottom: 32 }}>Available Assessments</h1>
+
+                <div className="internship-item" style={{
+                    background: '#fff',
+                    borderRadius: 12,
+                    boxShadow: '0 2px 8px rgba(30,41,59,0.06)',
+                    padding: 24,
+                    border: '1px solid var(--border)'
+                }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 16 }}>
+                        <FiClipboard style={{ color: 'var(--primary)', fontSize: 22 }} />
+                        <span style={{ fontWeight: 700, fontSize: '1.1rem' }}>Skill Assessments</span>
+                    </div>
+
+                    <div style={{ display: 'grid', gap: 16 }}>
                         {assessments.map((assessment) => (
-                            <li key={assessment.id} className="assessment-item">
-                                <div className="assessment-header">
-                                    <h3>{assessment.title}</h3>
+                            <div key={assessment.id} style={{
+                                background: '#fff',
+                                borderRadius: 8,
+                                border: '1px solid var(--border)',
+                                padding: 16,
+                                boxShadow: '0 1px 3px rgba(0,0,0,0.1)'
+                            }}>
+                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                    <h3 style={{ margin: 0, fontSize: '1.1rem', color: 'var(--primary)' }}>
+                                        {assessment.title}
+                                    </h3>
                                     <button
-                                        className="complete-button"
                                         onClick={() => setOpenModal(assessment.id)}
+                                        style={{
+                                            background: 'var(--primary)',
+                                            color: 'white',
+                                            border: 'none',
+                                            padding: '8px 16px',
+                                            borderRadius: 6,
+                                            cursor: 'pointer',
+                                            fontWeight: 600
+                                        }}
                                     >
                                         Take Assessment
                                     </button>
                                 </div>
-                                <p className="assessment-meta">Duration: {assessment.duration} • Skills: {assessment.skills}</p>
-                                <p className="assessment-desc">{assessment.description}</p>
+                                <p style={{ margin: '8px 0', color: '#666' }}>{assessment.description}</p>
+                                <div style={{ display: 'flex', gap: 16, fontSize: 14 }}>
+                                    <span><strong>Duration:</strong> {assessment.duration}</span>
+                                    <span><strong>Skills:</strong> {assessment.skills}</span>
+                                </div>
+
                                 {scores[assessment.id] !== undefined && (
-                                    <div className="assessment-results">
-                                        <div className="score-display">
-                                            <span>Your Score: {scores[assessment.id]}%</span>
-                                            <button
-    className="share-button"
-    onClick={() => handleShareGrade(assessment.title)}
->
-    Share Grade on Profile
-</button>
-
+                                    <div style={{
+                                        marginTop: 16,
+                                        paddingTop: 16,
+                                        borderTop: '1px solid var(--border)',
+                                        display: 'flex',
+                                        justifyContent: 'space-between',
+                                        alignItems: 'center'
+                                    }}>
+                                        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                                            <FiAward style={{ color: '#FFD700' }} />
+                                            <span style={{ fontWeight: 600 }}>
+                                                Your Score: <span style={{ color: '#00C49F' }}>{scores[assessment.id]}%</span>
+                                            </span>
                                         </div>
+                                        <button
+                                            onClick={() => handleShareGrade(assessment.title)}
+                                            style={{
+                                                background: 'transparent',
+                                                color: 'var(--primary)',
+                                                border: '1px solid var(--primary)',
+                                                padding: '6px 12px',
+                                                borderRadius: 6,
+                                                cursor: 'pointer',
+                                                fontWeight: 600
+                                            }}
+                                        >
+                                            Share Grade
+                                        </button>
                                     </div>
                                 )}
-
-                                {/* Modal */}
-                                {openModal === assessment.id && (
-                                    <div className="modal-overlay">
-                                        <div className="modal-content">
-                                            <h3>{assessment.title} - MCQ</h3>
-                                            {assessment.questions.map((q, index) => (
-                                                <div key={index} className="question-block">
-                                                    <p><strong>Q{index + 1}:</strong> {q.question}</p>
-                                                    {q.options.map((opt, i) => (
-                                                        <label key={i} className="option-label">
-                                                            <input
-                                                                type="radio"
-                                                                name={`q-${index}`}
-                                                                value={opt}
-                                                                checked={selectedAnswers[index] === opt}
-                                                                onChange={() => handleOptionChange(index, opt)}
-                                                            />
-                                                            {opt}
-                                                        </label>
-                                                    ))}
-                                                </div>
-                                            ))}
-                                            <div className="modal-actions">
-                                                <button onClick={() => handleSubmit(assessment.id)}>Submit</button>
-                                                <button onClick={() => setOpenModal(null)}>Cancel</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                )}
-                            </li>
+                            </div>
                         ))}
-                    </ul>
-                </main>
-            
+                    </div>
+                </div>
+            </main>
+
+            {openModal !== null && (
+                <div style={{
+                    position: 'fixed',
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    background: 'rgba(0,0,0,0.5)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    zIndex: 1000
+                }}>
+                    <div style={{
+                        background: '#fff',
+                        borderRadius: 12,
+                        width: '80%',
+                        maxWidth: 800,
+                        maxHeight: '90vh',
+                        overflow: 'auto',
+                        padding: 24,
+                        boxShadow: '0 4px 20px rgba(0,0,0,0.15)'
+                    }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
+                            <h3 style={{ margin: 0, color: 'var(--primary)' }}>
+                                {assessments.find(a => a.id === openModal)?.title}
+                            </h3>
+                            <button
+                                onClick={() => setOpenModal(null)}
+                                style={{
+                                    background: 'transparent',
+                                    border: 'none',
+                                    fontSize: 20,
+                                    cursor: 'pointer',
+                                    color: '#666'
+                                }}
+                            >
+                                ✕
+                            </button>
+                        </div>
+
+                        <div style={{ display: 'grid', gap: 24 }}>
+                            {assessments.find(a => a.id === openModal)?.questions.map((q, index) => (
+                                <div key={index} style={{
+                                    padding: 16,
+                                    background: '#f8f9fa',
+                                    borderRadius: 8,
+                                    border: '1px solid var(--border)'
+                                }}>
+                                    <p style={{ fontWeight: 600, marginBottom: 12 }}>Q{index + 1}: {q.question}</p>
+                                    <div style={{ display: 'grid', gap: 8 }}>
+                                        {q.options.map((opt, i) => (
+                                            <label key={i} style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                                                <input
+                                                    type="radio"
+                                                    name={`q-${index}`}
+                                                    value={opt}
+                                                    checked={selectedAnswers[index] === opt}
+                                                    onChange={() => handleOptionChange(index, opt)}
+                                                    style={{ width: 16, height: 16 }}
+                                                />
+                                                {opt}
+                                            </label>
+                                        ))}
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+
+                        <div style={{ display: 'flex', gap: 12, marginTop: 24 }}>
+                            <button
+                                onClick={() => handleSubmit(openModal)}
+                                style={{
+                                    flex: 1,
+                                    background: 'var(--primary)',
+                                    color: 'white',
+                                    border: 'none',
+                                    padding: '12px',
+                                    borderRadius: 8,
+                                    cursor: 'pointer',
+                                    fontWeight: 600
+                                }}
+                            >
+                                Submit Assessment
+                            </button>
+                            <button
+                                onClick={() => setOpenModal(null)}
+                                style={{
+                                    flex: 1,
+                                    background: '#FF6384',
+                                    color: 'white',
+                                    border: 'none',
+                                    padding: '12px',
+                                    borderRadius: 8,
+                                    cursor: 'pointer',
+                                    fontWeight: 600
+                                }}
+                            >
+                                Cancel
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
             {showAlert && (
-    <div className="custom-alert">
-        <p>{alertMessage}</p>
-    </div>
-)}
-
-
-</ProstudentLayout>
-        
+                <div style={{
+                    position: 'fixed',
+                    bottom: 20,
+                    right: 20,
+                    background: '#00C49F',
+                    color: 'white',
+                    padding: '12px 24px',
+                    borderRadius: 8,
+                    boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
+                    zIndex: 1000,
+                    animation: 'fadeIn 0.3s ease-in-out'
+                }}>
+                    <p style={{ margin: 0 }}>{alertMessage}</p>
+                </div>
+            )}
+        </ProstudentLayout>
     );
 };
 
