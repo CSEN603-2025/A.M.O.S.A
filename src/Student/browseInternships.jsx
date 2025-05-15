@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
 import React, { useState } from "react";
 import '../CSS/browseInternships.css';
+import StudentLayout from '../components/StudentLayout';
 
 const InternshipBrowser = () => {
     const [internships, setInternships] = useState([
@@ -75,6 +76,7 @@ const InternshipBrowser = () => {
     });
 
     return (
+        <StudentLayout>
         <div className="browser-wrapper">
             <header className="browser-header">
                 <h1 className="browser-title">Browse Internships</h1>
@@ -154,7 +156,8 @@ const InternshipBrowser = () => {
                     </div>
                 </div>
             )}
-        </div>
+            </div>
+        </StudentLayout>
     );
 };
 

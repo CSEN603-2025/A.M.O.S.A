@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import './CSS/StudentDashboard.css';
 import './CSS/browseInternships.css';
+import StudentLayout from './components/StudentLayout';
 
 const StudentApplied = () => {
     const [appliedIds, setAppliedIds] = useState([]);
@@ -26,26 +27,7 @@ const StudentApplied = () => {
     const appliedInternships = internships.filter((internship) => appliedIds.includes(internship.id));
 
     return (
-        <div className="dashboard-wrapper">
-            <header className="dashboard-header">
-                <div className="header-left">
-                    <h1 className="dashboard-title">Student Dashboard</h1>
-                </div>
-                <div className="header-right">
-                    <a href="/" className="signout-button">Sign Out</a>
-                </div>
-            </header>
-            <div className="dashboard-content">
-                <aside className="dashboard-sidebar">
-                    <h2 className="sidebar-title">Navigation</h2>
-                    <ul className="nav-list">
-                        <li className="nav-item"><a href="/StudentDashboard" className="nav-link">Home</a></li>
-                        <li className="nav-item"><a href="/studentInternships" className="nav-link">Browse Internships</a></li>
-                        <li className="nav-item">View Applied Internships</li>
-                        <li className="nav-item"><a href="/student/profile" className="nav-link">My Profile</a></li>
-                        <li className="nav-item"><a href="/MyInternships" className="nav-link">My Internships</a></li>
-                    </ul>
-                </aside>
+        <StudentLayout>
                 <main className="dashboard-main">
                     <div className="browser-wrapper">
                         <header className="browser-header">
@@ -93,11 +75,7 @@ const StudentApplied = () => {
                         )}
                     </div>
                 </main>
-            </div>
-            <footer className="dashboard-footer">
-                <p>&copy; 2025 SCAD System. All rights reserved.</p>
-            </footer>
-        </div>
+        </StudentLayout>
     );
 };
 

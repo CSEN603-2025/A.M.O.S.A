@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import '../CSS/StudentProfile.css';
 import { FiBell } from 'react-icons/fi'; // Bell icon
+import StudentLayout from '../components/StudentLayout';
 
 const StudentProfile = () => {
     const [profile, setProfile] = useState({
@@ -25,35 +26,7 @@ const StudentProfile = () => {
     };
 
     return (
-        <div className="dashboard-wrapper">
-            <header className="dashboard-header">
-                <div className="header-left">
-                    <h1 className="dashboard-title">Student Profile</h1>
-                </div>
-                <div className="header-right">
-                    <a href="/" className="signout-button">Sign Out</a>
-                </div>
-            </header>
-
-            <div className="dashboard-content">
-                <aside className="dashboard-sidebar">
-                    <div className="notification-widget">
-                        <a href="/StudentNotifications" className="notification-link">
-                            <FiBell size={18} className="bell-icon" />
-                            <span>Notifications</span>
-                        </a>
-                    </div>
-
-                    <h2 className="sidebar-title">Navigation</h2>
-                    <ul className="nav-list">
-                        <li className="nav-item"><a href="/StudentDashboard" className="nav-link">Home</a></li>
-                        <li className="nav-item"><a href="/studentInternships" className="nav-link">Browse Internships</a></li>
-                        <li className="nav-item"><a href="/StudentApplied" className="nav-link">View Applied Internships</a></li>
-                        <li className="nav-item">My Profile</li>
-                        <li className="nav-item"><a href="/MyInternships" className="nav-link">My Internships</a></li>
-                    </ul>
-                </aside>
-
+        <StudentLayout>
                 <main className="dashboard-main">
                     <section className="info-section">
                         <h2 className="section-title">Personal Information</h2>
@@ -148,12 +121,7 @@ const StudentProfile = () => {
 
                     <button onClick={handleSave} className="action-button">Save Profile</button>
                 </main>
-            </div>
-
-            <footer className="dashboard-footer">
-                <p>&copy; 2025 SCAD System. All rights reserved.</p>
-            </footer>
-        </div>
+        </StudentLayout>
     );
 };
 

@@ -2,6 +2,7 @@ import React, { useState, useRef } from "react";
 import { FaPhone, FaBell } from "react-icons/fa";
 import { useNavigate, useLocation } from "react-router-dom";
 import './CSS/SCADOfficeDashboard.css';
+import DashboardLayout from './components/Layout';
 
 const SCADCalls = () => {
     const [incomingCalls, setIncomingCalls] = useState([
@@ -119,103 +120,97 @@ const SCADCalls = () => {
     };
 
     return (
-        <div className="dashboard-wrapper">
-            <header className="dashboard-header">
-                <div className="header-left">
-                    <h1 className="dashboard-title">SCAD Office Dashboard</h1>
+        <DashboardLayout>
+            <main className="dashboard-main">
+                <h2>Incoming Calls</h2>
+
+                {incomingCalls.length === 0 && !activeCall && <p>No incoming calls.</p>}
+
+                <div className="calls-container">
+                    {incomingCalls.map((caller) => (
+                        <div key={caller.id} className="incoming-call-card ringing">
+                            <p><strong>{caller.name}</strong> is calling you...</p>
+                            <button onClick={() => acceptCall(caller)} className="btn accept">Accept</button>
+                            <button onClick={() => rejectCall(caller)} className="btn reject">Reject</button>
+                        </div>
+                    ))}
                 </div>
-                <div className="header-right">
-                    <div className="header-icons">
-                        <button
-                            onClick={location.pathname === "/scad/Calls" ? undefined : goToCalls}
-                            className={`icon-button call-button ${location.pathname === "/scad/Calls" ? "disabled" : ""}`}
-                            disabled={location.pathname === "/scad/Calls"}
-                        >
-                            <FaPhone />
-                            {location.pathname !== "/scad/Calls" && <span className="call-badge">{missedCalls}</span>}
-                        </button>
 
-                        <button onClick={goToNotifications} className="icon-button notification-button">
-                            <FaBell />
-                            <span className="notification-badge">{notifications}</span>
-                        </button>
-
-                        <a href="/" className="signout-button">Sign Out</a>
-                    </div>
-                </div>
-            </header>
-
-            <div className="dashboard-content">
-                <aside className="dashboard-sidebar">
-                    <h2 className="sidebar-title">Navigation</h2>
-                    <ul className="nav-list">
-                        <li className="nav-item"><a href="/scadOfficeDashboard" className="nav-link">Home</a></li>
-                        <li className="nav-item"><a href="/scad/companies" className="nav-link">Pending Company Applications</a></li>
-                        <li className="nav-item"><a href="/scad/interns" className="nav-link">All Internships</a></li>
-                        <li className="nav-item"><a href="/scad/cycle" className="nav-link">Current Cycle Information</a></li>
-                        <li className="nav-item"><a href="/scad/students" className="nav-link">View Students</a></li>
-                        <li className="nav-item"><a href="/scad/reports" className="nav-link">View Reports</a></li>
-                        <li className="nav-item"><a href="/scad/Statistics" className="nav-link">Statistics</a></li>
-                        <li className="nav-item"><a href="/scad/Appointmnets" className="nav-link">Appointments</a></li>
-                        <li className="nav-item">Calls</li>
-                        <li className="nav-item"><a href="/scad/Workshop" className="nav-link">Workshop</a></li>
-                    </ul>
-                </aside>
-
-                <main className="dashboard-main">
-                    <h2>Incoming Calls</h2>
-
-                    {incomingCalls.length === 0 && !activeCall && <p>No incoming calls.</p>}
-
-                    <div className="calls-container">
-                        {incomingCalls.map((caller) => (
-                            <div key={caller.id} className="incoming-call-card ringing">
-                                <p><strong>{caller.name}</strong> is calling you...</p>
-                                <button onClick={() => acceptCall(caller)} className="btn accept">Accept</button>
-                                <button onClick={() => rejectCall(caller)} className="btn reject">Reject</button>
+                {activeCall && (
+                    <div className="call-popup">
+                        <div className="popup-content">
+                            <h2>In Call with {activeCall.name}</h2>
+                            <div className="call-controls">
+                                <button onClick={toggleMic} className="btn control">{micOn ? "Mute Mic" : "Unmute Mic"}</button>
+                                <button onClick={toggleCamera} className="btn control">{cameraOn ? "Turn Off Camera" : "Turn On Camera"}</button>
+                                <button onClick={toggleScreen} className="btn control">{screenOn ? "Stop Screen" : "Share Screen"}</button>
+                                <button onClick={simulateCallerLeft} className="btn control">Simulate Caller Left</button>
+                                <button onClick={endCall} className="btn leave">End Call</button>
                             </div>
-                        ))}
-                    </div>
 
-                    {activeCall && (
-                        <div className="call-popup">
-                            <div className="popup-content">
-                                <h2>In Call with {activeCall.name}</h2>
-                                <div className="call-controls">
-                                    <button onClick={toggleMic} className="btn control">{micOn ? "Mute Mic" : "Unmute Mic"}</button>
-                                    <button onClick={toggleCamera} className="btn control">{cameraOn ? "Turn Off Camera" : "Turn On Camera"}</button>
-                                    <button onClick={toggleScreen} className="btn control">{screenOn ? "Stop Screen" : "Share Screen"}</button>
-                                    <button onClick={simulateCallerLeft} className="btn control">Simulate Caller Left</button>
-                                    <button onClick={endCall} className="btn leave">End Call</button>
+                            <div
+                                style={{
+                                    display: "flex",
+                                    flexWrap: "wrap",
+                                    justifyContent: "center",
+                                    gap: "1rem",
+                                    marginTop: "1rem"
+                                }}
+                            >
+                                <div style={{ textAlign: "center" }}>
+                                    <div
+                                        style={{
+                                            width: "300px",
+                                            height: "200px",
+                                            backgroundColor: cameraOn ? "transparent" : "black",
+                                            border: "1px solid #ccc"
+                                        }}
+                                    >
+                                        <video
+                                            ref={videoRef}
+                                            autoPlay
+                                            playsInline
+                                            muted
+                                            style={{
+                                                width: "100%",
+                                                height: "100%",
+                                                display: cameraOn ? "block" : "none"
+                                            }}
+                                        />
+                                    </div>
+                                    <p style={{ marginTop: "0.5rem" }}>Camera</p>
                                 </div>
-                                <div className="video-container">
-    <div className="video-wrapper">
-        <video ref={videoRef} autoPlay playsInline muted className="video-element" />
-        <p className="video-label">Camera</p>
-    </div>
-    <div className="video-wrapper">
-        <video
-            autoPlay
-            playsInline
-            muted
-            className="video-element"
-            ref={el => {
-                if (el && screenStream) el.srcObject = screenStream;
-            }}
-        />
-        <p className="video-label">Shared Screen</p>
-    </div>
-</div>
 
+                                <div style={{ textAlign: "center" }}>
+                                    <div
+                                        style={{
+                                            width: "300px",
+                                            height: "200px",
+                                            backgroundColor: screenOn ? "transparent" : "black",
+                                            border: "1px solid #ccc"
+                                        }}
+                                    >
+                                        <video
+                                            autoPlay
+                                            playsInline
+                                            muted
+                                            ref={(el) => {
+                                                if (el && screenStream) el.srcObject = screenStream;
+                                            }}
+                                            style={{
+                                                width: "100%",
+                                                height: "100%",
+                                                display: screenOn ? "block" : "none"
+                                            }}
+                                        />
+                                    </div>
+                                    <p style={{ marginTop: "0.5rem" }}>Shared Screen</p>
+                                </div>
                             </div>
                         </div>
-                    )}
-                </main>
-            </div>
-
-            <footer className="dashboard-footer">
-                <p>&copy; 2025 SCAD System. All rights reserved.</p>
-            </footer>
+                    </div>
+                )}
+            </main>
 
             {callerLeft && (
                 <div className="popup-overlay">
@@ -226,7 +221,7 @@ const SCADCalls = () => {
                     </div>
                 </div>
             )}
-        </div>
+        </DashboardLayout>
     );
 };
 

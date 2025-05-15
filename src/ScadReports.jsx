@@ -4,7 +4,7 @@ import { FaPhone, FaFileAlt, FaClipboardList } from "react-icons/fa";
 import { FiBell } from "react-icons/fi";
 import './CSS/SCADOfficeDashboard.css';
 import './CSS/browseInternships.css';
-
+import DashboardLayout from './components/Layout';
 const mockData = [
     {
         id: 1,
@@ -179,45 +179,7 @@ const SCADReports = () => {
     };
 
     return (
-        <div className="dashboard-wrapper">
-            <header className="dashboard-header">
-                <div className="header-left">
-                    <h1 className="dashboard-title">SCAD Office Dashboard</h1>
-                </div>
-                <div className="header-right">
-                    <div className="header-icons">
-                        <button onClick={goToCalls} className="notification-bell">
-                            <FaPhone />
-                            <span className="call-badge">{missedCalls}</span>
-                        </button>
-
-                        <button onClick={goToNotifications} className="notification-bell">
-                            <FiBell size={24} />
-                            <span className="notification-badge">{notifications}</span>
-                        </button>
-
-                        <a href="/" className="signout-button">Sign Out</a>
-                    </div>
-                </div>
-            </header>
-
-            <div className="dashboard-content">
-                <aside className="dashboard-sidebar">
-                    <h2 className="sidebar-title">Navigation</h2>
-                    <ul className="nav-list">
-                        <li className="nav-item"><a href="/scadOfficeDashboard" className="nav-link">Home</a></li>
-                        <li className="nav-item"><a href="/scad/companies" className="nav-link">Pending Company Applications</a></li>
-                        <li className="nav-item"><a href="/scad/interns" className="nav-link">All Internships</a></li>
-                        <li className="nav-item"><a href="/scad/cycle" className="nav-link">Current Cycle Information</a></li>
-                        <li className="nav-item"><a href="/scad/students" className="nav-link">View Students</a></li>
-                        <li className="nav-item">View Reports</li>
-                        <li className="nav-item"><a href="/scad/Statistics" className="nav-link">Statistics</a></li>
-                        <li className="nav-item"><a href="/scad/Appointments" className="nav-link">Appointments</a></li>
-                        <li className="nav-item"><a href="/scad/calls" className="nav-link">Calls</a></li>
-                        <li className="nav-item"><a href="/scad/Workshop" className="nav-link">Workshop</a></li>
-                    </ul>
-                </aside>
-
+        <DashboardLayout>
                 <main className="dashboard-main">
                     <div className="browser-wrapper">
                         <header className="browser-header">
@@ -307,7 +269,7 @@ const SCADReports = () => {
                         </main>
                     </div>
                 </main>
-            </div>
+            
 
             {selectedStudent && modalType === 'internship' && (
                 <Modal onClose={closeModal}>
@@ -373,10 +335,7 @@ const SCADReports = () => {
                 </Modal>
             )}
 
-            <footer className="dashboard-footer">
-                <p>&copy; 2025 SCAD System. All rights reserved.</p>
-            </footer>
-        </div>
+           </DashboardLayout>
     );
 };
 

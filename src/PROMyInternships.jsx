@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import './CSS/StudentDashboard.css';
 import { FiBell } from 'react-icons/fi';
+import ProstudentLayout from './components/prostudentLayout';
 
 const internshipsData = [
     { id: 1, company: "TechCorp", status: "Completed", duration: "Jan 2023 - Jun 2023", title: "Software Engineer Intern", current: false },
@@ -105,43 +106,7 @@ const PROMyInternships = () => {
     });
 
     return (
-        <div className="dashboard-wrapper">
-            <header className="dashboard-header">
-                <div className="header-left">
-                    <h1 className="dashboard-title">My Internships</h1>
-                </div>
-                <div className="header-right">
-                    <a href="/" className="signout-button">Sign Out</a>
-                </div>
-            </header>
-
-            <div className="dashboard-content">
-                <aside className="dashboard-sidebar">
-                    <div className="notification-widget">
-                        <a href="/PROStudentNotifications" className="notification-link">
-                            <FiBell size={18} className="bell-icon" />
-                            <span>Notifications</span>
-                        </a>
-                    </div>
-                    <h2 className="sidebar-title">Navigation</h2>
-                    <ul className="nav-list">
-                        <li className="nav-item"><a href="/PROStudentDashboard" className="nav-link">Home</a></li>
-                        <li className="nav-item"><a href="/PROStudentinternships" className="nav-link">Browse Internships</a></li>
-                        <li className="nav-item"><a href="/PROStudentApplied" className="nav-link">View Applied Internships</a></li>
-                        <li className="nav-item"><a href="/student/proprofile" className="nav-link">My Profile</a></li>
-                        <li className="nav-item">My Internships</li>
-                        <li className="nav-item"><a href="/student/appointments" className="nav-link">Appointments</a></li>
-
-                        <li className="nav-item"><a href="/student/Calls" className="nav-link">Calls</a></li>
-                        <li className="nav-item"><a href="/student/viewed" className="nav-link">Viewed my profile</a></li>
-                        <li className="nav-item"><a href="/student/assessment" className="nav-link">Online assessments</a></li>
-
-                        <li className="nav-item"><a href="/student/workshop" className="nav-link">Workshop</a></li>
-                        <li className="nav-item"><a href="/PreRecord" className="nav-link">Pre-recorded workshops</a></li>
-
-                    </ul>
-                </aside>
-
+      <ProstudentLayout>
                 <main className="dashboard-main">
                     <div className="search-filter-section">
                         <input
@@ -270,12 +235,7 @@ const PROMyInternships = () => {
                         ))}
                     </div>
                 </main>
-            </div>
-
-            <footer className="dashboard-footer">
-                <p>&copy; 2025 SCAD System. All rights reserved.</p>
-            </footer>
-        </div>
+          </ProstudentLayout>
     );
 };
 

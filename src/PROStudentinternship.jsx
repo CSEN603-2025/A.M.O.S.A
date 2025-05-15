@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import './CSS/StudentDashboard.css';
 import './CSS/browseInternships.css';
+import ProstudentLayout from "./components/prostudentLayout";
 
 const PROStudentinternship = () => {
     const [internships] = useState([
@@ -82,35 +83,7 @@ const PROStudentinternship = () => {
     });
 
     return (
-        <div className="dashboard-wrapper">
-            <header className="dashboard-header">
-                <div className="header-left">
-                    <h1 className="dashboard-title">PRO Student Dashboard</h1>
-                </div>
-                <div className="header-right">
-                    <a href="/" className="signout-button">Sign Out</a>
-                </div>
-            </header>
-            <div className="dashboard-content">
-                <aside className="dashboard-sidebar">
-                    <h2 className="sidebar-title">Navigation</h2>
-                    <ul className="nav-list">
-                        <li className="nav-item"><a href="/PROStudentDashboard" className="nav-link">Home</a></li>
-                        <li className="nav-item">Browse Internships</li>
-                        <li className="nav-item"><a href="/PROStudentApplied" className="nav-link">View Applied Internships</a></li>
-                        <li className="nav-item"><a href="/student/proprofile" className="nav-link">My Profile</a></li>
-                        <li className="nav-item"><a href="/PROMyInternships" className="nav-link">My Internships</a></li>
-                        <li className="nav-item"><a href="/student/appointments" className="nav-link">Appointments</a></li>
-
-                        <li className="nav-item"><a href="/student/Calls" className="nav-link">Calls</a></li>
-                        <li className="nav-item"><a href="/student/viewed" className="nav-link">Viewed my profile</a></li>
-                        <li className="nav-item"><a href="/student/assessment" className="nav-link">Online assessments</a></li>
-
-                        <li className="nav-item"><a href="/student/workshop" className="nav-link">Workshop</a></li>
-                        <li className="nav-item"><a href="/PreRecord" className="nav-link">Pre-recorded workshops</a></li>
-
-                    </ul>
-                </aside>
+        <ProstudentLayout>
                 <main className="dashboard-main">
                     <div className="browser-wrapper">
                         <header className="browser-header">
@@ -225,11 +198,7 @@ const PROStudentinternship = () => {
                         )}
                     </div>
                 </main>
-            </div>
-            <footer className="dashboard-footer">
-                <p>&copy; 2025 SCAD System. All rights reserved.</p>
-            </footer>
-        </div>
+        </ProstudentLayout>
     );
 };
 

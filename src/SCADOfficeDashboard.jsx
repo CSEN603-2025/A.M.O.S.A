@@ -1,83 +1,40 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { FaPhone, FaBell } from "react-icons/fa"; // icons
-import { FiBell } from "react-icons/fi"; // icons
+import { FaPhone } from "react-icons/fa";
+import { FiBell, FiHome, FiBriefcase, FiList, FiInfo, FiUsers, FiFileText, FiBarChart2, FiCalendar, FiPhone as FiPhoneIcon, FiTool } from "react-icons/fi";
 import './CSS/SCADOfficeDashboard.css';
+import DashboardLayout from './components/Layout';
+const navItems = [
+  { label: "Home", icon: <FiHome />, link: "/scad" },
+  { label: "Pending Company Applications", icon: <FiBriefcase />, link: "/scad/companies" },
+  { label: "All Internships", icon: <FiList />, link: "/scad/interns" },
+  { label: "Current Cycle Information", icon: <FiInfo />, link: "/scad/cycle" },
+  { label: "View Students", icon: <FiUsers />, link: "/scad/students" },
+  { label: "View Reports", icon: <FiFileText />, link: "/scad/reports" },
+  { label: "Statistics", icon: <FiBarChart2 />, link: "/scad/Statistics" },
+  { label: "Appointments", icon: <FiCalendar />, link: "/scad/Appointmnets" },
+  { label: "Calls", icon: <FiPhoneIcon />, link: "/scad/Calls" },
+  { label: "Workshop", icon: <FiTool />, link: "/scad/Workshop" },
+];
 
 const SCADOfficeDashboard = () => {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
+  const missedCalls = 5;
+  const notifications = 3;
 
-    const goToCalls = () => {
-        navigate("/scad/Calls");
-    };
-
-    const goToNotifications = () => {
-        navigate("/scad/noti");
-    };
-
-    // Example: numbers
-    const missedCalls = 5;
-    const notifications = 3;
-
-    return (
-        <div className="dashboard-wrapper">
-            <header className="dashboard-header">
-                <div className="header-left">
-                    <h1 className="dashboard-title">SCAD Office Dashboard</h1>
-                </div>
-
-                <div className="header-right">
-                    <div className="header-icons">
-                        {/* Calls Button with Badge */}
-                        <button onClick={goToCalls} className="notification-bell">
-                            <FaPhone />
-                            <span className="call-badge">{missedCalls}</span>
-                        </button>
-
-                        {/* Notifications Button with Badge */}
-                        <button onClick={goToNotifications} className="notification-bell">
-                            <FiBell size={24} />
-                            <span className="notification-count">3</span>
-                        </button>
-
-                        {/* Sign Out */}
-                        <a href="/" className="signout-button">Sign Out</a>
-                    </div>
-                </div>
-            </header>
-
-            <div className="dashboard-content">
-                <aside className="dashboard-sidebar">
-                    <h2 className="sidebar-title">Navigation</h2>
-                    <ul className="nav-list">
-                        <li className="nav-item">Home</li>
-                        <li className="nav-item"><a href="/scad/companies" className="nav-link">Pending Company Applications</a></li>
-                        <li className="nav-item"><a href="/scad/interns" className="nav-link">All Internships</a></li>
-                        <li className="nav-item"><a href="/scad/cycle" className="nav-link">Current Cycle Information</a></li>
-                        <li className="nav-item"><a href="/scad/students" className="nav-link">View Students</a></li>
-                        <li className="nav-item"><a href="/scad/reports" className="nav-link">View Reports</a></li>
-                        <li className="nav-item"><a href="/scad/Statistics" className="nav-link">Statistics</a></li>
-                        <li className="nav-item"><a href="/scad/Appointmnets" className="nav-link">Appointments</a></li>
-                        <li className="nav-item"><a href="/scad/Calls" className="nav-link">Calls</a></li>
-                        <li className="nav-item"><a href="/scad/Workshop" className="nav-link">Workshop</a></li>
-                    </ul>
-                </aside>
-
-                <main className="dashboard-main">
-                    <div className="welcome-box">
-                        <h2 className="welcome-title">Welcome to the SCAD Office Dashboard</h2>
-                        <p className="welcome-text">
-                            Use the navigation panel on the right to explore and manage internships, company applications, students, and more.
-                        </p>
-                    </div>
-                </main>
-            </div>
-
-            <footer className="dashboard-footer">
-                <p>&copy; 2025 SCAD System. All rights reserved.</p>
-            </footer>
-        </div>
-    );
+  return (
+    <DashboardLayout>
+      
+        <main className="main-content" aria-label="Main Content">
+          <h2 className="main-welcome">Welcome to the SCAD Office Dashboard</h2>
+          <p className="main-desc">
+            Use the navigation panel on the left to explore and manage internships, company applications, students, and more.
+          </p>
+        </main>
+       
+      
+    </DashboardLayout>
+  );
 };
 
 export default SCADOfficeDashboard;

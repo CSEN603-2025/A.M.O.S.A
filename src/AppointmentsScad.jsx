@@ -3,7 +3,8 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { FaPhone } from "react-icons/fa";
 import { FiBell } from "react-icons/fi";
 import './CSS/SCADOfficeDashboard.css';
-import './CSS/browseInternships.css'; // Reusing styles
+import './CSS/browseInternships.css'; // Reusing 
+import DashboardLayout from './components/Layout';
 
 const AppointmentsScad = () => {
     const [appointmentsScheduledByDefault, setAppointmentsScheduledByDefault] = useState([
@@ -67,45 +68,7 @@ const AppointmentsScad = () => {
     };
 
     return (
-        <div className="dashboard-wrapper">
-            {/* Header */}
-            <header className="dashboard-header">
-                <div className="header-left">
-                    <h1 className="dashboard-title">SCAD Office Dashboard</h1>
-                </div>
-                <div className="header-right">
-                    <div className="header-icons">
-                        <button onClick={goToCalls} className="notification-bell">
-                            <FaPhone />
-                            <span className="call-badge">{missedCalls}</span>
-                        </button>
-                        <button onClick={goToNotifications} className="notification-bell">
-                            <FiBell size={24} />
-                            <span className="notification-badge">{unreadNotifications}</span>
-                        </button>
-                        <a href="/" className="signout-button">Sign Out</a>
-                    </div>
-                </div>
-            </header>
-
-            {/* Sidebar and Main */}
-            <div className="dashboard-content">
-                <aside className="dashboard-sidebar">
-                    <h2 className="sidebar-title">Navigation</h2>
-                    <ul className="nav-list">
-                        <li className="nav-item"><a href="/ScadOfficeDashboard" className="nav-link">Home</a></li>
-                        <li className="nav-item"><a href="/scad/companies" className="nav-link">Pending Company Applications</a></li>
-                        <li className="nav-item"><a href="/scad/interns" className="nav-link">All Internships</a></li>
-                        <li className="nav-item"><a href="/scad/cycle" className="nav-link">Current Cycle Information</a></li>
-                        <li className="nav-item"><a href="/scad/students" className="nav-link">View Students</a></li>
-                        <li className="nav-item"><a href="/scad/reports" className="nav-link">View Reports</a></li>
-                        <li className="nav-item"><a href="/scad/Statistics" className="nav-link">Statistics</a></li>
-                        <li className="nav-item">Appointments</li>
-                        <li className="nav-item"><a href="/scad/Calls" className="nav-link">Calls</a></li>
-                        <li className="nav-item"><a href="/scad/Workshop" className="nav-link">Workshop</a></li>
-                    </ul>
-                </aside>
-
+       <DashboardLayout>
                 <main className="dashboard-main">
                     <div className="browser-wrapper">
                         {/* Title Header */}
@@ -193,13 +156,7 @@ const AppointmentsScad = () => {
                         </main>
                     </div>
                 </main>
-            </div>
-
-            {/* Footer */}
-            <footer className="dashboard-footer">
-                <p>&copy; 2025 SCAD System. All rights reserved.</p>
-            </footer>
-        </div>
+ </DashboardLayout>
     );
 };
 

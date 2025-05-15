@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "./CSS/SCADOfficeDashboard.css";
 import "./CSS/AssessmentModal.css"; // create this file for styling
+import ProstudentLayout from "./components/prostudentLayout";
 
 const PROAssessment = () => {
     const assessments = [
@@ -92,37 +93,7 @@ const handleShareGrade = (assessmentTitle) => {
 };
 
     return (
-        <div className="dashboard-wrapper">
-            {/* Header */}
-            <header className="dashboard-header">
-                <div className="header-left">
-                    <h1 className="dashboard-title">PRO Student Dashboard</h1>
-                </div>
-                <div className="header-right">
-                    <a href="/" className="signout-button">Sign Out</a>
-                </div>
-            </header>
-
-            <div className="dashboard-content">
-                {/* Sidebar */}
-                <aside className="dashboard-sidebar">
-                    <h2 className="sidebar-title">Navigation</h2>
-                    <ul className="nav-list">
-                        <li className="nav-item"><a href="/PROStudentDashboard" className="nav-link">Home</a></li>
-                    <li className="nav-item"><a href="/PROStudentinternship" className="nav-link">Browse Internships</a></li>
-                        <li className="nav-item"><a href="/PROStudentApplied" className="nav-link">View Applied Internships</a></li>
-                        <li className="nav-item"><a href="/student/proprofile" className="nav-link">My Profile</a></li>
-                        <li className="nav-item"><a href="/PROMyInternships" className="nav-link">My Internships</a></li>
-                        <li className="nav-item"><a href="/student/appointments" className="nav-link">Appointments</a></li>
-
-                        <li className="nav-item"><a href="/student/Calls" className="nav-link">Calls</a></li>
-                        <li className="nav-item"><a href="/student/viewed" className="nav-link">Viewed my profile</a></li>
-                        <li className="nav-item">Online assessments</li>
-                        <li className="nav-item"><a href="/student/workshop" className="nav-link">Workshop</a></li>
-                        <li className="nav-item"><a href="/PreRecord" className="nav-link">Pre-recorded workshops</a></li>
-                    </ul>
-                </aside>
-
+      <ProstudentLayout>
                 {/* Main Content */}
                 <main className="dashboard-main">
                     <h2>Available Assessments</h2>
@@ -188,7 +159,7 @@ const handleShareGrade = (assessmentTitle) => {
                         ))}
                     </ul>
                 </main>
-            </div>
+            
             {showAlert && (
     <div className="custom-alert">
         <p>{alertMessage}</p>
@@ -196,10 +167,8 @@ const handleShareGrade = (assessmentTitle) => {
 )}
 
 
-            <footer className="dashboard-footer">
-                <p>&copy; 2025 SCAD System. All rights reserved.</p>
-            </footer>
-        </div>
+</ProstudentLayout>
+        
     );
 };
 
