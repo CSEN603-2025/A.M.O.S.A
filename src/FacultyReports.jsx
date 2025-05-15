@@ -4,6 +4,8 @@ import { FaFileAlt, FaClipboardList } from "react-icons/fa";
 import { FiBell } from "react-icons/fi";
 import './CSS/SCADOfficeDashboard.css';
 import './CSS/browseInternships.css';
+import FacultyLayout from "./components/FacultyLayout";
+
 
 const mockData = [
     {
@@ -206,32 +208,7 @@ const FacultyReports = () => {
     const uniqueMajors = [...new Set(mockData.map(student => student.major))];
 
     return (
-        <div className="dashboard-wrapper">
-            <header className="dashboard-header">
-                <div className="header-left">
-                    <h1 className="dashboard-title">Faculty Member Dashboard</h1>
-                </div>
-                <div className="header-right">
-                    <div className="header-icons">
-                        <button onClick={goToNotifications} className="notification-bell">
-                            <FiBell size={24} />
-                            <span className="notification-badge">{notifications}</span>
-                        </button>
-                        <a href="/" className="signout-button">Sign Out</a>
-                    </div>
-                </div>
-            </header>
-
-            <div className="dashboard-content">
-                <aside className="dashboard-sidebar">
-                    <h2 className="sidebar-title">Navigation</h2>
-                    <ul className="nav-list">
-                        <li className="nav-item"><a href="/Facultydashboard" className="nav-link">Home</a></li>
-                        <li className="nav-item">Review Reports</li>
-                        <li className="nav-item"><a href="/faculty/statistics" className="nav-link">Statistics</a></li>
-                    </ul>
-                </aside>
-
+      <FacultyLayout>
                 <main className="dashboard-main">
                     <div className="browser-wrapper">
                         <header className="browser-header">
@@ -325,7 +302,7 @@ const FacultyReports = () => {
                         </main>
                     </div>
                 </main>
-            </div>
+            
 
             {selectedStudent && modalType === 'internship' && (
                 <Modal onClose={closeModal}>
@@ -409,10 +386,7 @@ const FacultyReports = () => {
                 </Modal>
             )}
 
-            <footer className="dashboard-footer">
-                <p>&copy; 2025 SCAD System. All rights reserved.</p>
-            </footer>
-        </div>
+        </FacultyLayout>
     );
 };
 

@@ -3,6 +3,7 @@ import { jsPDF } from "jspdf";
 import './CSS/CompanyDashboard.css';
 import { useNavigate } from 'react-router-dom';
 import { FiBell } from 'react-icons/fi';
+import CompanyLayout from ".//components/CompanyLayout";
 
 const dummyDocuments = [
     {
@@ -44,31 +45,7 @@ const CompanyDocs = () => {
     };
 
     return (
-        <div className="dashboard-wrapper">
-            <header className="dashboard-header">
-                <h1 className="dashboard-title">Company Documents</h1>
-                <div className="dashboard-actions">
-                    <button className="notification-bell" onClick={handleBellClick} title="Notifications">
-                        <FiBell size={24} />
-                        <span className="notification-count">3</span>
-                    </button>
-                    <button className="signout-button" onClick={handleLogout}>
-                        Sign Out
-                    </button>
-                </div>
-            </header>
-            <div className="dashboard-content">
-                <aside className="dashboard-sidebar">
-                    <h2 className="sidebar-title">Navigation</h2>
-                    <ul className="nav-list">
-                        <li className="nav-item"><a href="/CompanyDashboard" className="nav-link">Home</a></li>
-                        <li className="nav-item"><a href="/CompanyInternships" className="nav-link">My Internship Posts</a></li>
-                        <li className="nav-item"><a href="/company/applications" className="nav-link">Applications</a></li>
-                        <li className="nav-item"><a href="/CompanyCurrentInterns" className="nav-link">Current Interns</a></li>
-                        <li className="nav-item"><a href="/CompanyAll" className="nav-link">All Internships</a></li>
-                        <li className="nav-item">Reports and Documents</li>
-                    </ul>
-                </aside>
+       <CompanyLayout>
                 <main className="dashboard-main">
                     <section className="stats-section">
                         <h2 className="section-title">Downloadable Reports</h2>
@@ -88,11 +65,7 @@ const CompanyDocs = () => {
                         </ul>
                     </section>
                 </main>
-            </div>
-            <footer className="dashboard-footer">
-                <p>&copy; 2025 SCAD System. All rights reserved.</p>
-            </footer>
-        </div>
+        </CompanyLayout>
     );
 };
 

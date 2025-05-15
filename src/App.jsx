@@ -95,7 +95,7 @@ function App() {
               <Route path="/CompanyDocs" element={<CompanyDocs />} />
               <Route path="/CompanyNotifications" element={<CompanyNotifications />} />
 
-              <Route path="/faculty/statistics" element={<FacultyStatistics />} />
+              <Route path="/faculty/statisticss" element={<FacultyStatistics />} />
               <Route path="/faculty/reports" element={<FacultyReports />} />
 
               <Route path="/student/proprofile" element={<PROStudentProfile/>}/>

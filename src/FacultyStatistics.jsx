@@ -13,6 +13,7 @@ import {
     ResponsiveContainer
 } from 'recharts';
 import './CSS/SCADOfficeDashboard.css';
+import FacultyLayout from './components/FacultyLayout';
 
 const FacultyStatistics = () => {
     // Dummy real-time statistics for different cycles
@@ -114,25 +115,7 @@ ${stats.topCompaniesByCount.map((company, i) => `  ${i + 1}. ${company}`).join("
     const COLORS = ['#00C49F', '#FF6384', '#FFBB28'];
 
     return (
-        <div className="dashboard-wrapper">
-            <header className="dashboard-header">
-                <div className="header-left">
-                    <h1 className="dashboard-title">Faculty Member Dashboard</h1>
-                </div>
-                <div className="header-right">
-                    <a href="/" className="signout-button">Sign Out</a>
-                </div>
-            </header>
-
-            <div className="dashboard-content">
-                <aside className="dashboard-sidebar">
-                    <h2 className="sidebar-title">Navigation</h2>
-                    <ul className="nav-list">
-                        <li className="nav-item"><a href="/Facultydashboard" className="nav-link">Home</a></li>
-                        <li className="nav-item"><a href="/faculty/reports" className="nav-link">Review Reports</a></li>
-                        <li className="nav-item">Statistics</li>
-                    </ul>
-                </aside>
+      <FacultyLayout>
 
                 <main className="dashboard-main">
                     <div className="browser-wrapper">
@@ -219,7 +202,7 @@ ${stats.topCompaniesByCount.map((company, i) => `  ${i + 1}. ${company}`).join("
                         </main>
                     </div>
                 </main>
-            </div>
+            
 
             {openPopup && (
                 <div className="workshop-modal-backdrop">
@@ -247,10 +230,8 @@ ${stats.topCompaniesByCount.map((company, i) => `  ${i + 1}. ${company}`).join("
                 </div>
             )}
 
-            <footer className="dashboard-footer">
-                <p>&copy; 2025 SCAD System. All rights reserved.</p>
-            </footer>
-        </div>
+          
+        </FacultyLayout>
     );
 };
 

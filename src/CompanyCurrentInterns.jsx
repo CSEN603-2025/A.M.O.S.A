@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import './CSS/CompanyDashboard.css';
 import { useNavigate } from 'react-router-dom';
 import { FiBell } from 'react-icons/fi';
+import CompanyLayout from "./components/CompanyLayout";
 
 
 const sampleInterns = [
@@ -69,33 +70,7 @@ const CompanyCurrentInterns = () => {
     };
 
     return (
-        <div className="dashboard-wrapper">
-            <header className="dashboard-header">
-            <h1 className="dashboard-title">Current Interns</h1>
-            <div className="dashboard-actions">
-                <button className="notification-bell" onClick={handleBellClick} title="Notifications">
-                    <FiBell size={24} />
-                    <span className="notification-count">3</span>
-                </button>
-                <button className="signout-button" onClick={handleLogout}>
-                    Sign Out
-                </button>
-            </div>
-        </header>
-
-
-            <div className="dashboard-content wide">
-                <aside className="dashboard-sidebar">
-                    <h2 className="sidebar-title">Navigation</h2>
-                    <ul className="nav-list">
-                        <li className="nav-item"><a href="/CompanyDashboard" className="nav-link">Home</a></li>
-                        <li className="nav-item"><a href="/CompanyInternships" className="nav-link">My Internship Posts</a></li>
-                        <li className="nav-item"><a href="/company/applications" className="nav-link">Applications</a></li>
-                        <li className="nav-item">Current Interns</li>
-                        <li className="nav-item"><a href="/CompanyAll" className="nav-link">All Internships</a></li>
-                        <li className="nav-item"><a href="/CompanyDocs" className="nav-link">Reports and Documents</a></li>
-                    </ul>
-                </aside>
+<CompanyLayout>
 
                 <main className="dashboard-main">
                     <div className="search-filter-section">
@@ -143,7 +118,7 @@ const CompanyCurrentInterns = () => {
                         ))}
                     </ul>
                 </main>
-            </div>
+            
 
             {selectedIntern && (
                 <div className="modal">
@@ -163,10 +138,7 @@ const CompanyCurrentInterns = () => {
                 </div>
             )}
 
-            <footer className="dashboard-footer">
-                <p>&copy; 2025 SCAD System. All rights reserved.</p>
-            </footer>
-        </div>
+            </CompanyLayout>
     );
 };
 

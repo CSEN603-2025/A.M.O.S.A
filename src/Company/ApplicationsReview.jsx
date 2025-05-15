@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import '../CSS/ApplicationsReview.css';
 import { useNavigate } from 'react-router-dom';
 import { FiBell } from 'react-icons/fi';
-
+import CompanyLayout from '../components/CompanyLayout';
 
 const ApplicationsReview = () => {
     const [applications, setApplications] = useState([
@@ -82,34 +82,7 @@ const ApplicationsReview = () => {
     });
 
     return (
-        <div className="dashboard-wrapper">
-            <header className="dashboard-header">
-                <h1 className="dashboard-title">Applications Review</h1>
-                <div className="dashboard-actions">
-                    <button className="notification-bell" onClick={handleBellClick} title="Notifications">
-                        <FiBell size={24} />
-                        <span className="notification-count">3</span>
-                    </button>
-                    <button className="signout-button" onClick={handleLogout}>
-                        Sign Out
-                    </button>
-                </div>
-            </header>
-
-
-            <div className="dashboard-content">
-                <aside className="dashboard-sidebar">
-                    <h3 className="sidebar-title">Navigation</h3>
-                    <ul className="nav-list">
-                        <li className="nav-item"><a href="/CompanyDashboard" className="nav-link">Home</a></li>
-                        <li className="nav-item"><a href="/CompanyInternships" className="nav-link">My Internship Posts</a></li>
-                        <li className="nav-item">Applications</li>
-                        <li className="nav-item"><a href="/CompanyCurrentInterns" className="nav-link">Current Interns</a></li>
-                        <li className="nav-item"><a href="/CompanyAll" className="nav-link">All Internships</a></li>
-                        <li className="nav-item"><a href="/CompanyDocs" className="nav-link">Reports and Documents</a></li>
-                    </ul>
-                </aside>
-
+        <CompanyLayout>
                 <main className="dashboard-main">
                     <section className="filter-section">
                         <h2 className="section-title">Filter Applications</h2>
@@ -167,7 +140,7 @@ const ApplicationsReview = () => {
                         </ul>
                     </section>
                 </main>
-            </div>
+            
 
             {selectedApplication && (
                 <div className="modal">
@@ -187,10 +160,7 @@ const ApplicationsReview = () => {
                 </div>
             )}
 
-            <footer className="dashboard-footer">
-                &copy; 2025 Internship Management System
-            </footer>
-        </div>
+            </CompanyLayout>
     );
 };
 

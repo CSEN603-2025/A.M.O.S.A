@@ -6,17 +6,15 @@ import '../CSS/SCADOfficeDashboard.css';
 import { Link } from "react-router-dom";
 
 const navItems = [
-    { label: "Home", icon: <FiHome />, link: "/Companydashboard" },
-    { label: "My Internships Posts", icon: <FiUser />, link: "/CompanyInternships" },
-    { label: "Applications", icon: <FiBriefcase />, link: "/company/applications" },
-    { label: "Current Interns", icon: <FiUsers />, link: "/CompanyCurrentInterns" },
-    { label: "All Internships", icon: <FiList />, link: "/CompanyAll" },
-    { label: "Reports and Documents", icon: <FiFileText />, link: "/CompanyDocs" },
+    { label: "Home", icon: <FiHome />, link: "/Facultydashboard" },
+    { label: "Review Reports", icon: <FiFileText />, link: "/faculty/reports" },
+    { label: "Statistics", icon: <FiBarChart2 />, link: "/faculty/statisticss" },
+  
 
 
 ];
 
-const CompanyLayout = ({ children }) => {
+const FacultyLayout = ({ children }) => {
     const navigate = useNavigate();
     const missedCalls = 5;
     const notifications = 3;
@@ -33,7 +31,7 @@ const CompanyLayout = ({ children }) => {
             }}
         >
             <aside className="sidebar" aria-label="Sidebar Navigation">
-                <div className="sidebar-brand">Company</div>
+                <div className="sidebar-brand">Faculty</div>
                 <nav>
                     <ul className="sidebar-nav">
                         {navItems.map((item) => (
@@ -69,7 +67,7 @@ const CompanyLayout = ({ children }) => {
                         borderBottom: "1px solid var(--border)",
                     }}
                 >
-                    <div className="main-header-title">Company Zone</div>
+                    <div className="main-header-title">Faculty Zone</div>
                     <div className="main-header-actions" style={{ display: "flex", alignItems: "center", gap: "1.2rem" }}>
 
                         <button onClick={() => navigate("/StudentNotifications")} className="icon-btn" aria-label="Notifications">
@@ -94,4 +92,4 @@ const CompanyLayout = ({ children }) => {
     );
 };
 
-export default CompanyLayout
+export default FacultyLayout;

@@ -2,6 +2,7 @@ import React from "react";
 import './CSS/CompanyDashboard.css';
 import { useNavigate } from 'react-router-dom';
 import { FiBell } from 'react-icons/fi';
+import CompanyLayout from "./components/CompanyLayout";
 
 const CompanyDashboard = () => {
     const navigate = useNavigate();
@@ -16,33 +17,7 @@ const CompanyDashboard = () => {
     };
 
     return (
-        <div className="dashboard-wrapper">
-            <header className="dashboard-header">
-                <h1 className="dashboard-title">Company Dashboard</h1>
-                <div className="dashboard-actions">
-                    <button className="notification-bell" onClick={handleBellClick} title="Notifications">
-                        <FiBell size={24} />
-                        <span className="notification-count">3</span>
-                    </button>
-                    <button className="signout-button" onClick={handleLogout}>
-                        Sign Out
-                    </button>
-                </div>
-            </header>
-
-
-            <div className="dashboard-content">
-                <aside className="dashboard-sidebar">
-                    <h2 className="sidebar-title">Navigation</h2>
-                    <ul className="nav-list">
-                        <li className="nav-item">Home</li>
-                        <li className="nav-item"><a href="/CompanyInternships" className="nav-link"> My Internship Posts</a></li>
-                        <li className="nav-item"><a href="/company/applications" className="nav-link">Applications</a></li>
-                        <li className="nav-item"><a href="/CompanyCurrentInterns" className="nav-link">Current Interns</a></li>
-                        <li className="nav-item"><a href="/CompanyAll" className="nav-link">All Internships</a></li>
-                        <li className="nav-item"><a href="CompanyDocs" className="nav-link">Reports and Documents</a></li>
-                    </ul>
-                </aside>
+        <CompanyLayout>
                 <main className="dashboard-main">
                     <section className="stats-section">
                         <h2 className="section-title">Quick Stats</h2>
@@ -59,12 +34,7 @@ const CompanyDashboard = () => {
                         </ul>
                     </section>
                 </main> 
-            </div>
-
-            <footer className="dashboard-footer">
-                <p>&copy; 2025 SCAD System. All rights reserved.</p>
-            </footer>
-        </div>
+        </CompanyLayout>
     );
 };
 
