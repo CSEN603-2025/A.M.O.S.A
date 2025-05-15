@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { FiBook } from "react-icons/fi";
+import { FiBook, FiDownload } from "react-icons/fi";
 import "./CSS/SCADOfficeDashboard.css";
 import ProstudentLayout from "./components/ProstudentLayout";
 
@@ -42,6 +42,7 @@ const PROPreRecordedWorkshops = () => {
     const [isPlaying, setIsPlaying] = useState(false);
     const [notes, setNotes] = useState("");
     const [showFeedback, setShowFeedback] = useState(false);
+    const [showCertificate, setShowCertificate] = useState(false);
     const [rating, setRating] = useState(0);
     const [feedback, setFeedback] = useState("");
     const [submittedFeedback, setSubmittedFeedback] = useState(false);
@@ -77,8 +78,25 @@ const PROPreRecordedWorkshops = () => {
             setSubmittedFeedback(false);
             setRating(0);
             setFeedback("");
-            setActiveWorkshop(null);
+            setShowCertificate(true);
         }, 2000);
+    };
+
+    const handleDownloadCertificate = () => {
+        // In a real app, this would download a PDF
+        console.log("Downloading certificate...");
+        // Simulate download
+        const link = document.createElement('a');
+        link.href = '#';
+        link.download = `${activeWorkshop.name}-Certificate.pdf`;
+        link.click();
+        setShowCertificate(false);
+        setActiveWorkshop(null);
+    };
+
+    const handleCloseCertificate = () => {
+        setShowCertificate(false);
+        setActiveWorkshop(null);
     };
 
     const handleCancelWorkshop = () => {
@@ -384,6 +402,77 @@ const PROPreRecordedWorkshops = () => {
                                 <p>Your input helps us improve future workshops.</p>
                             </div>
                         )}
+                    </div>
+                </div>
+            )}
+
+            {/* Certificate Popup */}
+            {showCertificate && (
+                <div style={{
+                    position: 'fixed',
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    background: 'rgba(0,0,0,0.5)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    zIndex: 1000
+                }}>
+                    <div style={{
+                        background: '#fff',
+                        borderRadius: 12,
+                        width: '80%',
+                        maxWidth: 500,
+                        padding: 24,
+                        boxShadow: '0 4px 20px rgba(0,0,0,0.15)',
+                        textAlign: 'center'
+                    }}>
+                        <div style={{
+                            background: '#f8f9fa',
+                            borderRadius: 8,
+                            padding: 24,
+                            marginBottom: 24
+                        }}>
+                            <h3 style={{ color: 'var(--primary)', marginBottom: 16 }}>🎉 Congratulations!</h3>
+                            <p>You've successfully completed the <strong>{activeWorkshop?.name}</strong> workshop.</p>
+                            <p>Your certificate is ready to download!</p>
+                        </div>
+                        
+                        <div style={{ display: 'flex', gap: 16, justifyContent: 'center' }}>
+                            <button
+                                onClick={handleDownloadCertificate}
+                                style={{
+                                    background: 'var(--primary)',
+                                    color: 'white',
+                                    border: 'none',
+                                    padding: '12px 24px',
+                                    borderRadius: 8,
+                                    cursor: 'pointer',
+                                    fontWeight: 600,
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    gap: 8
+                                }}
+                            >
+                                <FiDownload /> Download Certificate
+                            </button>
+                            <button
+                                onClick={handleCloseCertificate}
+                                style={{
+                                    background: 'transparent',
+                                    color: '#666',
+                                    border: '1px solid #666',
+                                    padding: '12px 24px',
+                                    borderRadius: 8,
+                                    cursor: 'pointer',
+                                    fontWeight: 600
+                                }}
+                            >
+                                Close
+                            </button>
+                        </div>
                     </div>
                 </div>
             )}

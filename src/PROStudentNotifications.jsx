@@ -24,7 +24,29 @@ const PROStudentNotifications = () => {
             id: 4,
             message: "📝 Your internship report status (Sumerge internship) has been sent.",
             date: "2025-04-29"
-        }
+        },
+        {
+            id: 5,
+            message: "Ahmed Ali accepted your appointment at 10:00 AM on 12-May-2025.",
+            date: "2025-05-12"
+        },
+        {
+            id: 6,
+            message: "Sara Mohamed rescheduled your appointment to 2:30 PM on 13-May-2025.",
+            date: "2025-05-13"
+        },
+        {
+    id: 7,
+    message: "📅 Reminder: You registered for the 'Real-World Skills Workshop' happening on the 25th of this month. Don't forget to attend!",
+    date: "2025-05-16"
+},
+{
+    id: 8,
+    message: "📣 The 'Career Development Workshop'starts tomorrow at 10:00 AM. Good luck!",
+    date: "2025-05-17"
+}
+
+
     ]);
 
     return (

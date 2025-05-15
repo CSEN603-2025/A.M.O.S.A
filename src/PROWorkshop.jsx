@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { FiBook, FiVideo } from "react-icons/fi";
+import { FiBook, FiVideo, FiDownload } from "react-icons/fi";
 import "./CSS/SCADOfficeDashboard.css";
 import ProstudentLayout from "./components/ProstudentLayout";
 
@@ -46,9 +46,13 @@ const PROWorkshop = () => {
     const [chatInput, setChatInput] = useState("");
     const [showPopup, setShowPopup] = useState(false);
     const [showFeedback, setShowFeedback] = useState(false);
+    const [showCertificate, setShowCertificate] = useState(false);
     const [rating, setRating] = useState(0);
     const [feedback, setFeedback] = useState("");
     const [submittedFeedback, setSubmittedFeedback] = useState(false);
+    const [notifications, setNotifications] = useState([]);
+    const [registeredWorkshops, setRegisteredWorkshops] = useState([]);
+    const [successMessage, setSuccessMessage] = useState(null);
 
     const toggleWorkshop = (id) => {
         setExpandedWorkshop(expandedWorkshop === id ? null : id);
@@ -56,7 +60,9 @@ const PROWorkshop = () => {
 
     const handleRegister = (e, workshopId) => {
         e.stopPropagation();
-        console.log(`Registering for workshop ${workshopId}`);
+        const workshop = upcomingWorkshops.find(w => w.id === workshopId);
+        setSuccessMessage(`You have successfully registered to "${workshop.name}"`);
+        setTimeout(() => setSuccessMessage(null), 3000);
     };
 
     const handleJoinLive = (workshop) => {
@@ -85,12 +91,25 @@ const PROWorkshop = () => {
             setSubmittedFeedback(false);
             setRating(0);
             setFeedback("");
-            setActiveLiveWorkshop(null);
-            setShowPopup(false);
+            setShowCertificate(true);
         }, 2000);
     };
 
-    const handleCancelWorkshop = () => {
+    const handleDownloadCertificate = () => {
+        // In a real app, this would download a PDF
+        console.log("Downloading certificate...");
+        // Simulate download
+        const link = document.createElement('a');
+        link.href = '#';
+        link.download = `${activeLiveWorkshop.name}-Certificate.pdf`;
+        link.click();
+        setShowCertificate(false);
+        setActiveLiveWorkshop(null);
+        setShowPopup(false);
+    };
+
+    const handleCloseCertificate = () => {
+        setShowCertificate(false);
         setActiveLiveWorkshop(null);
         setShowPopup(false);
     };
@@ -110,8 +129,27 @@ const PROWorkshop = () => {
         <ProstudentLayout>
             <main className="main-content" aria-label="Main Content">
                 <h1 className="main-welcome" style={{ marginTop: 0, marginBottom: 32 }}>Workshops</h1>
+                
+                {successMessage && (
+                    <div style={{
+                        position: "fixed",
+                        bottom: "20px",
+                        right: "20px",
+                        backgroundColor: "#2ecc71",
+                        color: "white",
+                        padding: "12px 18px",
+                        borderRadius: "10px",
+                        boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.15)",
+                        zIndex: 1000,
+                        transition: "opacity 0.3s ease",
+                        animation: "fadeInUp 0.3s ease"
+                    }}>
+                        {successMessage}
+                    </div>
+                )}
 
                 <div style={{ display: 'grid', gap: 24, width: '100%' }}>
+                    {/* Upcoming Workshops Section */}
                     <div className="internship-item" style={{
                         background: '#fff',
                         borderRadius: 12,
@@ -180,6 +218,7 @@ const PROWorkshop = () => {
                         </div>
                     </div>
 
+                    {/* Live Workshops Section */}
                     <div className="internship-item" style={{
                         background: '#fff',
                         borderRadius: 12,
@@ -225,6 +264,7 @@ const PROWorkshop = () => {
                 </div>
             </main>
 
+            {/* Live Workshop Popup */}
             {showPopup && activeLiveWorkshop && (
                 <div style={{
                     position: 'fixed',
@@ -251,7 +291,7 @@ const PROWorkshop = () => {
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
                             <h3 style={{ margin: 0, color: 'var(--primary)' }}>Live: {activeLiveWorkshop.name}</h3>
                             <button
-                                onClick={handleCancelWorkshop}
+                                onClick={handleCloseCertificate}
                                 style={{
                                     background: 'transparent',
                                     border: 'none',
@@ -362,6 +402,7 @@ const PROWorkshop = () => {
                 </div>
             )}
 
+            {/* Feedback Popup */}
             {showFeedback && (
                 <div style={{
                     position: 'fixed',
@@ -441,6 +482,77 @@ const PROWorkshop = () => {
                                 <p>Your input helps us improve future workshops.</p>
                             </div>
                         )}
+                    </div>
+                </div>
+            )}
+
+            {/* Certificate Popup */}
+            {showCertificate && (
+                <div style={{
+                    position: 'fixed',
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    background: 'rgba(0,0,0,0.5)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    zIndex: 1000
+                }}>
+                    <div style={{
+                        background: '#fff',
+                        borderRadius: 12,
+                        width: '80%',
+                        maxWidth: 500,
+                        padding: 24,
+                        boxShadow: '0 4px 20px rgba(0,0,0,0.15)',
+                        textAlign: 'center'
+                    }}>
+                        <div style={{
+                            background: '#f8f9fa',
+                            borderRadius: 8,
+                            padding: 24,
+                            marginBottom: 24
+                        }}>
+                            <h3 style={{ color: 'var(--primary)', marginBottom: 16 }}>🎉 Congratulations!</h3>
+                            <p>You've successfully completed the <strong>{activeLiveWorkshop?.name}</strong> workshop.</p>
+                            <p>Your certificate is ready to download!</p>
+                        </div>
+                        
+                        <div style={{ display: 'flex', gap: 16, justifyContent: 'center' }}>
+                            <button
+                                onClick={handleDownloadCertificate}
+                                style={{
+                                    background: 'var(--primary)',
+                                    color: 'white',
+                                    border: 'none',
+                                    padding: '12px 24px',
+                                    borderRadius: 8,
+                                    cursor: 'pointer',
+                                    fontWeight: 600,
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    gap: 8
+                                }}
+                            >
+                                <FiDownload /> Download Certificate
+                            </button>
+                            <button
+                                onClick={handleCloseCertificate}
+                                style={{
+                                    background: 'transparent',
+                                    color: '#666',
+                                    border: '1px solid #666',
+                                    padding: '12px 24px',
+                                    borderRadius: 8,
+                                    cursor: 'pointer',
+                                    fontWeight: 600
+                                }}
+                            >
+                                Close
+                            </button>
+                        </div>
                     </div>
                 </div>
             )}

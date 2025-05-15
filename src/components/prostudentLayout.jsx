@@ -23,7 +23,7 @@ const navItems = [
 const ProstudentLayout = ({ children }) => {
     const navigate = useNavigate();
     const missedCalls = 5;
-    const notifications = 3;
+    const notifications = 8;
 
     return (
         <div
