@@ -1,9 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { FaPhone } from "react-icons/fa";
-import { FiBell } from "react-icons/fi";
+import { FiBell, FiCalendar, FiClock, FiUser, FiMail } from "react-icons/fi";
 import './CSS/SCADOfficeDashboard.css';
-import './CSS/browseInternships.css'; // Reusing 
+import './CSS/browseInternships.css';
 import DashboardLayout from './components/Layout';
 
 const AppointmentsScad = () => {
@@ -30,16 +29,6 @@ const AppointmentsScad = () => {
 
     const navigate = useNavigate();
     const location = useLocation();
-    const missedCalls = 2;
-    const unreadNotifications = notifications.length;
-
-    const goToCalls = () => {
-        navigate("/scad/Calls", { state: { from: location.pathname } });
-    };
-
-    const goToNotifications = () => {
-        navigate("/scad/noti", { state: { from: location.pathname } });
-    };
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -68,95 +57,290 @@ const AppointmentsScad = () => {
     };
 
     return (
-       <DashboardLayout>
-                <main className="dashboard-main">
-                    <div className="browser-wrapper">
-                        {/* Title Header */}
-                        <header className="browser-header">
-                            <h1 className="browser-title">Appointments</h1>
-                        </header>
+        <DashboardLayout>
+            <main className="main-content" aria-label="Main Content">
+                <h1 className="main-welcome" style={{ marginTop: 0, marginBottom: 32 }}>Appointments Management</h1>
 
-                        {/* Main Appointment Sections */}
-                        <main className="browser-main">
-                            <section className="list-section">
-                                <h2 className="section-title">Notifications</h2>
-                                {notifications.length === 0 ? (
-                                    <p>No notifications.</p>
-                                ) : (
-                                    <ul>
-                                        {notifications.map(note => (
-                                            <li key={note.id}>{note.message}</li>
-                                        ))}
-                                    </ul>
-                                )}
-                            </section>
-
-                            <section className="list-section">
-                                <h2 className="section-title">Scheduled Appointments</h2>
-                                <ul>
-                                    {appointmentsScheduledByDefault.map(app => (
-                                        <li key={app.id}>
-                                            <strong>{app.username}</strong> on <em>{app.date}</em> at <em>{app.timing}</em> - {app.subject}
-                                            <span className={`status ${app.online ? "online" : "offline"}`}>
-                                                {app.online ? "Online" : "Offline"}
-                                            </span>
-                                        </li>
-                                    ))}
-                                </ul>
-                            </section>
-
-                            <section className="list-section">
-                                <h2 className="section-title">Appointment Requests (Incoming)</h2>
-                                {appointmentRequests.length === 0 ? (
-                                    <p>No incoming requests.</p>
-                                ) : (
-                                    <ul>
-                                        {appointmentRequests.map(req => (
-                                            <li key={req.id}>
-                                                <div>
-                                                    <strong>{req.username}</strong> requests <em>{req.subject}</em> on <em>{req.date}</em> at <em>{req.timing}</em>
-                                                </div>
-                                                <button className="accept-btn" onClick={() => handleAcceptRequest(req)}>Accept</button>
-                                                <button className="reject-btn" onClick={() => handleRejectRequest(req.id)}>Reject</button>
-                                            </li>
-                                        ))}
-                                    </ul>
-                                )}
-                            </section>
-
-                            <section className="list-section">
-                                <button className="request-button" onClick={() => setShowRequestForm(true)}>
-                                    Request Appointment
-                                </button>
-
-                                {showRequestForm && (
-                                    <div className="popup-form">
-                                        <form onSubmit={handleSubmit}>
-                                            <h3>Request New Appointment</h3>
-                                            <label>Username:
-                                                <input type="text" name="username" value={newAppointment.username} onChange={handleInputChange} required />
-                                            </label>
-                                            <label>Date:
-                                                <input type="date" name="date" value={newAppointment.date} onChange={handleInputChange} required />
-                                            </label>
-                                            <label>Timing:
-                                                <input type="time" name="timing" value={newAppointment.timing} onChange={handleInputChange} required />
-                                            </label>
-                                            <label>Subject:
-                                                <input type="text" name="subject" value={newAppointment.subject} onChange={handleInputChange} required />
-                                            </label>
-                                            <div className="form-buttons">
-                                                <button type="submit">Submit</button>
-                                                <button type="button" onClick={() => setShowRequestForm(false)}>Cancel</button>
-                                            </div>
-                                        </form>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24, width: '100%', marginBottom: 24 }}>
+                    {/* Notifications Section */}
+                    <div className="internship-item" style={{ background: '#fff', borderRadius: 12, boxShadow: '0 2px 8px rgba(30,41,59,0.06)', padding: 24, border: '1px solid var(--border)' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 16 }}>
+                            <FiBell style={{ color: 'var(--primary)', fontSize: 22 }} />
+                            <span style={{ fontWeight: 700, fontSize: '1.1rem' }}>Notifications</span>
+                        </div>
+                        {notifications.length === 0 ? (
+                            <p style={{ color: 'var(--text-secondary)', fontSize: 15 }}>No notifications.</p>
+                        ) : (
+                            <div style={{ display: 'grid', gap: 12 }}>
+                                {notifications.map(note => (
+                                    <div key={note.id} style={{
+                                        padding: '12px 16px',
+                                        background: 'rgba(0, 196, 159, 0.1)',
+                                        borderRadius: 8,
+                                        fontSize: 15
+                                    }}>
+                                        {note.message}
                                     </div>
-                                )}
-                            </section>
-                        </main>
+                                ))}
+                            </div>
+                        )}
                     </div>
-                </main>
- </DashboardLayout>
+
+                    {/* Scheduled Appointments Section */}
+                    <div className="internship-item" style={{ background: '#fff', borderRadius: 12, boxShadow: '0 2px 8px rgba(30,41,59,0.06)', padding: 24, border: '1px solid var(--border)' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 16 }}>
+                            <FiCalendar style={{ color: 'var(--primary)', fontSize: 22 }} />
+                            <span style={{ fontWeight: 700, fontSize: '1.1rem' }}>Scheduled Appointments</span>
+                        </div>
+                        {appointmentsScheduledByDefault.length === 0 ? (
+                            <p style={{ color: 'var(--text-secondary)', fontSize: 15 }}>No scheduled appointments.</p>
+                        ) : (
+                            <div style={{ display: 'grid', gap: 12 }}>
+                                {appointmentsScheduledByDefault.map(app => (
+                                    <div key={app.id} style={{
+                                        padding: '12px 16px',
+                                        background: 'rgba(0, 196, 159, 0.1)',
+                                        borderRadius: 8,
+                                        fontSize: 15
+                                    }}>
+                                        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8 }}>
+                                            <span style={{ fontWeight: 600 }}>{app.username}</span>
+                                            <span style={{
+                                                color: app.online ? '#00C49F' : '#FF6384',
+                                                fontWeight: 600,
+                                                fontSize: 14
+                                            }}>
+                                                {app.online ? 'Online' : 'Offline'}
+                                            </span>
+                                        </div>
+                                        <div style={{ display: 'grid', gap: 4 }}>
+                                            <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                                                <FiCalendar size={14} />
+                                                <span>{app.date}</span>
+                                            </div>
+                                            <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                                                <FiClock size={14} />
+                                                <span>{app.timing}</span>
+                                            </div>
+                                            <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                                                <FiMail size={14} />
+                                                <span>{app.subject}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+                    </div>
+                </div>
+
+                {/* Appointment Requests Section */}
+                <div className="internship-item" style={{ background: '#fff', borderRadius: 12, boxShadow: '0 2px 8px rgba(30,41,59,0.06)', padding: 24, border: '1px solid var(--border)', marginBottom: 24 }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 16 }}>
+                        <FiUser style={{ color: 'var(--primary)', fontSize: 22 }} />
+                        <span style={{ fontWeight: 700, fontSize: '1.1rem' }}>Appointment Requests</span>
+                    </div>
+                    {appointmentRequests.length === 0 ? (
+                        <p style={{ color: 'var(--text-secondary)', fontSize: 15 }}>No incoming requests.</p>
+                    ) : (
+                        <div style={{ display: 'grid', gap: 12 }}>
+                            {appointmentRequests.map(req => (
+                                <div key={req.id} style={{
+                                    padding: '12px 16px',
+                                    background: 'rgba(0, 196, 159, 0.1)',
+                                    borderRadius: 8,
+                                    fontSize: 15
+                                }}>
+                                    <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8 }}>
+                                        <span style={{ fontWeight: 600 }}>{req.username}</span>
+                                        <span style={{ fontWeight: 600, fontSize: 14 }}>Pending</span>
+                                    </div>
+                                    <div style={{ display: 'grid', gap: 4 }}>
+                                        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                                            <FiCalendar size={14} />
+                                            <span>{req.date}</span>
+                                        </div>
+                                        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                                            <FiClock size={14} />
+                                            <span>{req.timing}</span>
+                                        </div>
+                                        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                                            <FiMail size={14} />
+                                            <span>{req.subject}</span>
+                                        </div>
+                                    </div>
+                                    <div style={{ display: 'flex', gap: 12, marginTop: 12 }}>
+                                        <button
+                                            onClick={() => handleAcceptRequest(req)}
+                                            style={{
+                                                background: '#00C49F',
+                                                color: 'white',
+                                                border: 'none',
+                                                padding: '8px 16px',
+                                                borderRadius: 8,
+                                                cursor: 'pointer',
+                                                fontWeight: 600,
+                                                fontSize: 14
+                                            }}
+                                        >
+                                            Accept
+                                        </button>
+                                        <button
+                                            onClick={() => handleRejectRequest(req.id)}
+                                            style={{
+                                                background: '#FF6384',
+                                                color: 'white',
+                                                border: 'none',
+                                                padding: '8px 16px',
+                                                borderRadius: 8,
+                                                cursor: 'pointer',
+                                                fontWeight: 600,
+                                                fontSize: 14
+                                            }}
+                                        >
+                                            Reject
+                                        </button>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    )}
+                </div>
+
+                {/* Request Appointment Button */}
+                <button
+                    onClick={() => setShowRequestForm(true)}
+                    style={{
+                        background: 'var(--primary)',
+                        color: 'white',
+                        border: 'none',
+                        padding: '12px 24px',
+                        borderRadius: 8,
+                        cursor: 'pointer',
+                        fontWeight: 600,
+                        fontSize: 16,
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: 8,
+                        margin: '0 auto'
+                    }}
+                >
+                    Request New Appointment
+                </button>
+
+                {/* Appointment Request Form Modal */}
+                {showRequestForm && (
+                    <div className="workshop-modal-backdrop">
+                        <div className="workshop-modal">
+                            <div className="modal-buttons">
+                                <button onClick={() => setShowRequestForm(false)} style={{
+                                    background: '#FF6384',
+                                    color: 'white',
+                                    border: 'none',
+                                    padding: '8px 16px',
+                                    borderRadius: 8,
+                                    cursor: 'pointer',
+                                    fontWeight: 600
+                                }}>
+                                    Close
+                                </button>
+                            </div>
+                            <h2 style={{ marginBottom: 24 }}>Request New Appointment</h2>
+                            <form onSubmit={handleSubmit} style={{ display: 'grid', gap: 16 }}>
+                                <div style={{ display: 'grid', gap: 8 }}>
+                                    <label style={{ fontWeight: 600 }}>Username:</label>
+                                    <input
+                                        type="text"
+                                        name="username"
+                                        value={newAppointment.username}
+                                        onChange={handleInputChange}
+                                        required
+                                        style={{
+                                            width: '100%',
+                                            height: 40,
+                                            borderRadius: 8,
+                                            border: '1px solid var(--border)',
+                                            padding: '0 14px',
+                                            fontSize: 16
+                                        }}
+                                    />
+                                </div>
+                                <div style={{ display: 'grid', gap: 8 }}>
+                                    <label style={{ fontWeight: 600 }}>Date:</label>
+                                    <input
+                                        type="date"
+                                        name="date"
+                                        value={newAppointment.date}
+                                        onChange={handleInputChange}
+                                        required
+                                        style={{
+                                            width: '100%',
+                                            height: 40,
+                                            borderRadius: 8,
+                                            border: '1px solid var(--border)',
+                                            padding: '0 14px',
+                                            fontSize: 16
+                                        }}
+                                    />
+                                </div>
+                                <div style={{ display: 'grid', gap: 8 }}>
+                                    <label style={{ fontWeight: 600 }}>Timing:</label>
+                                    <input
+                                        type="time"
+                                        name="timing"
+                                        value={newAppointment.timing}
+                                        onChange={handleInputChange}
+                                        required
+                                        style={{
+                                            width: '100%',
+                                            height: 40,
+                                            borderRadius: 8,
+                                            border: '1px solid var(--border)',
+                                            padding: '0 14px',
+                                            fontSize: 16
+                                        }}
+                                    />
+                                </div>
+                                <div style={{ display: 'grid', gap: 8 }}>
+                                    <label style={{ fontWeight: 600 }}>Subject:</label>
+                                    <input
+                                        type="text"
+                                        name="subject"
+                                        value={newAppointment.subject}
+                                        onChange={handleInputChange}
+                                        required
+                                        style={{
+                                            width: '100%',
+                                            height: 40,
+                                            borderRadius: 8,
+                                            border: '1px solid var(--border)',
+                                            padding: '0 14px',
+                                            fontSize: 16
+                                        }}
+                                    />
+                                </div>
+                                <button
+                                    type="submit"
+                                    style={{
+                                        background: '#00C49F',
+                                        color: 'white',
+                                        border: 'none',
+                                        padding: '12px 24px',
+                                        borderRadius: 8,
+                                        cursor: 'pointer',
+                                        fontWeight: 600,
+                                        fontSize: 16,
+                                        marginTop: 16
+                                    }}
+                                >
+                                    Submit Request
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                )}
+            </main>
+        </DashboardLayout>
     );
 };
 
