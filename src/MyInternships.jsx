@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import './CSS/StudentDashboard.css';
+import { useNavigate } from 'react-router-dom';
 import { FiBell } from 'react-icons/fi';
+
 
 const internshipsData = [
     { id: 1, company: "TechCorp", status: "Completed", duration: "Jan 2023 - Jun 2023", title: "Software Engineer Intern", current: false },
@@ -39,6 +41,17 @@ const MyInternships = () => {
         setSubmitted(prev => ({ ...prev, [id]: { ...prev[id], evaluation: true } }));
         setEditable(prev => ({ ...prev, [id]: { ...prev[id], evaluation: false } }));
     };
+
+    const navigate = useNavigate();
+
+    const handleBellClick = () => {
+        navigate('/StudentNotifications');
+    };
+
+    const handleLogout = () => {
+        navigate('/');
+    };
+
 
     const handleEditEvaluation = (id) => {
         setEditable(prev => ({ ...prev, [id]: { ...prev[id], evaluation: true } }));
@@ -107,22 +120,21 @@ const MyInternships = () => {
     return (
         <div className="dashboard-wrapper">
             <header className="dashboard-header">
-                <div className="header-left">
-                    <h1 className="dashboard-title">My Internships</h1>
-                </div>
-                <div className="header-right">
-                    <a href="/" className="signout-button">Sign Out</a>
-                </div>
-            </header>
+            <h1 className="dashboard-title">My Internships</h1>
+            <div className="dashboard-actions">
+                <button className="notification-bell" onClick={handleBellClick} title="Notifications">
+                    <FiBell size={24} />
+                    <span className="notification-count">4</span>
+                </button>
+                <button className="signout-button" onClick={handleLogout}>
+                    Sign Out
+                </button>
+            </div>
+        </header>
+
 
             <div className="dashboard-content">
                 <aside className="dashboard-sidebar">
-                    <div className="notification-widget">
-                        <a href="/StudentNotifications" className="notification-link">
-                            <FiBell size={18} className="bell-icon" />
-                            <span>Notifications</span>
-                        </a>
-                    </div>
                     <h2 className="sidebar-title">Navigation</h2>
                     <ul className="nav-list">
                         <li className="nav-item"><a href="/StudentDashboard" className="nav-link">Home</a></li>
