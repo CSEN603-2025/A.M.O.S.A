@@ -105,7 +105,7 @@ const StudentInternships = () => {
                                     onChange={handleFilterChange}
                                     className="filter-select"
                                 >
-                                    <option value="All">All Industries</option>
+                                    <option value="All">All Fields</option>
                                     <option value="Technology">Technology</option>
                                     <option value="Marketing">Marketing</option>
                                     <option value="Data Analytics">Data Analytics</option>
@@ -116,7 +116,7 @@ const StudentInternships = () => {
                                     onChange={handleFilterChange}
                                     className="filter-select"
                                 >
-                                    <option value="All">All</option>
+                                    <option value="All">All Internships</option>
                                     <option value="Paid">Paid</option>
                                     <option value="Unpaid">Unpaid</option>
                                 </select>

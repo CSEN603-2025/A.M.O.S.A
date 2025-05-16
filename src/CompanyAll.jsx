@@ -63,7 +63,7 @@ const durationOptions = [
 const CompanyAll = () => {
     const [internships] = useState(dummyInternships);
     const [searchTerm, setSearchTerm] = useState("");
-    const [selectedIndustry, setSelectedIndustry] = useState("All");
+    const [selectedIndustry, setSelectedIndustry] = useState("All Fields");
     const [selectedPay, setSelectedPay] = useState("All");
     const [selectedDuration, setSelectedDuration] = useState("All");
     const [selectedInternship, setSelectedInternship] = useState(null);
@@ -75,7 +75,7 @@ const CompanyAll = () => {
     const handleDurationChange = (e) => setSelectedDuration(e.target.value);
 
     const filteredInternships = internships.filter(internship =>
-        (selectedIndustry === "All" || internship.industry === selectedIndustry) &&
+        (selectedIndustry === "All Fields" || internship.industry === selectedIndustry) &&
         (selectedPay === "All" ||
             (selectedPay === "Paid" && internship.paid) ||
             (selectedPay === "Unpaid" && !internship.paid)) &&
@@ -87,7 +87,7 @@ const CompanyAll = () => {
             internship.companyName.toLowerCase().includes(searchTerm.toLowerCase()))
     );
 
-    const industryTypes = ["All", ...new Set(dummyInternships.map(i => i.industry))];
+    const industryTypes = ["All Fields", ...new Set(dummyInternships.map(i => i.industry))];
 
     return (
         <CompanyLayout>
@@ -143,7 +143,7 @@ const CompanyAll = () => {
                             onChange={handlePayChange}
                             className="input"
                             style={{
-                                width: 120,
+                                width: 160,
                                 height: 40,
                                 borderRadius: 8,
                                 border: '1px solid var(--border)',
@@ -153,7 +153,7 @@ const CompanyAll = () => {
                                 color: 'var(--text)'
                             }}
                         >
-                            <option value="All">All</option>
+                            <option value="All">All Internships</option>
                             <option value="Paid">Paid</option>
                             <option value="Unpaid">Unpaid</option>
                         </select>

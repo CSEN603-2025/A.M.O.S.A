@@ -163,7 +163,7 @@ const CompanyInternships = () => {
                             onChange={(e) => setFilter(e.target.value)}
                             className="input"
                             style={{
-                                width: 120,
+                                width: 160,
                                 height: 40,
                                 borderRadius: 8,
                                 border: '1px solid var(--border)',
@@ -173,7 +173,7 @@ const CompanyInternships = () => {
                                 color: 'var(--text)'
                             }}
                         >
-                            <option value="All">All</option>
+                            <option value="All">All Internships</option>
                             <option value="Paid">Paid</option>
                             <option value="Unpaid">Unpaid</option>
                         </select>

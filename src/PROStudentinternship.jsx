@@ -63,7 +63,7 @@ const PROStudentinternship = () => {
 
     const [searchTerm, setSearchTerm] = useState("");
     const [filter, setFilter] = useState({
-        industry: "All",
+        industry: "All Fields",
         paid: "All",
         duration: "All"
     });
@@ -98,7 +98,7 @@ const PROStudentinternship = () => {
             internship.jobTitle.toLowerCase().includes(searchTerm.toLowerCase()) ||
             internship.companyName.toLowerCase().includes(searchTerm.toLowerCase());
         const matchesIndustry =
-            filter.industry === "All" || internship.industry === filter.industry;
+            filter.industry === "All Fields" || internship.industry === filter.industry;
         const matchesPaid =
             filter.paid === "All" ||
             (filter.paid === "Paid" && internship.paid) ||
@@ -118,7 +118,7 @@ const PROStudentinternship = () => {
         return matchesSearch && matchesIndustry && matchesPaid && matchesDuration;
     });
 
-    const industryTypes = ["All", ...new Set(internships.map(internship => internship.industry))];
+    const industryTypes = ["All Fields", ...new Set(internships.map(internship => internship.industry))];
 
     return (
         <ProstudentLayout>
@@ -170,7 +170,7 @@ const PROStudentinternship = () => {
                             onChange={handleFilterChange}
                             className="input"
                             style={{
-                                width: 120,
+                                width: 160,
                                 height: 40,
                                 borderRadius: 8,
                                 border: '1px solid var(--border)',
@@ -180,7 +180,7 @@ const PROStudentinternship = () => {
                                 color: 'var(--text)'
                             }}
                         >
-                            <option value="All">All</option>
+                            <option value="All">All Internships</option>
                             <option value="Paid">Paid</option>
                             <option value="Unpaid">Unpaid</option>
                         </select>
