@@ -8,7 +8,7 @@ const dummyDocuments = [
     {
         id: 1,
         title: "Internship Evaluation Report",
-        content: "This report evaluates the performance of the intern during their tenure at the company..."
+        content: "This report evaluates the performance of the intern during their tenure at the company so that scad can grade him"
     },
     {
         id: 2,

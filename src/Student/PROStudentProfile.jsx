@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import '../CSS/StudentProfile.css';
-import { FiBell, FiUser, FiAward, FiBook, FiBriefcase, FiSave } from 'react-icons/fi';
+import { FiBell, FiUser, FiAward, FiBook, FiBriefcase, FiSave, FiBarChart2 } from 'react-icons/fi';
 import ProstudentLayout from "../components/prostudentLayout";
 
 const PROStudentProfile = () => {
@@ -14,6 +14,13 @@ const PROStudentProfile = () => {
         semester: "",
         proBadge: true,
     });
+
+    const [assessmentScores] = useState([
+        { id: 1, assessment: "Technical Skills", score: 85, date: "2023-10-15", maxScore: 100 },
+        { id: 2, assessment: "Communication", score: 78, date: "2023-10-20", maxScore: 100 },
+        { id: 3, assessment: "Problem Solving", score: 92, date: "2023-11-05", maxScore: 100 },
+        { id: 4, assessment: "Teamwork", score: 88, date: "2023-11-12", maxScore: 100 },
+    ]);
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -226,6 +233,69 @@ const PROStudentProfile = () => {
                                 placeholder="Describe your past work experiences, projects, or internships..."
                             ></textarea>
                         </div>
+                    </div>
+                </div>
+
+                {/* Assessment Scores Section */}
+                <div style={{
+                    marginTop: 24,
+                    background: '#fff',
+                    borderRadius: 12,
+                    boxShadow: '0 2px 8px rgba(30,41,59,0.06)',
+                    padding: 24,
+                    border: '1px solid var(--border)'
+                }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 24 }}>
+                        <FiBarChart2 style={{ color: 'var(--primary)', fontSize: 22 }} />
+                        <span style={{ fontWeight: 700, fontSize: '1.1rem' }}>Assessment Scores</span>
+                    </div>
+
+                    <div style={{ overflowX: 'auto' }}>
+                        <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+                            <thead>
+                                <tr style={{ borderBottom: '1px solid var(--border)' }}>
+                                    <th style={{ textAlign: 'left', padding: '12px 16px', fontWeight: 600 }}>Assessment</th>
+                                    <th style={{ textAlign: 'left', padding: '12px 16px', fontWeight: 600 }}>Score</th>
+                                    <th style={{ textAlign: 'left', padding: '12px 16px', fontWeight: 600 }}>Date Taken</th>
+                                    <th style={{ textAlign: 'left', padding: '12px 16px', fontWeight: 600 }}>Percentage</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {assessmentScores.map((assessment) => (
+                                    <tr key={assessment.id} style={{ borderBottom: '1px solid var(--border)' }}>
+                                        <td style={{ padding: '12px 16px' }}>{assessment.assessment}</td>
+                                        <td style={{ padding: '12px 16px' }}>{assessment.score}/{assessment.maxScore}</td>
+                                        <td style={{ padding: '12px 16px' }}>{assessment.date}</td>
+                                        <td style={{ padding: '12px 16px' }}>
+                                            <div style={{
+                                                width: '100%',
+                                                backgroundColor: 'rgba(0, 196, 159, 0.1)',
+                                                borderRadius: 4,
+                                                display: 'flex'
+                                            }}>
+                                                <div
+                                                    style={{
+                                                        width: `${(assessment.score / assessment.maxScore) * 100}%`,
+                                                        backgroundColor: '#00C49F',
+                                                        height: 24,
+                                                        borderRadius: 4,
+                                                        display: 'flex',
+                                                        alignItems: 'center',
+                                                        justifyContent: 'flex-end',
+                                                        paddingRight: 8,
+                                                        color: 'white',
+                                                        fontWeight: 600,
+                                                        fontSize: 12
+                                                    }}
+                                                >
+                                                    {Math.round((assessment.score / assessment.maxScore) * 100)}%
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
                     </div>
                 </div>
 

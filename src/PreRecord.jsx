@@ -239,8 +239,9 @@ const PROPreRecordedWorkshops = () => {
                             <p>🎥 Video Player - {activeWorkshop.name}</p>
                             <div style={{
                                 position: 'absolute',
-                                bottom: '10px',
-                                left: '10px',
+                                bottom: '10px',  // Keeps it at the bottom
+                                left: '50%',     // Starts at horizontal center
+                                transform: 'translateX(-50%)',  // Adjusts to truly center
                                 display: 'flex',
                                 gap: '10px'
                             }}>

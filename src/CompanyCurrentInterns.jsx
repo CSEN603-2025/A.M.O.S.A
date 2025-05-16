@@ -251,7 +251,7 @@ const CompanyCurrentInterns = () => {
                                     fontSize: '15px'
                                 }}
                             />
-                            <div style={{ display: 'flex', gap: '12px' }}>
+                            <div style={{ display: 'flex', gap: '12px', textAlign: 'center',justifyContent: 'center' }}>
                                 <button
                                     className="action-button"
                                     style={{

@@ -61,21 +61,34 @@ const PROStudentDashboard = () => {
                             padding: 16
                         }}>
                             <p style={{ marginBottom: 16, textAlign: 'center' }}>Video cannot be played. No video link provided.</p>
-                            <button
-                                className="play-button"
-                                disabled
+                            <div
                                 style={{
-                                    background: '#ccc',
-                                    color: 'white',
-                                    border: 'none',
-                                    padding: '10px 24px',
-                                    borderRadius: 8,
-                                    cursor: 'not-allowed',
-                                    fontWeight: 600
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    marginTop: '70px',
+                                    height: '200px',
+                                    background: 'transparent',
+
+
                                 }}
                             >
-                                Play
-                            </button>
+                                <button
+                                    className="play-button"
+                                    disabled
+                                    style={{
+                                        background: '#ccc',
+                                        color: 'white',
+                                        border: 'none',
+                                        padding: '10px 24px',
+                                        borderRadius: 8,
+                                        cursor: 'not-allowed',
+                                        fontWeight: 600
+                                    }}
+                                >
+                                    Play
+                                </button>
+                            </div>
                         </div>
                     </div>
 
