@@ -67,7 +67,7 @@ const FacultyLayout = ({ children }) => {
                         borderBottom: "1px solid var(--border)",
                     }}
                 >
-                    <div className="main-header-title">Faculty Zone</div>
+                    <div className="main-header-title">Welcome!</div>
                     <div className="main-header-actions" style={{ display: "flex", alignItems: "center", gap: "1.2rem" }}>
 
                         <button onClick={() => navigate("/StudentNotifications")} className="icon-btn" aria-label="Notifications">
@@ -78,7 +78,7 @@ const FacultyLayout = ({ children }) => {
                     </div>
                 </header>
                 <main
-                    className="main-content"
+                    className="main-content fade-in"
                     aria-label="Main Content"
 
                 >

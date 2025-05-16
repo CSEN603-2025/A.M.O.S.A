@@ -73,11 +73,15 @@ const ProstudentLayout = ({ children }) => {
                         borderBottom: "1px solid var(--border)",
                     }}
                 >
-                    <div className="main-header-title">PROStudent zone</div>
+                    <div className="main-header-title">Welcome!</div>
                     <div className="main-header-actions" style={{ display: "flex", alignItems: "center", gap: "1.2rem" }}>
-                        <button onClick={() => navigate("/scad/Calls")} className="icon-btn" aria-label="Missed Calls">
+                        <button onClick={() => navigate("/student/Calls")} className="icon-btn" aria-label="Missed Calls">
                             <FaPhone />
                             <span className="badge" aria-label={`${missedCalls} missed calls`}>{missedCalls}</span>
+                        </button>
+                        <button onClick={() => navigate("/Student/proprofile")} className="icon-btn" aria-label="Notifications">
+                            <FiUser size={22} />
+                            
                         </button>
                         <button onClick={() => navigate("/PROStudentNotifications")} className="icon-btn" aria-label="Notifications">
                             <FiBell size={22} />
@@ -87,7 +91,7 @@ const ProstudentLayout = ({ children }) => {
                     </div>
                 </header>
                 <main
-                    className="main-content"
+                    className="main-content fade-in"
                     aria-label="Main Content"
 
                 >

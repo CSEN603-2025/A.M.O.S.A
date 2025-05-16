@@ -71,7 +71,7 @@ const DashboardLayout = ({ children }) => {
             borderBottom: "1px solid var(--border)",
           }}
         >
-          <div className="main-header-title">SCAD Office</div>
+          <div className="main-header-title">Welcome!</div>
           <div className="main-header-actions" style={{ display: "flex", alignItems: "center", gap: "1.2rem" }}>
             <button onClick={() => navigate("/scad/Calls")} className="icon-btn" aria-label="Missed Calls">
               <FaPhone />
@@ -85,7 +85,7 @@ const DashboardLayout = ({ children }) => {
           </div>
         </header>
         <main
-          className="main-content"
+          className="main-content fade-in"
           aria-label="Main Content"
          
         >

@@ -5,6 +5,10 @@ import './CSS/SCADOfficeDashboard.css';
 import ProstudentLayout from './components/prostudentLayout';
 
 const AppointmentsStudent = () => {
+    const [showAlert, setShowAlert] = useState(false);
+    const [fadeOut, setFadeOut] = useState(false);
+
+   
     const [notifications, setNotifications] = useState([
         { id: 1, message: "Your appointment for Career guidance on 2025-05-08 at 10:00 AM was accepted." },
         { id: 2, message: "Your appointment for Career guidance on 2025-05-09 at 2:00 PM was accepted." }
@@ -39,6 +43,18 @@ const AppointmentsStudent = () => {
         e.preventDefault();
         setNewAppointment({ date: "", timing: "", subject: "", online: true });
         setShowRequestForm(false);
+        setShowAlert(true);
+        setFadeOut(true); // Ensure visible
+
+        // Start fade out after 2.5s
+        setTimeout(() => {
+            setFadeOut(false); // Triggers opacity: 0
+        }, 2500);
+
+        // Hide completely after 3s (fade duration = 500ms)
+        setTimeout(() => {
+            setShowAlert(false);
+        }, 3000);
     };
 
     const handleAcceptOffer = (offer) => {
@@ -55,7 +71,23 @@ const AppointmentsStudent = () => {
         <ProstudentLayout>
             <main className="main-content" aria-label="Main Content">
                 <h1 className="main-welcome" style={{ marginTop: 0, marginBottom: 32 }}>My Appointments</h1>
-
+                {showAlert && (
+                    <div style={{
+                        background: '#00C49F',
+                        color: 'white',
+                        padding: '10px 20px',
+                        borderRadius: 6,
+                        position: 'fixed',
+                        top: 20,
+                        right: 20,
+                        boxShadow: '0 2px 10px rgba(0,0,0,0.1)',
+                        zIndex: 999,
+                        opacity: fadeOut ? 1 : 0,
+                        transition: 'opacity 0.5s ease-out'
+                    }}>
+                        Appointment requested!
+                    </div>
+                )}
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24, width: '100%', marginBottom: 24 }}>
                     {/* Notifications Section */}
                     <div className="internship-item" style={{ background: '#fff', borderRadius: 12, boxShadow: '0 2px 8px rgba(30,41,59,0.06)', padding: 24, border: '1px solid var(--border)' }}>
@@ -288,8 +320,13 @@ const AppointmentsStudent = () => {
                                         }}
                                     />
                                 </div>
+                                
+                                 
+
+
                                 <button
                                     type="submit"
+                                    
                                     style={{
                                         background: '#00C49F',
                                         color: 'white',
@@ -305,6 +342,7 @@ const AppointmentsStudent = () => {
                                     Submit Request
                                 </button>
                             </form>
+                         
                         </div>
                     </div>
                 )}

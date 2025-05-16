@@ -67,9 +67,12 @@ const StudentLayout = ({ children }) => {
                         borderBottom: "1px solid var(--border)",
                     }}
                 >
-                    <div className="main-header-title">Student zone</div>
+                    <div className="main-header-title">Welcome!</div>
                     <div className="main-header-actions" style={{ display: "flex", alignItems: "center", gap: "1.2rem" }}>
-                        
+                        <button onClick={() => navigate("/Student/Profile")} className="icon-btn" aria-label="Notifications">
+                            <FiUser size={22} />
+
+                        </button>
                         <button onClick={() => navigate("/StudentNotifications")} className="icon-btn" aria-label="Notifications">
                             <FiBell size={22} />
                             <span className="badge" aria-label={`${notifications} notifications`}>{notifications}</span>
@@ -78,7 +81,7 @@ const StudentLayout = ({ children }) => {
                     </div>
                 </header>
                 <main
-                    className="main-content"
+                    className="main-content fade-in"
                     aria-label="Main Content"
 
                 >
