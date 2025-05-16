@@ -62,7 +62,7 @@ const StudentInternships = () => {
 
     const [searchTerm, setSearchTerm] = useState("");
     const [filter, setFilter] = useState({
-        industry: "All",
+        industry: "All Fields",
         paid: "All",
         duration: "All"
     });
@@ -97,7 +97,7 @@ const StudentInternships = () => {
             internship.jobTitle.toLowerCase().includes(searchTerm.toLowerCase()) ||
             internship.companyName.toLowerCase().includes(searchTerm.toLowerCase());
         const matchesIndustry =
-            filter.industry === "All" || internship.industry === filter.industry;
+            filter.industry === "All Fields" || internship.industry === filter.industry;
         const matchesPaid =
             filter.paid === "All" ||
             (filter.paid === "Paid" && internship.paid) ||
@@ -111,7 +111,7 @@ const StudentInternships = () => {
         return matchesSearch && matchesIndustry && matchesPaid && matchesDuration;
     });
 
-    const industryTypes = ["All", ...new Set(internships.map(internship => internship.industry))];
+    const industryTypes = ["All Fields", ...new Set(internships.map(internship => internship.industry))];
 
     return (
         <StudentLayout>
@@ -163,7 +163,7 @@ const StudentInternships = () => {
                             onChange={handleFilterChange}
                             className="input"
                             style={{
-                                width: 120,
+                                width: 160,
                                 height: 40,
                                 borderRadius: 8,
                                 border: '1px solid var(--border)',
@@ -173,7 +173,7 @@ const StudentInternships = () => {
                                 color: 'var(--text)'
                             }}
                         >
-                            <option value="All">All</option>
+                            <option value="All">All Internships</option>
                             <option value="Paid">Paid</option>
                             <option value="Unpaid">Unpaid</option>
                         </select>
@@ -283,6 +283,7 @@ const StudentInternships = () => {
                                     className="upload-input"
                                     style={{
                                         margin: '20px 0',
+                                        display: 'flex',
                                         justifyContent: 'center',
                                         width: '100%'
                                     }}
@@ -301,17 +302,16 @@ const StudentInternships = () => {
                             {applications.includes(selectedInternship.id) ? (
                                 <p className="applied-message" style={{ color: statusColors.Applied, fontWeight: 600 }}>✅ Applied</p>
                             ) : (
+                                <div style={{ display: 'flex', justifyContent: 'center', marginTop: '16px' }}>
                                 <button
-                                    onClick={() => handleApply(selectedInternship)}
-                                    className="signout-btn"
-                                    style={{
-                                        background: 'var(--primary)',
-                                        width: '100%',
-                                        marginTop: '16px'
-                                    }}
+                                    onClick={handleApply}
+                                    className="apply-btn"
+                                    style={{ padding: '10px 24px', borderRadius: '8px', backgroundColor: '#003366', color: 'white', border: 'none' }}
                                 >
                                     Apply
                                 </button>
+                                </div>
+
                             )}
                         </div>
                     </div>

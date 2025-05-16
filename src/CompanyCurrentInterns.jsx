@@ -149,67 +149,68 @@ const CompanyCurrentInterns = () => {
 
                             {intern.status === 'Completed' && (
                                 <div style={{ marginTop: 16 }}>
-                                    {intern.evaluation ? (
-                                        <>
-                                            <div style={{ marginBottom: 12 }}>
-                                                <strong>Evaluation:</strong>
-                                                <p style={{ marginTop: 4 }}>{intern.evaluation}</p>
-                                            </div>
-                                            <div style={{ display: 'flex', gap: 8 }}>
-                                                <button
-                                                    className="action-button"
-                                                    style={{
-                                                        background: 'var(--primary)',
-                                                        color: 'white',
-                                                        border: 'none',
-                                                        padding: '8px 16px',
-                                                        borderRadius: 8,
-                                                        cursor: 'pointer',
-                                                        fontWeight: 600,
-                                                        fontSize: 14
-                                                    }}
-                                                    onClick={() => openEvaluation(intern)}
-                                                >
-                                                    Edit Evaluation
-                                                </button>
-                                                <button
-                                                    className="action-button"
-                                                    style={{
-                                                        background: '#FF6384',
-                                                        color: 'white',
-                                                        border: 'none',
-                                                        padding: '8px 16px',
-                                                        borderRadius: 8,
-                                                        cursor: 'pointer',
-                                                        fontWeight: 600,
-                                                        fontSize: 14
-                                                    }}
-                                                    onClick={() => deleteEvaluation(intern.id)}
-                                                >
-                                                    Delete Evaluation
-                                                </button>
-                                            </div>
-                                        </>
-                                    ) : (
+                                {intern.evaluation ? (
+                                    <>
+                                    <div style={{ marginBottom: 12 }}>
+                                        <strong>Evaluation:</strong>
+                                        <p style={{ marginTop: 4 }}>{intern.evaluation}</p>
+                                    </div>
+                                    <div style={{ display: 'flex', gap: 8, justifyContent: 'center' }}>
                                         <button
-                                            className="action-button"
-                                            style={{
-                                                background: 'var(--primary)',
-                                                color: 'white',
-                                                border: 'none',
-                                                padding: '8px 16px',
-                                                borderRadius: 8,
-                                                cursor: 'pointer',
-                                                fontWeight: 600,
-                                                fontSize: 14,
-                                                width: '100%'
-                                            }}
-                                            onClick={() => openEvaluation(intern)}
+                                        className="action-button"
+                                        style={{
+                                            background: 'var(--primary)',
+                                            color: 'white',
+                                            border: 'none',
+                                            padding: '8px 16px',
+                                            borderRadius: 8,
+                                            cursor: 'pointer',
+                                            fontWeight: 600,
+                                            fontSize: 14
+                                        }}
+                                        onClick={() => openEvaluation(intern)}
                                         >
-                                            Add Evaluation
+                                        Edit Evaluation
                                         </button>
-                                    )}
+                                        <button
+                                        className="action-button"
+                                        style={{
+                                            background: '#FF6384',
+                                            color: 'white',
+                                            border: 'none',
+                                            padding: '8px 16px',
+                                            borderRadius: 8,
+                                            cursor: 'pointer',
+                                            fontWeight: 600,
+                                            fontSize: 14
+                                        }}
+                                        onClick={() => deleteEvaluation(intern.id)}
+                                        >
+                                        Delete Evaluation
+                                        </button>
+                                    </div>
+                                    </>
+                                ) : (
+                                    <button
+                                    className="action-button"
+                                    style={{
+                                        background: 'var(--primary)',
+                                        color: 'white',
+                                        border: 'none',
+                                        padding: '8px 16px',
+                                        borderRadius: 8,
+                                        cursor: 'pointer',
+                                        fontWeight: 600,
+                                        fontSize: 14,
+                                        width: '100%'
+                                    }}
+                                    onClick={() => openEvaluation(intern)}
+                                    >
+                                    Add Evaluation
+                                    </button>
+                                )}
                                 </div>
+
                             )}
                         </div>
                     ))}
@@ -232,7 +233,7 @@ const CompanyCurrentInterns = () => {
                                 <strong>Position:</strong> {selectedIntern.title}
                             </div>
                             <div style={{ marginBottom: 16 }}>
-                                <strong>Status:</strong>
+                                <strong>Status: </strong>
                                 <span style={{ color: statusColors[selectedIntern.status], fontWeight: 600 }}>
                                     {selectedIntern.status}
                                 </span>

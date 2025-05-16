@@ -117,8 +117,8 @@ const SCADWorkshop = () => {
                         <h2 className="section-title" style={{ margin: 0 }}>Upcoming & Past Workshops</h2>
                         <button
                             onClick={() => setShowModal(true)}
-                            className="signout-btn"
-                            style={{ fontWeight: 600, fontSize: '1rem', padding: '0.5rem 1.2rem' }}
+                            className="create-btn"
+                            style={{ fontWeight: 600, fontSize: '1rem', padding: '0.5rem 1.2rem', background: 'var(--primary)'}}
                         >
                             + Create Workshop
                         </button>

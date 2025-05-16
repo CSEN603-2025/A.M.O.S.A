@@ -330,6 +330,7 @@ body {
 }
 
 .modal-content button {
+    justify-content: center;
     margin-top: 20px;
 }
 
