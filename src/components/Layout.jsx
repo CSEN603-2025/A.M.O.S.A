@@ -89,6 +89,7 @@ const DashboardLayout = ({ children }) => {
           aria-label="Main Content"
          
         >
+          
           {children}
         </main>
         <footer className="main-footer" aria-label="Footer">

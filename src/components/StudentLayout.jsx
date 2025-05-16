@@ -17,7 +17,7 @@ const navItems = [
 const StudentLayout = ({ children }) => {
     const navigate = useNavigate();
     const missedCalls = 5;
-    const notifications = 3;
+    const notifications = 4;
 
     return (
         <div

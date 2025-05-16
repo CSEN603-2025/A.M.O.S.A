@@ -102,7 +102,7 @@ const durationOptions = [
 const SCADInternships = () => {
     const [internships, setInternships] = useState(dummyInternships);
     const [searchTerm, setSearchTerm] = useState("");
-    const [selectedIndustry, setSelectedIndustry] = useState("All");
+    const [selectedIndustry, setSelectedIndustry] = useState("All Fields");
     const [selectedPay, setSelectedPay] = useState("All");
     const [selectedDuration, setSelectedDuration] = useState("All");
     const [selectedInternship, setSelectedInternship] = useState(null);
@@ -126,7 +126,7 @@ const SCADInternships = () => {
 
     const filteredInternships = internships.filter(internship => {
         // Apply industry filter
-        const industryMatch = selectedIndustry === "All" || internship.industry === selectedIndustry;
+        const industryMatch = selectedIndustry === "All Fields" || internship.industry === selectedIndustry;
 
         // Apply pay filter
         const payMatch = selectedPay === "All" ||
@@ -151,7 +151,7 @@ const SCADInternships = () => {
         return industryMatch && payMatch && searchMatch && durationMatch;
     });
 
-    const industryTypes = ["All", ...new Set(dummyInternships.map(internship => internship.industry))];
+    const industryTypes = ["All Fields", ...new Set(dummyInternships.map(internship => internship.industry))];
 
     return (
         <DashboardLayout>
@@ -203,7 +203,7 @@ const SCADInternships = () => {
                             onChange={handlePayChange}
                             className="input"
                             style={{
-                                width: 120,
+                                width: 160,
                                 height: 40,
                                 borderRadius: 8,
                                 border: '1px solid var(--border)',
@@ -213,7 +213,7 @@ const SCADInternships = () => {
                                 color: 'var(--text)'
                             }}
                         >
-                            <option value="All">All</option>
+                            <option value="All">All Internships</option>
                             <option value="Paid">Paid</option>
                             <option value="Unpaid">Unpaid</option>
                         </select>

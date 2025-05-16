@@ -82,7 +82,7 @@ const statusColors = {
 const SCADPendingCompany = () => {
     const [companies, setCompanies] = useState(dummyCompanies);
     const [searchTerm, setSearchTerm] = useState("");
-    const [selectedType, setSelectedType] = useState("All");
+    const [selectedType, setSelectedType] = useState("All Fields");
     const [selectedCompany, setSelectedCompany] = useState(null);
     const navigate = useNavigate();
 
@@ -105,11 +105,11 @@ const SCADPendingCompany = () => {
     };
 
     const filteredCompanies = companies.filter(company =>
-        (selectedType === "All" || company.type === selectedType) &&
+        (selectedType === "All Fields" || company.type === selectedType) &&
         company.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
-    const companyTypes = ["All", ...new Set(dummyCompanies.map(company => company.type))];
+    const companyTypes = ["All Fields", ...new Set(dummyCompanies.map(company => company.type))];
 
     return (
         <DashboardLayout>
