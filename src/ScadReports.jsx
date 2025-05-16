@@ -427,7 +427,7 @@ const SCADReports = () => {
                                 </div>
                             )}
                     </div>
-                    <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 12 }}>
+                    <div style={{ display: 'flex', justifyContent: 'center', gap: 12 }}>
                         <button
                             onClick={() => downloadReport('internship')}
                             style={{
@@ -458,7 +458,7 @@ const SCADReports = () => {
                             <p style={{ margin: '8px 0' }}><strong>End Date:</strong> {selectedStudent.evaluationReport.endDate}</p>
                         </div>
                     </div>
-                    <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 12 }}>
+                    <div style={{ display: 'flex', justifyContent: 'center', gap: 12 }}>
                         <button
                             onClick={() => downloadReport('evaluation')}
                             style={{
