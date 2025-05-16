@@ -16,7 +16,7 @@ const navItems = [
     { label: "Viewed my profile", icon: <FiEye />, link: "/student/viewed" },
     { label: "Workshop", icon: <FiTool />, link: "/student/workshop" },
     { label: "Online Assessments", icon: <FiFileText />, link: "/student/assessment" },
-    { label: "Prerecorded Workshops", icon: <FiPlayCircle />, link: "/PreRecord" },
+    { label: "Recorded Workshop", icon: <FiPlayCircle />, link: "/PreRecord" },
 
 ];
 

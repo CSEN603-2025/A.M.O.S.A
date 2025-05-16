@@ -11,7 +11,7 @@ const navItems = [
     { label: "Applications", icon: <FiBriefcase />, link: "/company/applications" },
     { label: "Current Interns", icon: <FiUsers />, link: "/CompanyCurrentInterns" },
     { label: "All Internships", icon: <FiList />, link: "/CompanyAll" },
-    { label: "Reports and Documents", icon: <FiFileText />, link: "/CompanyDocs" },
+    { label: "Reports&Documents", icon: <FiFileText />, link: "/CompanyDocs" },
 
 
 ];

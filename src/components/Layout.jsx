@@ -7,9 +7,9 @@ import { Link } from "react-router-dom";
 
 const navItems = [
   { label: "Home", icon: <FiHome />, link: "/SCADOfficeDashboard" },
-  { label: "Pending Company Applications", icon: <FiBriefcase />, link: "/scad/companies" },
+  { label: "Pending Companies", icon: <FiBriefcase />, link: "/scad/companies" },
   { label: "All Internships", icon: <FiList />, link: "/scad/interns" },
-  { label: "Current Cycle Information", icon: <FiInfo />, link: "/scad/cycle" },
+  { label: "Current Cycle ", icon: <FiInfo />, link: "/scad/cycle" },
   { label: "View Students", icon: <FiUsers />, link: "/scad/students" },
   { label: "View Reports", icon: <FiFileText />, link: "/scad/reports" },
   { label: "Statistics", icon: <FiBarChart2 />, link: "/scad/Statistics" },
