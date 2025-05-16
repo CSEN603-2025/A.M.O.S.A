@@ -83,13 +83,21 @@ const ApplicationsReview = () => {
 
     return (
         <CompanyLayout>
-                <main className="dashboard-main">
-                    <section className="filter-section">
-                        <h2 className="section-title">Filter Applications</h2>
+            <main className="dashboard-main" style={{ padding: 32, fontFamily: "Inter, sans-serif", backgroundColor: "#f9fafb", minHeight: "100vh" }}>
+                {/* Filter Section */}
+                <section className="filter-section" style={{ marginBottom: 32 }}>
+                    <h2 style={{ fontSize: 20, fontWeight: 600, marginBottom: 12 }}>Filter Applications</h2>
+                    <div style={{ display: "flex", gap: 16, flexWrap: "wrap" }}>
                         <select
                             value={filterStatus}
                             onChange={(e) => setFilterStatus(e.target.value)}
-                            className="filter-select"
+                            style={{
+                                padding: "8px 12px",
+                                border: "1px solid #d1d5db",
+                                borderRadius: 6,
+                                backgroundColor: "#fff",
+                                fontSize: 14
+                            }}
                         >
                             <option value="All">All Statuses</option>
                             <option value="Pending">Pending</option>
@@ -103,7 +111,13 @@ const ApplicationsReview = () => {
                         <select
                             value={filterInternshipId}
                             onChange={(e) => setFilterInternshipId(e.target.value)}
-                            className="filter-select"
+                            style={{
+                                padding: "8px 12px",
+                                border: "1px solid #d1d5db",
+                                borderRadius: 6,
+                                backgroundColor: "#fff",
+                                fontSize: 14
+                            }}
                         >
                             <option value="All">All Internship Posts</option>
                             {uniqueInternships.map((internship) => (
@@ -112,53 +126,118 @@ const ApplicationsReview = () => {
                                 </option>
                             ))}
                         </select>
-                    </section>
-
-                    <section className="list-section">
-                        <h2 className="section-title">Applications</h2>
-                        <ul className="applications-list">
-                            {filteredApplications.map((app) => (
-                                <li key={app.id} className="application-item">
-                                    <p><strong>Applicant:</strong> {app.applicantName}</p>
-                                    <p><strong>Internship:</strong> {app.internshipTitle}</p>
-                                    <p><strong>Status:</strong> {app.status}</p>
-                                    <button
-                                        onClick={() => setSelectedApplication(app)}
-                                        className="view-button"
-                                    >
-                                        View Details
-                                    </button>
-                                    <div className="status-buttons">
-                                        <button onClick={() => handleStatusUpdate(app.id, "Finalized")} className="status-button">Finalize</button>
-                                        <button onClick={() => handleStatusUpdate(app.id, "Accepted")} className="status-button">Accept</button>
-                                        <button onClick={() => handleStatusUpdate(app.id, "Rejected")} className="status-button">Reject</button>
-                                        <button onClick={() => handleStatusUpdate(app.id, "Current Intern")} className="status-button">Start Internship</button>
-                                        <button onClick={() => handleStatusUpdate(app.id, "Internship Complete")} className="status-button">Complete Internship</button>
-                                    </div>
-                                </li>
-                            ))}
-                        </ul>
-                    </section>
-                </main>
-            
-
-            {selectedApplication && (
-                <div className="modal">
-                    <div className="modal-content">
-                        <h2>Details</h2>
-                        <p><strong>Name:</strong> {selectedApplication.applicantName}</p>
-                        <p><strong>Internship:</strong> {selectedApplication.internshipTitle}</p>
-                        <p><strong>Status:</strong> {selectedApplication.status}</p>
-                        <p><strong>Details:</strong> {selectedApplication.details}</p>
-                        <button
-                            onClick={() => setSelectedApplication(null)}
-                            className="close-button"
-                        >
-                            Close
-                        </button>
                     </div>
-                </div>
-            )}
+                </section>
+
+                {/* Applications List */}
+                <section className="list-section">
+                    <h2 style={{ fontSize: 20, fontWeight: 600, marginBottom: 20 }}>Applications</h2>
+                    <ul style={{
+                        display: "grid",
+                        gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
+                        gap: 20
+                    }}>
+                        {filteredApplications.map((app) => (
+                            <li key={app.id} style={{
+                                backgroundColor: "#fff",
+                                border: "1px solid #e5e7eb",
+                                borderRadius: 8,
+                                padding: 20,
+                                boxShadow: "0 1px 2px rgba(0,0,0,0.05)",
+                                display: "flex",
+                                flexDirection: "column",
+                                gap: 8
+                            }}>
+                                <p><strong>Applicant:</strong> {app.applicantName}</p>
+                                <p><strong>Internship:</strong> {app.internshipTitle}</p>
+                                <p><strong>Status:</strong> {app.status}</p>
+
+                                <button
+                                    onClick={() => setSelectedApplication(app)}
+                                    style={{
+                                        marginTop: 8,
+                                        backgroundColor: "#2563eb",
+                                        color: "#fff",
+                                        border: "none",
+                                        padding: "6px 12px",
+                                        fontSize: 14,
+                                        fontWeight: 500,
+                                        borderRadius: 6,
+                                        cursor: "pointer"
+                                    }}
+                                >
+                                    View Details
+                                </button>
+
+                                <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginTop: 12 }}>
+                                    {["Finalized", "Accepted", "Rejected", "Current Intern", "Internship Complete"].map(status => (
+                                        <button
+                                            key={status}
+                                            onClick={() => handleStatusUpdate(app.id, status)}
+                                            style={{
+                                                backgroundColor: "#f3f4f6",
+                                                color: "#374151",
+                                                padding: "6px 10px",
+                                                border: "1px solid #d1d5db",
+                                                borderRadius: 6,
+                                                fontSize: 13,
+                                                fontWeight: 500
+                                            }}
+                                        >
+                                            {status}
+                                        </button>
+                                    ))}
+                                </div>
+                            </li>
+                        ))}
+                    </ul>
+                </section>
+
+                {/* Modal */}
+                {selectedApplication && (
+                    <div className="modal" style={{
+                        position: "fixed",
+                        top: 0, left: 0, right: 0, bottom: 0,
+                        backgroundColor: "rgba(0,0,0,0.5)",
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        zIndex: 50
+                    }}>
+                        <div className="modal-content" style={{
+                            backgroundColor: "#fff",
+                            borderRadius: 10,
+                            padding: 24,
+                            width: "90%",
+                            maxWidth: 480,
+                            boxShadow: "0 10px 30px rgba(0,0,0,0.2)"
+                        }}>
+                            <h2 style={{ fontSize: 20, fontWeight: 600, marginBottom: 16 }}>Application Details</h2>
+                            <p><strong>Name:</strong> {selectedApplication.applicantName}</p>
+                            <p><strong>Internship:</strong> {selectedApplication.internshipTitle}</p>
+                            <p><strong>Status:</strong> {selectedApplication.status}</p>
+                            <p><strong>Details:</strong> {selectedApplication.details}</p>
+                            <div style={{ textAlign: "right", marginTop: 20 }}>
+                                <button
+                                    onClick={() => setSelectedApplication(null)}
+                                    style={{
+                                        backgroundColor: "#ef4444",
+                                        color: "#fff",
+                                        border: "none",
+                                        padding: "8px 16px",
+                                        fontSize: 14,
+                                        fontWeight: 500,
+                                        borderRadius: 6,
+                                        cursor: "pointer"
+                                    }}
+                                >
+                                    Close
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                )}
+            </main>
 
             </CompanyLayout>
     );

@@ -119,59 +119,84 @@ const CompanyInternships = () => {
     return (
         <CompanyLayout>
 
-                <main className="dashboard-main">
-                    <div className="filter-bar" style={{ marginBottom: "20px", display: "flex", gap: "10px", alignItems: "center" }}>
+            <main className="main-content" aria-label="Main Content">
+                <h1 className="main-welcome" style={{ marginTop: 0, marginBottom: 32 }}>Manage Internships</h1>
+
+                {/* Top Filter Bar */}
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 }}>
+                    <h2 className="section-title" style={{ margin: 0 }}>Your Internship Posts</h2>
+                    <div style={{ display: 'flex', gap: 12 }}>
                         <input
                             type="text"
                             placeholder="Search by internship name..."
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
                             style={{
-                                flex: 1,
-                                padding: "10px",
-                                borderRadius: "6px",
-                                border: "1px solid #ccc",
-                                fontSize: "16px"
+                                width: 280,
+                                height: 40,
+                                borderRadius: 8,
+                                border: '1px solid var(--border)',
+                                padding: '0 14px',
+                                fontSize: 16
                             }}
                         />
                         <select
                             value={filter}
                             onChange={(e) => setFilter(e.target.value)}
                             style={{
-                                padding: "10px",
-                                borderRadius: "6px",
-                                fontSize: "16px"
+                                width: 140,
+                                height: 40,
+                                borderRadius: 8,
+                                border: '1px solid var(--border)',
+                                padding: '0 14px',
+                                fontSize: 16
                             }}
                         >
                             <option value="all">All</option>
                             <option value="paid">Paid</option>
                             <option value="unpaid">Unpaid</option>
                         </select>
-                        <button className="action-button" onClick={() => {
-                            setFormData({
-                                name: "",
-                                duration: "",
-                                paid: "unpaid",
-                                salary: "",
-                                skills: "",
-                                description: ""
-                            });
-                            setEditPostId(null);
-                            setShowForm(true);
-                        }}>
-                            Create Post
+                        <button
+                            className="action-button"
+                            onClick={() => {
+                                setFormData({
+                                    name: "",
+                                    duration: "",
+                                    paid: "unpaid",
+                                    salary: "",
+                                    skills: "",
+                                    description: ""
+                                });
+                                setEditPostId(null);
+                                setShowForm(true);
+                            }}
+                            style={{
+                                height: 40,
+                                padding: "0 16px",
+                                borderRadius: 8,
+                                backgroundColor: "var(--primary)",
+                                color: "#fff",
+                                fontSize: 16,
+                                border: "none"
+                            }}
+                        >
+                            + Create Post
                         </button>
                     </div>
+                </div>
 
-                    {showForm && (
-                        <div style={{
-                            background: "#f9f9f9",
-                            border: "1px solid #ccc",
-                            padding: "20px",
-                            borderRadius: "8px",
-                            marginBottom: "20px"
-                        }}>
-                            <h3>{editPostId ? "Edit Internship Post" : "Create Internship Post"}</h3>
+                {/* Internship Form */}
+                {showForm && (
+                    <div style={{
+                        background: "#fff",
+                        border: "1px solid var(--border)",
+                        padding: "24px",
+                        borderRadius: "12px",
+                        marginBottom: "24px",
+                        boxShadow: "0 2px 12px rgba(0,0,0,0.08)"
+                    }}>
+                        <h3 style={{ marginBottom: 16 }}>{editPostId ? "Edit Internship Post" : "Create Internship Post"}</h3>
+                        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, marginBottom: 16 }}>
                             <input type="text" name="name" placeholder="Internship Name" value={formData.name} onChange={handleInputChange} className="form-input" />
                             <input type="text" name="duration" placeholder="Duration" value={formData.duration} onChange={handleInputChange} className="form-input" />
                             <select name="paid" value={formData.paid} onChange={handleInputChange} className="form-input">
@@ -182,39 +207,53 @@ const CompanyInternships = () => {
                                 <input type="number" name="salary" placeholder="Expected Salary" value={formData.salary} onChange={handleInputChange} className="form-input" />
                             )}
                             <input type="text" name="skills" placeholder="Required Skills" value={formData.skills} onChange={handleInputChange} className="form-input" />
-                            <textarea name="description" placeholder="Job Description" value={formData.description} onChange={handleInputChange} className="form-input" rows={4}></textarea>
-                            <button className="action-button" onClick={handleCreateOrUpdate}>
-                                {editPostId ? "Update" : "Create"}
-                            </button>
                         </div>
-                    )}
+                        <textarea name="description" placeholder="Job Description" value={formData.description} onChange={handleInputChange} className="form-input" rows={4} style={{ width: '100%', marginBottom: 16 }}></textarea>
+                        <button className="action-button" onClick={handleCreateOrUpdate} style={{ backgroundColor: "var(--primary)", color: "#fff", padding: "10px 16px", borderRadius: 8, fontSize: 16 }}>
+                            {editPostId ? "Update" : "Create"}
+                        </button>
+                    </div>
+                )}
 
-                    <h2 className="section-title">Internship Posts</h2>
+                {/* Internship Cards */}
+                <div style={{
+                    display: 'grid',
+                    gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))',
+                    gap: 24
+                }}>
                     {filteredPosts.length > 0 ? (
                         filteredPosts.map(post => (
                             <div key={post.id} style={{
                                 background: "#fff",
-                                border: "1px solid #ccc",
-                                padding: "15px",
-                                borderRadius: "8px",
-                                marginBottom: "10px",
-                                boxShadow: "2px 2px 10px rgba(0,0,0,0.05)"
+                                border: "1px solid var(--border)",
+                                borderRadius: "12px",
+                                boxShadow: "0 2px 8px rgba(30,41,59,0.06)",
+                                padding: 24,
+                                display: 'flex',
+                                flexDirection: 'column',
+                                justifyContent: 'space-between'
                             }}>
-                                <h3>{post.name}</h3>
-                                <p><strong>Duration:</strong> {post.duration}</p>
-                                <p><strong>Type:</strong> {post.paid}</p>
-                                {post.paid === "paid" && <p><strong>Salary:</strong> ${post.salary}</p>}
-                                <p><strong>Skills:</strong> {post.skills}</p>
-                                <p><strong>Description:</strong> {post.description}</p>
-                                <p><strong>Applications:</strong> {dummyApplicationCounts[post.id] || 0}</p>
-                                <button className="action-button" onClick={() => handleEdit(post)}>Edit</button>
-                                <button className="action-button" style={{ marginLeft: "10px", backgroundColor: "#dc3545" }} onClick={() => handleDelete(post.id)}>Delete</button>
+                                <div>
+                                    <h3 style={{ marginBottom: 8 }}>{post.name}</h3>
+                                    <p><strong>Duration:</strong> {post.duration}</p>
+                                    <p><strong>Type:</strong> {post.paid}</p>
+                                    {post.paid === "paid" && <p><strong>Salary:</strong> ${post.salary}</p>}
+                                    <p><strong>Skills:</strong> {post.skills}</p>
+                                    <p><strong>Description:</strong> {post.description}</p>
+                                    <p><strong>Applications:</strong> {dummyApplicationCounts[post.id] || 0}</p>
+                                </div>
+                                <div style={{ marginTop: 12, display: 'flex', justifyContent: 'flex-end', gap: 8 }}>
+                                    <button className="action-button" onClick={() => handleEdit(post)} style={{ padding: "8px 12px", borderRadius: 6 }}>Edit</button>
+                                    <button className="action-button" onClick={() => handleDelete(post.id)} style={{ padding: "8px 12px", backgroundColor: "#dc3545", color: "#fff", borderRadius: 6 }}>Delete</button>
+                                </div>
                             </div>
                         ))
                     ) : (
                         <p>No internship posts found.</p>
                     )}
-                </main>
+                </div>
+            </main>
+
             </CompanyLayout>
     );
 };
