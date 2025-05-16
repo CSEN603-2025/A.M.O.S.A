@@ -23,7 +23,7 @@ const navItems = [
 const ProstudentLayout = ({ children }) => {
     const navigate = useNavigate();
     const missedCalls = 5;
-    const notifications = 3;
+    const notifications = 8;
 
     return (
         <div
@@ -79,7 +79,7 @@ const ProstudentLayout = ({ children }) => {
                             <FaPhone />
                             <span className="badge" aria-label={`${missedCalls} missed calls`}>{missedCalls}</span>
                         </button>
-                        <button onClick={() => navigate("/scad/noti")} className="icon-btn" aria-label="Notifications">
+                        <button onClick={() => navigate("/PROStudentNotifications")} className="icon-btn" aria-label="Notifications">
                             <FiBell size={22} />
                             <span className="badge" aria-label={`${notifications} notifications`}>{notifications}</span>
                         </button>

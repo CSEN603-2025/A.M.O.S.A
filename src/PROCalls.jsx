@@ -1,8 +1,7 @@
 import React, { useState, useRef } from "react";
-import { FaPhone, FaBell } from "react-icons/fa";
 import { useNavigate, useLocation } from "react-router-dom";
+import { FiMic, FiMicOff, FiVideo, FiVideoOff, FiMonitor, FiX, FiPhone as FiPhoneIcon } from "react-icons/fi";
 import './CSS/SCADOfficeDashboard.css';
-import DashboardLayout from './components/Layout';
 import ProstudentLayout from "./components/prostudentLayout";
 
 const PROCalls = () => {
@@ -23,17 +22,6 @@ const PROCalls = () => {
     const videoRef = useRef(null);
     const navigate = useNavigate();
     const location = useLocation();
-
-    const missedCalls = 0;
-    const notifications = 3;
-
-    const goToCalls = () => {
-        navigate("/scad/Calls");
-    };
-
-    const goToNotifications = () => {
-        navigate("/scad/noti", { state: { from: location.pathname } });
-    };
 
     const acceptCall = (caller) => {
         setIncomingCalls(prev => prev.filter(call => call.id !== caller.id));
@@ -122,106 +110,250 @@ const PROCalls = () => {
 
     return (
         <ProstudentLayout>
-            <main className="dashboard-main">
-                <h2>Incoming Calls</h2>
+            <div style={{
+                maxWidth: 1200,
+                margin: "0 auto",
+                padding: "0 32px",
+                width: "100%",
+                display: "flex",
+                flexDirection: "column"
+            }}>
+                <h1 className="main-welcome" style={{ marginTop: 0, marginBottom: 32 }}>Calls</h1>
 
-                {incomingCalls.length === 0 && !activeCall && <p>No incoming calls.</p>}
+                {/* Active Call Section */}
+                {activeCall && (
+                    <div style={{
+                        background: '#fff',
+                        borderRadius: 12,
+                        boxShadow: '0 2px 8px rgba(30,41,59,0.12)',
+                        padding: 28,
+                        marginBottom: 24,
+                        border: '1px solid var(--border)'
+                    }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
+                            <h2 style={{ margin: 0 }}>Call with {activeCall.name}</h2>
+                            <button onClick={endCall} className="icon-btn" style={{ background: 'var(--badge-bg)', color: '#fff' }}>
+                                <FiX size={20} />
+                            </button>
+                        </div>
 
-                <div className="calls-container">
+                        <div style={{
+                            display: "flex",
+                            flexWrap: "wrap",
+                            justifyContent: "center",
+                            gap: "1rem",
+                            marginBottom: "1.5rem"
+                        }}>
+                            <div style={{ textAlign: "center" }}>
+                                <div style={{
+                                    width: "300px",
+                                    height: "200px",
+                                    backgroundColor: cameraOn ? "transparent" : "var(--bg-dark)",
+                                    border: "1px solid var(--border)",
+                                    borderRadius: 8,
+                                    overflow: 'hidden'
+                                }}>
+                                    <video
+                                        ref={videoRef}
+                                        autoPlay
+                                        playsInline
+                                        muted
+                                        style={{
+                                            width: "100%",
+                                            height: "100%",
+                                            display: cameraOn ? "block" : "none",
+                                            objectFit: 'cover'
+                                        }}
+                                    />
+                                    {!cameraOn && (
+                                        <div style={{
+                                            width: "100%",
+                                            height: "100%",
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            justifyContent: 'center',
+                                            color: '#fff'
+                                        }}>
+                                            Camera is off
+                                        </div>
+                                    )}
+                                </div>
+                                <p style={{ marginTop: "0.5rem", fontSize: 14 }}>Your Camera</p>
+                            </div>
+
+                            <div style={{ textAlign: "center" }}>
+                                <div style={{
+                                    width: "300px",
+                                    height: "200px",
+                                    backgroundColor: screenOn ? "transparent" : "var(--bg-dark)",
+                                    border: "1px solid var(--border)",
+                                    borderRadius: 8,
+                                    overflow: 'hidden'
+                                }}>
+                                    <video
+                                        autoPlay
+                                        playsInline
+                                        muted
+                                        ref={(el) => {
+                                            if (el && screenStream) el.srcObject = screenStream;
+                                        }}
+                                        style={{
+                                            width: "100%",
+                                            height: "100%",
+                                            display: screenOn ? "block" : "none",
+                                            objectFit: 'contain'
+                                        }}
+                                    />
+                                    {!screenOn && (
+                                        <div style={{
+                                            width: "100%",
+                                            height: "100%",
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            justifyContent: 'center',
+                                            color: '#fff'
+                                        }}>
+                                            Screen not shared
+                                        </div>
+                                    )}
+                                </div>
+                                <p style={{ marginTop: "0.5rem", fontSize: 14 }}>Shared Screen</p>
+                            </div>
+                        </div>
+
+                        <div style={{
+                            display: 'flex',
+                            justifyContent: 'center',
+                            gap: 16,
+                            marginTop: 16
+                        }}>
+                            <button
+                                onClick={toggleMic}
+                                className="icon-btn"
+                                style={{
+                                    background: micOn ? 'var(--primary)' : 'var(--badge-bg)',
+                                    color: '#fff',
+                                    width: 44,
+                                    height: 44,
+                                    borderRadius: '50%',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center'
+                                }}
+                            >
+                                {micOn ? <FiMic size={20} /> : <FiMicOff size={20} />}
+                            </button>
+                            <button
+                                onClick={toggleCamera}
+                                className="icon-btn"
+                                style={{
+                                    background: cameraOn ? 'var(--primary)' : 'var(--badge-bg)',
+                                    color: '#fff',
+                                    width: 44,
+                                    height: 44,
+                                    borderRadius: '50%',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center'
+                                }}
+                            >
+                                {cameraOn ? <FiVideo size={20} /> : <FiVideoOff size={20} />}
+                            </button>
+                            <button
+                                onClick={toggleScreen}
+                                className="icon-btn"
+                                style={{
+                                    background: screenOn ? 'var(--primary)' : 'var(--badge-bg)',
+                                    color: '#fff',
+                                    width: 44,
+                                    height: 44,
+                                    borderRadius: '50%',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center'
+                                }}
+                            >
+                                <FiMonitor size={20} />
+                            </button>
+                        </div>
+                    </div>
+                )}
+
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%', marginBottom: 24 }}>
+                    <h2 className="section-title" style={{ margin: 0 }}>Incoming Calls</h2>
+                </div>
+
+                {incomingCalls.length === 0 && !activeCall && (
+                    <div style={{
+                        background: '#fff',
+                        borderRadius: 12,
+                        boxShadow: '0 2px 8px rgba(30,41,59,0.06)',
+                        padding: 28,
+                        marginBottom: 24,
+                        border: '1px solid var(--border)',
+                        textAlign: 'center'
+                    }}>
+                        <p>No incoming calls at the moment</p>
+                    </div>
+                )}
+
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 32, width: '100%' }}>
                     {incomingCalls.map((caller) => (
-                        <div key={caller.id} className="incoming-call-card ringing">
-                            <p><strong>{caller.name}</strong> is calling you...</p>
-                            <button onClick={() => acceptCall(caller)} className="btn accept">Accept</button>
-                            <button onClick={() => rejectCall(caller)} className="btn reject">Reject</button>
+                        <div
+                            key={caller.id}
+                            style={{
+                                minWidth: 340,
+                                maxWidth: 400,
+                                background: '#fff',
+                                borderRadius: 12,
+                                boxShadow: '0 2px 8px rgba(30,41,59,0.06)',
+                                padding: 28,
+                                marginBottom: 24,
+                                border: '1px solid var(--border)'
+                            }}
+                        >
+                            <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 8 }}>
+                                <FiPhoneIcon style={{ color: 'var(--primary)', fontSize: 22 }} />
+                                <span style={{ fontWeight: 700, fontSize: '1.1rem' }}>{caller.name}</span>
+                            </div>
+                            <p style={{ marginBottom: 16 }}>Incoming call...</p>
+                            <div style={{ display: 'flex', gap: 12 }}>
+                                <button
+                                    onClick={() => acceptCall(caller)}
+                                    className="signout-btn"
+                                    style={{ background: 'var(--primary)', fontWeight: 600 }}
+                                >
+                                    Accept
+                                </button>
+                                <button
+                                    onClick={() => rejectCall(caller)}
+                                    className="signout-btn"
+                                    style={{ background: 'var(--badge-bg)', fontWeight: 600 }}
+                                >
+                                    Reject
+                                </button>
+                            </div>
                         </div>
                     ))}
                 </div>
 
-                {activeCall && (
-                    <div className="call-popup">
-                        <div className="popup-content">
-                            <h2>In Call with {activeCall.name}</h2>
-                            <div className="call-controls">
-                                <button onClick={toggleMic} className="btn control">{micOn ? "Mute Mic" : "Unmute Mic"}</button>
-                                <button onClick={toggleCamera} className="btn control">{cameraOn ? "Turn Off Camera" : "Turn On Camera"}</button>
-                                <button onClick={toggleScreen} className="btn control">{screenOn ? "Stop Screen" : "Share Screen"}</button>
-                                <button onClick={simulateCallerLeft} className="btn control">Simulate Caller Left</button>
-                                <button onClick={endCall} className="btn leave">End Call</button>
-                            </div>
-
-                            <div
-                                style={{
-                                    display: "flex",
-                                    flexWrap: "wrap",
-                                    justifyContent: "center",
-                                    gap: "1rem",
-                                    marginTop: "1rem"
-                                }}
+                {/* Popup for caller left notification */}
+                {callerLeft && (
+                    <div className="call-modal-backdrop">
+                        <div className="call-modal" style={{ maxWidth: 400 }}>
+                            <h2 style={{ marginBottom: 16 }}>Call Ended</h2>
+                            <p style={{ marginBottom: 24 }}>{activeCall?.name} has left the call.</p>
+                            <button
+                                onClick={closeCallerLeftPopup}
+                                className="signout-btn"
+                                style={{ background: 'var(--primary)', width: '100%' }}
                             >
-                                <div style={{ textAlign: "center" }}>
-                                    <div
-                                        style={{
-                                            width: "300px",
-                                            height: "200px",
-                                            backgroundColor: cameraOn ? "transparent" : "black",
-                                            border: "1px solid #ccc"
-                                        }}
-                                    >
-                                        <video
-                                            ref={videoRef}
-                                            autoPlay
-                                            playsInline
-                                            muted
-                                            style={{
-                                                width: "100%",
-                                                height: "100%",
-                                                display: cameraOn ? "block" : "none"
-                                            }}
-                                        />
-                                    </div>
-                                    <p style={{ marginTop: "0.5rem" }}>Camera</p>
-                                </div>
-
-                                <div style={{ textAlign: "center" }}>
-                                    <div
-                                        style={{
-                                            width: "300px",
-                                            height: "200px",
-                                            backgroundColor: screenOn ? "transparent" : "black",
-                                            border: "1px solid #ccc"
-                                        }}
-                                    >
-                                        <video
-                                            autoPlay
-                                            playsInline
-                                            muted
-                                            ref={(el) => {
-                                                if (el && screenStream) el.srcObject = screenStream;
-                                            }}
-                                            style={{
-                                                width: "100%",
-                                                height: "100%",
-                                                display: screenOn ? "block" : "none"
-                                            }}
-                                        />
-                                    </div>
-                                    <p style={{ marginTop: "0.5rem" }}>Shared Screen</p>
-                                </div>
-                            </div>
+                                Close
+                            </button>
                         </div>
                     </div>
                 )}
-            </main>
-
-            {callerLeft && (
-                <div className="popup-overlay">
-                    <div className="caller-left-popup">
-                        <h2>Call Ended</h2>
-                        <p>{activeCall?.name} has left the call.</p>
-                        <button onClick={closeCallerLeftPopup} className="btn close-popup">Close</button>
-                    </div>
-                </div>
-            )}
+            </div>
         </ProstudentLayout>
     );
 };

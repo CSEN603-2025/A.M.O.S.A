@@ -72,7 +72,7 @@ const CompanyLayout = ({ children }) => {
                     <div className="main-header-title">Company Zone</div>
                     <div className="main-header-actions" style={{ display: "flex", alignItems: "center", gap: "1.2rem" }}>
 
-                        <button onClick={() => navigate("/StudentNotifications")} className="icon-btn" aria-label="Notifications">
+                        <button onClick={() => navigate("/CompanyNotifications")} className="icon-btn" aria-label="Notifications">
                             <FiBell size={22} />
                             <span className="badge" aria-label={`${notifications} notifications`}>{notifications}</span>
                         </button>
