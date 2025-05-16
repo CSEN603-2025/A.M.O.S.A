@@ -10,7 +10,7 @@ const navItems = [
     { label: "Profile", icon: <FiUser />, link: "/Student/Profile" },
     { label: "Browse Internships", icon: <FiBriefcase />, link: "/Student/internships" },
     { label: "Applied Internships", icon: <FiList />, link: "/StudentApplied" },
-    { label: "My Internships", icon: <FiList />, link: "/studentInternships" },
+    { label: "My Internships", icon: <FiList />, link: "/MyNewInternships" },
  
 ];
 

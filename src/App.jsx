@@ -54,6 +54,7 @@ import PROMyInternships from './PROMyInternships';
 import PROStudentNotifications from './PROStudentNotifications';
 import PROReportFeedback from './PROReportFeedback';
 import PreRecord from './PreRecord';
+import NewMyInternships from './MynewInternships';
 
 
 function App() {
@@ -77,6 +78,7 @@ function App() {
               <Route path="/StudentApplied" element={<StudentApplied />} />
               <Route path="/StudentNotifications" element={<StudentNotifications />} />
               <Route path="/MyInternships" element={<MyInternships />} />
+              <Route path="/MyNewInternships" element={<NewMyInternships />} />
               <Route path="/ReportFeedback" element={<ReportFeedback/>} />
 
               <Route path="/scad/companies" element={<SCADPendingCompany />} />
