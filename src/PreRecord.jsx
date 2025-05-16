@@ -8,31 +8,31 @@ const PROPreRecordedWorkshops = () => {
         {
             "id": 1,
             "name": "Resume Writing Masterclass",
-            "duration": "45 min",
+            "duration": "1h 15min",
             "description": "Learn to craft a professional resume that stands out.",
             "speakerBio": "Jane Doe, Career Coach",
             "uploadDate": "2025-05-01",
-            "videoUrl": "#",
+            "videoUrl": "https://www.youtube.com/embed/vpmOQfdMtqA",
             "details": "This session covers resume structure, impactful language, and formatting tips. Ideal for students and professionals aiming to enhance job prospects."
         },
         {
             "id": 2,
             "name": "Technical Interview Preparation",
-            "duration": "1h 20min",
+            "duration": "20 min",
             "description": "Ace your technical interviews with these strategies.",
             "speakerBio": "John Smith, Senior Developer",
             "uploadDate": "2025-05-10",
-            "videoUrl": "#",
+            "videoUrl": "https://www.youtube.com/embed/Pr_CyUwfAUM",
             "details": "Learn how to approach coding problems, communicate your thought process, and handle common technical questions. Perfect for software job seekers at any level."
         },
         {
             "id": 3,
             "name": "Networking for Introverts",
-            "duration": "35 min",
+            "duration": "12 min",
             "description": "Effective networking strategies for shy professionals.",
             "speakerBio": "Alex Johnson, HR Specialist",
             "uploadDate": "2025-05-15",
-            "videoUrl": "#",
+            "videoUrl": "https://www.youtube.com/embed/Cj98mr_wUA0",
             "details": "Discover techniques to build meaningful connections without stepping out of your comfort zone. A must-watch for professionals who find traditional networking challenging."
         }
     ];
@@ -46,6 +46,7 @@ const PROPreRecordedWorkshops = () => {
     const [rating, setRating] = useState(0);
     const [feedback, setFeedback] = useState("");
     const [submittedFeedback, setSubmittedFeedback] = useState(false);
+    const [playTimestamp, setPlayTimestamp] = useState(Date.now());
 
     const toggleWorkshop = (id) => {
         setExpandedWorkshop(expandedWorkshop === id ? null : id);
@@ -54,6 +55,7 @@ const PROPreRecordedWorkshops = () => {
     const handlePlayWorkshop = (workshop) => {
         setActiveWorkshop(workshop);
         setIsPlaying(true);
+        setPlayTimestamp(Date.now());
     };
 
     const handlePauseWorkshop = () => {
@@ -236,12 +238,25 @@ const PROPreRecordedWorkshops = () => {
                             borderRadius: 8,
                             position: 'relative'
                         }}>
-                            <p>🎥 Video Player - {activeWorkshop.name}</p>
+                            {/* Video Workshop Player */}
+                            <iframe
+                                width="100%"
+                                height="260"
+                                src={activeWorkshop.videoUrl + (isPlaying ? "?autoplay=1" : "")}
+                                title={activeWorkshop.name + ' Workshop'}
+                                frameBorder="0"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                allowFullScreen
+                                style={{
+                                    borderRadius: 8,
+                                    background: '#222',
+                                }}
+                            />
                             <div style={{
                                 position: 'absolute',
-                                bottom: '10px',  // Keeps it at the bottom
-                                left: '50%',     // Starts at horizontal center
-                                transform: 'translateX(-50%)',  // Adjusts to truly center
+                                bottom: '10px',
+                                left: '50%',
+                                transform: 'translateX(-50%)',
                                 display: 'flex',
                                 gap: '10px'
                             }}>
@@ -440,7 +455,7 @@ const PROPreRecordedWorkshops = () => {
                             <p>You've successfully completed the <strong>{activeWorkshop?.name}</strong> workshop.</p>
                             <p>Your certificate is ready to download!</p>
                         </div>
-                        
+
                         <div style={{ display: 'flex', gap: 16, justifyContent: 'center' }}>
                             <button
                                 onClick={handleDownloadCertificate}

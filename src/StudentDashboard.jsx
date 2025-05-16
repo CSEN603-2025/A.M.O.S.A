@@ -1,9 +1,20 @@
-import React from "react";
+import React, { useState } from "react";
 import './CSS/StudentDashboard.css';
 import { FiBell, FiBriefcase } from 'react-icons/fi'; // Bell icon
 import StudentLayout from './components/StudentLayout';
 
 const StudentDashboard = () => {
+    // Set a default video URL (YouTube link)
+    const defaultVideoUrl = "https://www.youtube.com/watch?v=01r-_IondVY";
+    const [videoUrl] = useState(defaultVideoUrl);
+    const showVideo = true;
+
+    // Helper to extract YouTube embed URL
+    const getEmbedUrl = (url) => {
+        const match = url.match(/(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/watch\?v=|youtu\.be\/)([\w-]{11})/);
+        return match ? `https://www.youtube.com/embed/${match[1]}` : "";
+    };
+
     return (
         <StudentLayout>
             <main className="main-content" aria-label="Main Content">
@@ -55,41 +66,21 @@ const StudentDashboard = () => {
                             flexDirection: 'column',
                             alignItems: 'center',
                             justifyContent: 'center',
-                            height: '200px',
+                            minHeight: '200px',
                             background: 'rgba(0, 196, 159, 0.1)',
                             borderRadius: 8,
                             padding: 16
                         }}>
-                            <p style={{ marginBottom: 16, textAlign: 'center' }}>Video cannot be played. No video link provided.</p>
-                            <div
-                                style={{
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                    marginTop:'70px',
-                                    height: '200px',
-                                    background: 'transparent',
-                                    
-                                    
-                                }}
-                            >
-                                <button
-                                    className="play-button"
-                                    disabled
-                                    style={{
-                                        background: '#ccc',
-                                        color: 'white',
-                                        border: 'none',
-                                        padding: '10px 24px',
-                                        borderRadius: 8,
-                                        cursor: 'not-allowed',
-                                        fontWeight: 600
-                                    }}
-                                >
-                                    Play
-                                </button>
-                            </div>
-
+                            <iframe
+                                width="100%"
+                                height="200"
+                                src={getEmbedUrl(videoUrl) + "?autoplay=1"}
+                                title="Introduction Video"
+                                frameBorder="0"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                allowFullScreen
+                                style={{ borderRadius: 8, background: '#222', marginTop: 8 }}
+                            />
                         </div>
                     </div>
 

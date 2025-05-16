@@ -60,35 +60,16 @@ const PROStudentDashboard = () => {
                             borderRadius: 8,
                             padding: 16
                         }}>
-                            <p style={{ marginBottom: 16, textAlign: 'center' }}>Video cannot be played. No video link provided.</p>
-                            <div
-                                style={{
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                    marginTop: '70px',
-                                    height: '200px',
-                                    background: 'transparent',
-
-
-                                }}
-                            >
-                                <button
-                                    className="play-button"
-                                    disabled
-                                    style={{
-                                        background: '#ccc',
-                                        color: 'white',
-                                        border: 'none',
-                                        padding: '10px 24px',
-                                        borderRadius: 8,
-                                        cursor: 'not-allowed',
-                                        fontWeight: 600
-                                    }}
-                                >
-                                    Play
-                                </button>
-                            </div>
+                            <iframe
+                                width="100%"
+                                height="200"
+                                src="https://www.youtube.com/embed/01r-_IondVY?autoplay=1"
+                                title="Introduction Video"
+                                frameBorder="0"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                allowFullScreen
+                                style={{ borderRadius: 8, background: '#222', marginTop: 8 }}
+                            />
                         </div>
                     </div>
 
