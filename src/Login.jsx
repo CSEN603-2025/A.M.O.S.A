@@ -4,221 +4,160 @@ import { useNavigate } from "react-router-dom";
 const LoginPage = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [role, setRole] = useState("Company");
+    const [error, setError] = useState("");
     const navigate = useNavigate();
+
     const handleLogin = (e) => {
         e.preventDefault();
-        // Dummy authentication logic
         if (email && password) {
             switch (email) {
                 case "Company@gmail.com":
-                    navigate('/Companydashboard');
-                    break;
+                    navigate('/Companydashboard'); break;
                 case "Student@gmail.com":
-                    navigate('/Studentdashboard');
-                    break;
+                    navigate('/Studentdashboard'); break;
                 case "PROstudent@gmail.com":
-                    navigate('/PROStudentDashboard');
-                    break;
+                    navigate('/PROStudentDashboard'); break;
                 case "SCADOffice@gmail.com":
-                    navigate('/SCADOfficedashboard');
-                    break;
+                    navigate('/SCADOfficedashboard'); break;
                 case "FacultyMember@gmail.com":
-                    navigate('/Facultydashboard');
-                    break;
+                    navigate('/Facultydashboard'); break;
                 default:
-                    alert("Invalid role selected.");
+                    setError("Invalid credentials. Please check your email.");
             }
-            }
-        else {
-            alert("Please enter both email and password.");
+        } else {
+            setError("Please enter both email and password.");
         }
     };
 
     return (
-        <div style={styles.container}>
-                   <h1 style={styles.title}>Login</h1>
-                   <form onSubmit={handleLogin} style={styles.form}>
-                       <div style={styles.inputGroup}>
-                           <label style={styles.label}>Email</label>
-                           <input
-                               type="email"
-                               value={email}
-                               onChange={(e) => setEmail(e.target.value)}
-                               style={{ ...styles.input, ...styles.inputFocus }}
-                               required
-                           />
-                       </div>
-                       <div style={styles.inputGroup}>
-                           <label style={styles.label}>Password</label>
-                           <input
-                               type="password"
-                               value={password}
-                               onChange={(e) => setPassword(e.target.value)}
-                               style={{ ...styles.input, ...styles.inputFocus }}
-                               required
-                           />
-                       </div>
-                       
-                       <button
-                           type="submit"
-                           style={{ ...styles.button, ...styles.buttonHover }}
-                           onMouseEnter={(e) => (e.target.style.transform = "translateY(-3px)")}
-                           onMouseLeave={(e) => (e.target.style.transform = "translateY(0)")}
-                           
-                              
-                       >
-                           Login
-                       </button>
-                   </form>
-                   <a
-                       href="/"
-                       style={{ ...styles.forgotPassword, ...styles.forgotPasswordLink }}
-                       onMouseEnter={(e) => {
-                           e.target.style.textShadow = "0 0 5px rgba(30, 144, 255, 0.8)";
-                           e.target.style.color = "#add8e6";
-                       }}
-                       onMouseLeave={(e) => {
-                           e.target.style.textShadow = "none";
-                           e.target.style.color = "#4682b4";
-                       }}
-                   >
-                       Forgot password?
-            </a>
-            <br/>
-            <a
-                href="Companyregistration"
-                style={{ ...styles.forgotPassword, ...styles.forgotPasswordLink }}
-                onMouseEnter={(e) => {
-                    e.target.style.textShadow = "0 0 5px rgba(30, 144, 255, 0.8)";
-                    e.target.style.color = "#add8e6";
-                }}
-                onMouseLeave={(e) => {
-                    e.target.style.textShadow = "none";
-                    e.target.style.color = "#4682b4";
-                }}
-            >
-Don't have an account?(if you are a company)
-            </a>
-               </div>
+        <div style={styles.wrapper}>
+            <div style={styles.container}>
+                <h2 style={styles.title}>GUC Internship Portal</h2>
+                {error && (
+                    <div style={{ color: 'red', textAlign: 'center', marginBottom: '16px', fontWeight: 'bold' }}>
+                        {error}
+                    </div>
+                )}
+                <form onSubmit={handleLogin} style={styles.form}>
+                    <div style={styles.inputGroup}>
+                        <label style={styles.label}>Email</label>
+                        <input
+                            type="email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            style={styles.input}
+                            required
+                        />
+                    </div>
+                    <div style={styles.inputGroup}>
+                        <label style={styles.label}>Password</label>
+                        <input
+                            type="password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            style={styles.input}
+                            required
+                        />
+                    </div>
+                    <div style={{ display: 'flex', justifyContent: 'center' }}>
+                        <button type="submit" style={styles.button}>Login</button>
+                    </div>
+                </form>
+                <div style={styles.linksContainer}>
+                    <a href="/Companyregistration" style={styles.link}>Don't have an account? (if you are a company)</a>
+                </div>
+            </div>
+        </div>
     );
 };
 
-const styles = {  
-  body: {  
-      backgroundImage: "url('./assets/ims-chart.png')",
-      backgroundSize: "cover",  
-      backgroundRepeat: "no-repeat",  
-      backgroundPosition: "center",  
-      height: "100vh",  
-      margin: "0",  
-      fontFamily: "'Courier New', Courier, monospace",  
-  },  
-  container: {  
-      width: "500px",  
-      margin: "0 auto",  
-      padding: "25px",  
-      background: "linear-gradient(135deg, #add8e6, #e0ffff)",  
-      borderRadius: "15px",  
-      boxShadow: "0 8px 15px rgba(0, 0, 0, 0.2)",  
-      fontFamily: "'Courier New', Courier, monospace",  
-      border: "2px solid #4682b4",  
-      animation: "fadeIn 1.5s ease-in-out",  
-  },  
-  title: {  
-      textAlign: "center",  
-      color: "#1e90ff",  
-      marginBottom: "25px",  
-      fontSize: "28px",  
-      textShadow: "2px 2px 4px rgba(0, 0, 0, 0.2)",  
-      letterSpacing: "2px",  
-  },  
-  form: {  
-      display: "flex",  
-      flexDirection: "column",  
-      gap: "20px",  
-      background: "rgba(255, 255, 255, 0.8)",  
-      padding: "20px",  
-      borderRadius: "10px",  
-      boxShadow: "inset 0 4px 6px rgba(0, 0, 0, 0.1)",  
-  },  
-  inputGroup: {  
-      marginBottom: "15px",  
-      display: "flex",  
-      flexDirection: "column",  
-  },  
-  label: {  
-      fontWeight: "bold",  
-      color: "#00008b",  
-      fontSize: "16px",  
-      textTransform: "uppercase",  
-      letterSpacing: "1px",  
-  },  
-  input: {  
-      width: "95%",  
-      padding: "12px",  
-      border: "2px solid #4682b4",  
-      borderRadius: "8px",  
-      fontSize: "15px",  
-      background: "rgba(255, 255, 255, 0.9)",  
-      transition: "transform 0.3s ease, box-shadow 0.3s ease",  
-  },  
-  inputFocus: {  
-      transform: "scale(1.05)",  
-      boxShadow: "0 0 10px rgba(30, 144, 255, 0.5)",  
-      outline: "none",  
-  },  
-  select: {  
-      width: "100%",  
-      padding: "12px",  
-      border: "2px solid #4682b4",  
-      borderRadius: "8px",  
-      fontSize: "15px",  
-      background: "rgba(255, 255, 255, 0.9)",  
-      transition: "transform 0.3s ease, box-shadow 0.3s ease",  
-  },  
-  button: {  
-      background: "linear-gradient(135deg, #4682b4, #add8e6)",  
-      color: "white",  
-      padding: "12px 20px",  
-      border: "none",  
-      borderRadius: "8px",  
-      cursor: "pointer",  
-      fontSize: "18px",  
-      fontWeight: "bold",  
-      textTransform: "uppercase",  
-      letterSpacing: "1px",  
-      transition: "background 0.3s ease, transform 0.3s ease",  
-  },  
-  buttonHover: {  
-      background: "linear-gradient(135deg, #add8e6, #4682b4)",  
-      transform: "translateY(-3px)",  
-  },  
-  forgotPassword: {  
-      textAlign: "center",  
-      marginTop: "25px",  
-      color: "#1e90ff",  
-      fontSize: "16px",  
-      fontWeight: "bold",  
-  },  
-  forgotPasswordLink: {  
-      textDecoration: "none",  
-      color: "inherit",  
-      transition: "color 0.3s ease, text-shadow 0.3s ease",  
-  },  
-  forgotPasswordLinkHover: {  
-      textShadow: "0 0 5px rgba(30, 144, 255, 0.8)",  
-      color: "#add8e6",  
-  },  
-  "@keyframes fadeIn": {  
-      from: {  
-          opacity: 0,  
-          transform: "translateY(-10px)",  
-      },  
-      to: {  
-          opacity: 1,  
-          transform: "translateY(0)",  
-      },  
-  },  
+const styles = {
+    wrapper: {
+        height: "100vh",
+        width: "100vw",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        background: "linear-gradient(135deg, #cbdaf0, #87a5d4, #3a5ba0)",
+        fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+        margin: 0,
+        padding: 0,
+        boxSizing: "border-box",
+    },
+    container: {
+        backgroundColor: "#ffffffd9",
+        padding: "48px 40px",
+        borderRadius: "18px",
+        boxShadow: "0 20px 60px rgba(0, 0, 0, 0.2)",
+        backdropFilter: "blur(10px)",
+        WebkitBackdropFilter: "blur(10px)",
+        width: "100%",
+        maxWidth: "440px",
+        border: "2px solid #a0c4ff",
+        animation: "fadeIn 1s ease-out",
+    },
+    title: {
+        fontSize: "28px",
+        fontWeight: "700",
+        color: "#1e3a8a",
+        marginBottom: "30px",
+        textAlign: "center",
+        letterSpacing: "1px",
+        textShadow: "1px 1px 2px rgba(0, 0, 0, 0.1)",
+    },
+    form: {
+        display: "flex",
+        flexDirection: "column",
+        gap: "18px"
+    },
+    inputGroup: {
+        display: "flex",
+        flexDirection: "column",
+    },
+    label: {
+        marginBottom: "6px",
+        fontSize: "15px",
+        fontWeight: "600",
+        color: "#2c3e50"
+    },
+    input: {
+        padding: "12px 14px",
+        borderRadius: "8px",
+        border: "1px solid #b0c4de",
+        fontSize: "15px",
+        outline: "none",
+        transition: "box-shadow 0.3s ease, border-color 0.3s ease",
+        backgroundColor: "#f8fbff",
+        boxShadow: "inset 0 1px 4px rgba(0, 0, 0, 0.08)",
+    },
+    button: {
+        marginTop: "12px",
+        padding: "14px 40px",
+        backgroundColor: "#1e40af",
+        color: "white",
+        border: "none",
+        borderRadius: "10px",
+        fontSize: "16px",
+        fontWeight: "700",
+        letterSpacing: "1px",
+        cursor: "pointer",
+        transition: "background-color 0.3s ease, transform 0.2s ease",
+        boxShadow: "0 4px 12px rgba(0, 0, 0, 0.15)",
+    },
+    linksContainer: {
+        marginTop: "26px",
+        textAlign: "center",
+        display: "flex",
+        flexDirection: "column",
+        gap: "10px",
+    },
+    link: {
+        color: "#2b6cb0",
+        textDecoration: "none",
+        fontSize: "14px",
+        fontWeight: "500",
+        transition: "color 0.2s ease, text-shadow 0.2s ease",
+    }
 };
+
 export default LoginPage;
