@@ -11,6 +11,7 @@ const dummyInternships = [
         companyName: "TechCorp",
         jobTitle: "Software Engineer Intern",
         duration: "3 months",
+        durationMonths: 3,
         paid: true,
         salary: "$1500/month",
         industry: "Technology",
@@ -23,6 +24,7 @@ const dummyInternships = [
         companyName: "Marketify",
         jobTitle: "Marketing Intern",
         duration: "2 months",
+        durationMonths: 2,
         paid: false,
         salary: "N/A",
         industry: "Marketing",
@@ -35,6 +37,7 @@ const dummyInternships = [
         companyName: "DataWorks",
         jobTitle: "Data Analyst Intern",
         duration: "4 months",
+        durationMonths: 4,
         paid: true,
         salary: "$2000/month",
         industry: "Data Analytics",
@@ -49,6 +52,13 @@ const statusColors = {
     Applied: "#FFBB28",
     Closed: "#FF6384"
 };
+
+const durationOptions = [
+    { value: "All", label: "All Durations" },
+    { value: "1-3", label: "1-3 months" },
+    { value: "3-6", label: "3-6 months" },
+    { value: "6+", label: "6+ months" }
+];
 
 const CompanyAll = () => {
     const [internships] = useState(dummyInternships);
@@ -69,13 +79,15 @@ const CompanyAll = () => {
         (selectedPay === "All" ||
             (selectedPay === "Paid" && internship.paid) ||
             (selectedPay === "Unpaid" && !internship.paid)) &&
-        (selectedDuration === "All" || internship.duration === selectedDuration) &&
+        (selectedDuration === "All" ||
+            (selectedDuration === "1-3" && internship.durationMonths >= 1 && internship.durationMonths <= 3) ||
+            (selectedDuration === "3-6" && internship.durationMonths >= 3 && internship.durationMonths <= 6) ||
+            (selectedDuration === "6+" && internship.durationMonths >= 6)) &&
         (internship.jobTitle.toLowerCase().includes(searchTerm.toLowerCase()) ||
             internship.companyName.toLowerCase().includes(searchTerm.toLowerCase()))
     );
 
     const industryTypes = ["All", ...new Set(dummyInternships.map(i => i.industry))];
-    const durations = ["All", ...new Set(dummyInternships.map(i => i.duration))];
 
     return (
         <CompanyLayout>
@@ -150,7 +162,7 @@ const CompanyAll = () => {
                             onChange={handleDurationChange}
                             className="input"
                             style={{
-                                width: 140,
+                                width: 150,
                                 height: 40,
                                 borderRadius: 8,
                                 border: '1px solid var(--border)',
@@ -160,8 +172,8 @@ const CompanyAll = () => {
                                 color: 'var(--text)'
                             }}
                         >
-                            {durations.map((d, index) => (
-                                <option key={index} value={d}>{d}</option>
+                            {durationOptions.map((option, index) => (
+                                <option key={index} value={option.value}>{option.label}</option>
                             ))}
                         </select>
                     </div>
