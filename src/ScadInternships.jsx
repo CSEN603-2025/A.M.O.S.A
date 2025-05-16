@@ -11,6 +11,7 @@ const dummyInternships = [
         companyName: "TechCorp",
         jobTitle: "Software Engineer Intern",
         duration: "3 months",
+        durationMonths: 3,
         paid: true,
         salary: "$1500/month",
         industry: "Technology",
@@ -23,6 +24,7 @@ const dummyInternships = [
         companyName: "Marketify",
         jobTitle: "Marketing Intern",
         duration: "2 months",
+        durationMonths: 2,
         paid: false,
         salary: "N/A",
         industry: "Marketing",
@@ -35,6 +37,7 @@ const dummyInternships = [
         companyName: "DataWorks",
         jobTitle: "Data Analyst Intern",
         duration: "4 months",
+        durationMonths: 4,
         paid: true,
         salary: "$2000/month",
         industry: "Data Analytics",
@@ -47,6 +50,7 @@ const dummyInternships = [
         companyName: "DesignHub",
         jobTitle: "UI/UX Design Intern",
         duration: "3 months",
+        durationMonths: 3,
         paid: true,
         salary: "$1200/month",
         industry: "Design",
@@ -59,6 +63,7 @@ const dummyInternships = [
         companyName: "FinancePlus",
         jobTitle: "Financial Analyst Intern",
         duration: "6 months",
+        durationMonths: 6,
         paid: true,
         salary: "$1800/month",
         industry: "Finance",
@@ -71,6 +76,7 @@ const dummyInternships = [
         companyName: "HealthCare Solutions",
         jobTitle: "Healthcare Admin Intern",
         duration: "4 months",
+        durationMonths: 4,
         paid: false,
         salary: "N/A",
         industry: "Healthcare",
@@ -86,11 +92,19 @@ const statusColors = {
     Closed: "#FF6384"
 };
 
+const durationOptions = [
+    { value: "All", label: "All Durations" },
+    { value: "1-3", label: "1-3 months" },
+    { value: "3-6", label: "3-6 months" },
+    { value: "6+", label: "6+ months" }
+];
+
 const SCADInternships = () => {
     const [internships, setInternships] = useState(dummyInternships);
     const [searchTerm, setSearchTerm] = useState("");
     const [selectedIndustry, setSelectedIndustry] = useState("All");
     const [selectedPay, setSelectedPay] = useState("All");
+    const [selectedDuration, setSelectedDuration] = useState("All");
     const [selectedInternship, setSelectedInternship] = useState(null);
     const navigate = useNavigate();
 
@@ -106,14 +120,36 @@ const SCADInternships = () => {
         setSelectedPay(e.target.value);
     };
 
-    const filteredInternships = internships.filter(internship =>
-        (selectedIndustry === "All" || internship.industry === selectedIndustry) &&
-        (selectedPay === "All" ||
+    const handleDurationChange = (e) => {
+        setSelectedDuration(e.target.value);
+    };
+
+    const filteredInternships = internships.filter(internship => {
+        // Apply industry filter
+        const industryMatch = selectedIndustry === "All" || internship.industry === selectedIndustry;
+
+        // Apply pay filter
+        const payMatch = selectedPay === "All" ||
             (selectedPay === "Paid" && internship.paid) ||
-            (selectedPay === "Unpaid" && !internship.paid)) &&
-        (internship.jobTitle.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            internship.companyName.toLowerCase().includes(searchTerm.toLowerCase()))
-    );
+            (selectedPay === "Unpaid" && !internship.paid);
+
+        // Apply search term filter
+        const searchMatch = internship.jobTitle.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            internship.companyName.toLowerCase().includes(searchTerm.toLowerCase());
+
+        // Apply duration filter
+        let durationMatch = true;
+        if (selectedDuration !== "All") {
+            const [min, max] = selectedDuration.split("-").map(Number);
+            if (selectedDuration === "6+") {
+                durationMatch = internship.durationMonths >= 6;
+            } else {
+                durationMatch = internship.durationMonths >= min && internship.durationMonths <= max;
+            }
+        }
+
+        return industryMatch && payMatch && searchMatch && durationMatch;
+    });
 
     const industryTypes = ["All", ...new Set(dummyInternships.map(internship => internship.industry))];
 
@@ -180,6 +216,26 @@ const SCADInternships = () => {
                             <option value="All">All</option>
                             <option value="Paid">Paid</option>
                             <option value="Unpaid">Unpaid</option>
+                        </select>
+                        <select
+                            name="duration"
+                            value={selectedDuration}
+                            onChange={handleDurationChange}
+                            className="input"
+                            style={{
+                                width: 150,
+                                height: 40,
+                                borderRadius: 8,
+                                border: '1px solid var(--border)',
+                                padding: '0 14px',
+                                fontSize: 16,
+                                background: '#fff',
+                                color: 'var(--text)'
+                            }}
+                        >
+                            {durationOptions.map((option, index) => (
+                                <option key={index} value={option.value}>{option.label}</option>
+                            ))}
                         </select>
                     </div>
                 </div>

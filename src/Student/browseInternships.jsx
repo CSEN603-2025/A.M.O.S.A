@@ -11,6 +11,7 @@ const StudentInternships = () => {
             companyName: "TechCorp",
             jobTitle: "Software Engineer Intern",
             duration: "3 months",
+            durationMonths: 3,
             paid: true,
             salary: "$1500/month",
             industry: "Technology",
@@ -23,6 +24,7 @@ const StudentInternships = () => {
             companyName: "Marketify",
             jobTitle: "Marketing Intern",
             duration: "2 months",
+            durationMonths: 2,
             paid: false,
             salary: "N/A",
             industry: "Marketing",
@@ -35,6 +37,7 @@ const StudentInternships = () => {
             companyName: "DataWorks",
             jobTitle: "Data Analyst Intern",
             duration: "4 months",
+            durationMonths: 4,
             paid: true,
             salary: "$2000/month",
             industry: "Data Analytics",
@@ -50,8 +53,19 @@ const StudentInternships = () => {
         Closed: "#FF6384"
     };
 
+    const durationOptions = [
+        { value: "All", label: "All Durations" },
+        { value: "1-3", label: "1-3 months" },
+        { value: "3-6", label: "3-6 months" },
+        { value: "6+", label: "6+ months" }
+    ];
+
     const [searchTerm, setSearchTerm] = useState("");
-    const [filter, setFilter] = useState({ industry: "All", paid: "All" });
+    const [filter, setFilter] = useState({
+        industry: "All",
+        paid: "All",
+        duration: "All"
+    });
     const [selectedInternship, setSelectedInternship] = useState(null);
     const [applications, setApplications] = useState(() => {
         const saved = localStorage.getItem("StudentApplied");
@@ -88,7 +102,13 @@ const StudentInternships = () => {
             filter.paid === "All" ||
             (filter.paid === "Paid" && internship.paid) ||
             (filter.paid === "Unpaid" && !internship.paid);
-        return matchesSearch && matchesIndustry && matchesPaid;
+        const matchesDuration =
+            filter.duration === "All" ||
+            (filter.duration === "1-3" && internship.durationMonths >= 1 && internship.durationMonths <= 3) ||
+            (filter.duration === "3-6" && internship.durationMonths >= 3 && internship.durationMonths <= 6) ||
+            (filter.duration === "6+" && internship.durationMonths >= 6);
+
+        return matchesSearch && matchesIndustry && matchesPaid && matchesDuration;
     });
 
     const industryTypes = ["All", ...new Set(internships.map(internship => internship.industry))];
@@ -156,6 +176,26 @@ const StudentInternships = () => {
                             <option value="All">All</option>
                             <option value="Paid">Paid</option>
                             <option value="Unpaid">Unpaid</option>
+                        </select>
+                        <select
+                            name="duration"
+                            value={filter.duration}
+                            onChange={handleFilterChange}
+                            className="input"
+                            style={{
+                                width: 150,
+                                height: 40,
+                                borderRadius: 8,
+                                border: '1px solid var(--border)',
+                                padding: '0 14px',
+                                fontSize: 16,
+                                background: '#fff',
+                                color: 'var(--text)'
+                            }}
+                        >
+                            {durationOptions.map((option, index) => (
+                                <option key={index} value={option.value}>{option.label}</option>
+                            ))}
                         </select>
                     </div>
                 </div>

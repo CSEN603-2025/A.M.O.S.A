@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 const CompanyRegistration = () => {
@@ -57,7 +57,10 @@ const CompanyRegistration = () => {
                         </select>
                     </div>
                     <div style={styles.inputGroup}>
-                        <label style={styles.label}>Company Size</label>
+                        <label style={styles.label}>
+                            Company Size
+                            <span style={styles.infoIcon} title="Small<50--50<Medium<100--100<Large<500--Corporate>500">ℹ️</span>
+                        </label>
                         <div style={styles.radioGridCentered}>
                             {['small', 'medium', 'large', 'corporate'].map(size => (
                                 <label key={size} style={styles.radioLabel}>
